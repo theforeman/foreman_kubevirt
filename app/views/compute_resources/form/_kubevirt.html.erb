@@ -1,0 +1,7 @@
+<%= text_f f, :hostname, :label => _('Hostname'), :required => true %>
+<%= text_f f, :namespace, :label => _('Namespace') %>
+<%= text_f f, :password, :label => _('Token'), :required => true %>
+
+ <div class="col-md-offset-2">
+   <%= test_connection_button_f(f, true) %>
+ </div>

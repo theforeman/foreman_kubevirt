@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[foreman.foreman_kubevirt]
+file_filter = locale/<lang>/foreman_kubevirt.edit.po
+source_file = locale/foreman_kubevirt.pot
+source_lang = en
+type = PO
