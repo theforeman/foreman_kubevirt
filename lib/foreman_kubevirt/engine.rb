@@ -22,6 +22,7 @@ module ForemanKubevirt
         parameter_filter(ComputeResource, :hostname, :url)
         parameter_filter(ComputeResource, :namespace, :user)
         parameter_filter(ComputeResource, :token, :password)
+        parameter_filter(ComputeResource, :ca_cert)
 
         # Add permissions
         # security_block :foreman_kubevirt do

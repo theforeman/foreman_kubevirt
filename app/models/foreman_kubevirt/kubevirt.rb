@@ -5,7 +5,14 @@ module ForemanKubevirt
     alias_attribute :hostname, :url
     alias_attribute :token, :password
     alias_attribute :namespace, :user
-    #alias_attribute :certificate_path, :uuid
+
+    def ca_cert
+      attrs[:ca_cert]
+    end
+
+    def ca_cert=(key)
+      attrs[:ca_cert] = key
+    end
 
     def capabilities
       [:image]
@@ -40,10 +47,8 @@ module ForemanKubevirt
 
     protected
 
-    # TODO: Add SSL support
     def client
       return @client if @client
-
       server_parts = hostname.split(':')
       address = server_parts[0]
       port = server_parts[1] || 443
@@ -55,6 +60,8 @@ module ForemanKubevirt
         :kubevirt_namespace  => namespace || 'default',
         :kubevirt_token      => token,
         :kubevirt_log        => nil,
+        :kubevirt_verify_ssl => !ca_cert.blank?,
+        :kubevirt_ca_cert    => ca_cert
       )
     rescue => e
       if e.message =~ /SSL_connect.*certificate verify failed/ ||
