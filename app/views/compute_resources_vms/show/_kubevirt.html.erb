@@ -28,6 +28,25 @@
         <td><%= @vm.namespace %></td>
       </tr>
       <tr>
+        <td><%= _('Type') %></td>
+        <td><%= @vm.machine_type %></td>
+      </tr>
+
+      <% @vm.interfaces.each do |nic| %>
+        <tr>
+          <td><%= _('NIC') %></td>
+          <td><%= "#{nic.name} - #{nic.mac_address} (#{nic.type})" %></td>
+        </tr>
+      <% end %>
+
+      <% @vm.volumes.each do |vol| %>
+        <tr>
+          <td><%= _('Disk') %></td>
+          <td><%= "#{vol.name}  - #{vol.type} (#{vol.info})" %></td>
+        </tr>
+      <% end %>
+
+      <tr>
         <td><%= _('Running on') %></td>
         <td><%= link_to @compute_resource, compute_resource_path(@compute_resource) %></td>
       </tr>
