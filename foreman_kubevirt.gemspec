@@ -1,4 +1,4 @@
-require File.expand_path('../lib/foreman_kubevirt/version', __FILE__)
+require File.expand_path('lib/foreman_kubevirt/version', __dir__)
 
 Gem::Specification.new do |s|
   s.name        = 'foreman_kubevirt'
@@ -10,12 +10,12 @@ Gem::Specification.new do |s|
   s.summary     = 'Kubevirt as compute resource for The Foreman.'
   # also update locale/gemspec.rb
   s.description = 'This gem provides Kubevirt as compute resource for The Foreman.'
+  s.files       = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
+  s.test_files  = Dir['test/**/*']
 
-  s.files = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
-  s.test_files = Dir['test/**/*']
-
-  s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc'
+  s.add_development_dependency 'rubocop'
 
   s.add_dependency('fog-kubevirt', '< 1.0')
 end
