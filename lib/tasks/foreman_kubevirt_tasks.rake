@@ -31,7 +31,7 @@ namespace :foreman_kubevirt do
                          "#{ForemanKubevirt::Engine.root}/lib/**/*.rb",
                          "#{ForemanKubevirt::Engine.root}/test/**/*.rb"]
       end
-    rescue
+    rescue StandardError
       puts 'Rubocop not loaded.'
     end
 

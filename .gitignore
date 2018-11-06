@@ -10,3 +10,7 @@ locale/*/*.edit.po
 locale/*/*.po.time_stamp
 locale/*/*.pox
 Gemfile.lock
+.rbenv*
+.rvmrc*
+.ruby-version*
+.ruby-gemset*

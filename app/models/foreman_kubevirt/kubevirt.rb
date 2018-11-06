@@ -37,18 +37,19 @@ module ForemanKubevirt
     def test_connection(options = {})
       super
       connection_details_ok? && client.valid? && client.virt_supported?
-    rescue => e
+    rescue StandardError => e
       errors[:base] << e.message
     end
 
     def create_vm(args = {})
-      # TODO implement this
+      # TODO: implement this
     end
 
     protected
 
     def client
       return @client if @client
+
       server_parts = hostname.split(':')
       address = server_parts[0]
       port = server_parts[1] || 443
@@ -60,12 +61,12 @@ module ForemanKubevirt
         :kubevirt_namespace  => namespace || 'default',
         :kubevirt_token      => token,
         :kubevirt_log        => nil,
-        :kubevirt_verify_ssl => !ca_cert.blank?,
+        :kubevirt_verify_ssl => ca_cert.present?,
         :kubevirt_ca_cert    => ca_cert
       )
-    rescue => e
+    rescue StandardError => e
       if e.message =~ /SSL_connect.*certificate verify failed/ ||
-          e.message =~ /Peer certificate cannot be authenticated with given CA certificates/
+         e.message =~ /Peer certificate cannot be authenticated with given CA certificates/
         raise Foreman::FingerprintException.new(
           N_("The remote system presented a public key signed by an unidentified certificate authority. If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
           ca_cert
