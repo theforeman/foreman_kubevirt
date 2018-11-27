@@ -45,19 +45,24 @@ module ForemanKubevirt
       # TODO: implement this
     end
 
+
+    def server_address
+      hostname.split(':')[0]
+    end
+
+    def server_port
+      hostname.split(':')[1] || 443
+    end
+
     protected
 
     def client
       return @client if @client
 
-      server_parts = hostname.split(':')
-      address = server_parts[0]
-      port = server_parts[1] || 443
-
       @client ||= Fog::Compute.new(
         :provider            => "kubevirt",
-        :kubevirt_hostname   => address,
-        :kubevirt_port       => port,
+        :kubevirt_hostname   => server_address,
+        :kubevirt_port       => server_port,
         :kubevirt_namespace  => namespace || 'default',
         :kubevirt_token      => token,
         :kubevirt_log        => nil,
