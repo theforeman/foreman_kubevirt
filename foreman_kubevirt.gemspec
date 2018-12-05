@@ -17,5 +17,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rubocop'
 
-  s.add_dependency('fog-kubevirt', '< 1.0')
+  s.add_dependency('fog-kubevirt', '0.1.8')
 end

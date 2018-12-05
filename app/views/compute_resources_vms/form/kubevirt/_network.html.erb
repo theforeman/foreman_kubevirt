@@ -1,0 +1,14 @@
+<%= selectable_f f, :cni_provider, compute_resource.cni_providers, {},
+                    :class => "kubevirt_cni_provider",
+                    :disabled => !new_vm,
+                    :label => _('CNI Provider'),
+                    :label_size => "col-md-3" %>
+
+<%= select_f f, :network, compute_resource.networks, :name, :name, {},
+                :disabled => !new_vm,
+                :class => "kubevirt_network",
+                :label => _('Network'),
+                :label_size => "col-md-3" %>
+
+<%= checkbox_f f, :boot, :label => _('Boot From Network'), :label_size => "col-md-3" %>
+
