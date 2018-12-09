@@ -65,7 +65,7 @@ module ForemanKubevirt
         :kubevirt_port       => server_port,
         :kubevirt_namespace  => namespace || 'default',
         :kubevirt_token      => token,
-        :kubevirt_log        => nil,
+        :kubevirt_log        => logger,
         :kubevirt_verify_ssl => ca_cert.present?,
         :kubevirt_ca_cert    => ca_cert
       )
