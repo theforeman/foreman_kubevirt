@@ -1,0 +1,15 @@
+<%= select_f f, :name,
+                compute_resource.volume_claims,
+                :attributes,
+                :name,
+                { :include_blank => _("Create New Claim") },
+                :label => _('Persistent Volume Claim'),
+                :label_size => "col-md-2",
+                :disabled => !new_vm,
+                :onchange    => 'pvcSelected(this);',
+                :class => "col-md-2 pvc-name" %>
+
+<%= select_f f, :name, compute_resource.volumes, :attributes, :name,
+               { }, :label => _('Persistent Volume'), :label_size => "col-md-2", :disabled => !new_vm, :class => "col-md-2 pvc-selected-volume" %>
+
+<%= text_f f,:capacity, :label => _('Size (GB)'), :value => "", :label_size => "col-md-2", :disabled => !new_vm, :class => "col-md-2 pvc-size" %>

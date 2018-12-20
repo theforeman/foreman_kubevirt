@@ -58,6 +58,25 @@ module ForemanKubevirt
       raise ActiveRecord::RecordNotFound
     end
 
+    def volumes
+      client.volumes
+    end
+
+    def volume_claims
+      client.pvcs
+    end
+
+    def new_volume(attr = {})
+      return unless new_volume_errors.empty?
+      client.volumes.new(attr.merge(:capacity => '0G'))
+    end
+
+    def new_volume_errors
+      errors = []
+      errors.push _('no Persistent Volumes available on provider') if volumes.empty?
+      errors
+    end
+
     def cni_providers
       [[_("multus"), :multus ], [_("genie"), :genie]]
     end
@@ -79,6 +98,11 @@ module ForemanKubevirt
     #               "boot"    => "0"
     #             }
     #    }
+    # volumes_attributes[Hash] - the attributes for the persistent volume claim:
+    #  If provided 'capacity' key, a new PVC will be created on volume with name
+    #  specified by 'name' key.
+    #  If provided only 'name', its value will be used as the PVC to servce as an
+    #  existing claim of the VM.
     def create_vm(args = {})
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
@@ -86,8 +110,17 @@ module ForemanKubevirt
       if args["provision_method"] == "image"
         image = args["image_id"]
       else
+        volume = args.dig(:volumes_attributes, :name)
         # TODO: Support PVC
-        raise "Currently supports only image provisioning"
+        raise "VM should be created based on Persistent Volume Claim or Image" unless volume
+
+        capacity = args.dig(:volumes_attributes, :capacity)
+        if capacity
+          pvc = options[:name].gsub(/[._]+/,'-') + "-pvc-01"
+          create_new_pvc(volume, capacity, pvc)
+        else
+          pvc = volume
+        end
       end
 
       # FIXME Add cloud-init support
@@ -129,6 +162,7 @@ module ForemanKubevirt
                           :cpus        => options[:cpu_cores].to_i,
                           :memory_size => options[:memory].to_i / 2**20,
                           :image       => image,
+                          :pvc         => pvc,
                           # :cloudinit   => init,
                           :networks    => networks,
                           :interfaces  => interfaces)
@@ -136,6 +170,16 @@ module ForemanKubevirt
       rescue Fog::Kubevirt::Errors::ClientError => e
         raise e
       end
+    end
+
+    def create_new_pvc(volume_name, capacity, pvc_name)
+      volume = volumes.get(volume_name)
+      client.pvcs.create(:name          => pvc_name,
+                         :namespace     => namespace,
+                         :access_modes  => volume.access_modes,
+                         :volume_name   => volume.name,
+                         :storage_class => volume.storage_class,
+                         :requests      => { :storage => capacity + "G" })
     end
 
     def destroy_vm(uuid)
