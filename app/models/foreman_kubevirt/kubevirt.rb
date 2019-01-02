@@ -15,7 +15,7 @@ module ForemanKubevirt
     end
 
     def capabilities
-      [:build]
+      [:build, :image]
     end
 
     def provided_attributes
@@ -83,9 +83,15 @@ module ForemanKubevirt
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
 
-      # FIXME provide an image based on user selection and cloud init
-      image = 'kubevirt/fedora-cloud-registry-disk-demo'
-      init = { 'userData' => "#!/bin/bash\necho \"fedora\" | passwd fedora --stdin"}
+      if args["provision_method"] == "image"
+        image = args["image_id"]
+      else
+        # TODO: Support PVC
+        raise "Currently supports only image provisioning"
+      end
+
+      # FIXME Add cloud-init support
+      #init = { 'userData' => "#!/bin/bash\necho \"fedora\" | passwd fedora --stdin"}
 
       interfaces = []
       networks = []
