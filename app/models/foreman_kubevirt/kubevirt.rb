@@ -129,7 +129,7 @@ module ForemanKubevirt
                           :cpus        => options[:cpu_cores].to_i,
                           :memory_size => options[:memory].to_i / 2**20,
                           :image       => image,
-                          :cloudinit   => init,
+                          # :cloudinit   => init,
                           :networks    => networks,
                           :interfaces  => interfaces)
         client.servers.get(options[:name])
