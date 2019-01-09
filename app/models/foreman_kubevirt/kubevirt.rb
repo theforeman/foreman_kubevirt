@@ -62,6 +62,10 @@ module ForemanKubevirt
       client.volumes
     end
 
+    def available_volumes
+      volumes.select { |v| v.phase == 'Available' }
+    end
+
     def volume_claims
       client.pvcs
     end
