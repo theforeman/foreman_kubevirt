@@ -218,6 +218,10 @@ module ForemanKubevirt
       end
     end
 
+    def associated_host(vm)
+      associate_by("mac", vm.mac)
+    end
+
     # TODO: max supported values should be fetched according to namespace
     #      capabilities: kubectl get limits namespace_name
     def max_cpu_count
