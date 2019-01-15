@@ -11,6 +11,7 @@ module ForemanKubevirt
         parameter_filter(ComputeResource, :namespace, :user)
         parameter_filter(ComputeResource, :token, :password)
         parameter_filter(ComputeResource, :ca_cert)
+        parameter_filter(ComputeResource, :api_port)
       end
     end
 

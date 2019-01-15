@@ -5,6 +5,7 @@ module ForemanKubevirt
     alias_attribute :hostname, :url
     alias_attribute :token, :password
     alias_attribute :namespace, :user
+    validates :hostname, :api_port, :namespace, :token, :presence => true
 
     def ca_cert
       attrs[:ca_cert]
@@ -13,6 +14,15 @@ module ForemanKubevirt
     def ca_cert=(key)
       attrs[:ca_cert] = key
     end
+
+    def api_port
+      attrs[:api_port]
+    end
+
+    def api_port=(key)
+      attrs[:api_port] = key
+    end
+
 
     def capabilities
       [:build, :image]
@@ -236,14 +246,6 @@ module ForemanKubevirt
       64.gigabytes
     end
 
-    def server_address
-      hostname.split(':')[0]
-    end
-
-    def server_port
-      hostname.split(':')[1] || 443
-    end
-
     protected
 
     def client
@@ -251,9 +253,9 @@ module ForemanKubevirt
 
       @client ||= Fog::Compute.new(
         :provider            => "kubevirt",
-        :kubevirt_hostname   => server_address,
-        :kubevirt_port       => server_port,
-        :kubevirt_namespace  => namespace || 'default',
+        :kubevirt_hostname   => hostname,
+        :kubevirt_port       => api_port,
+        :kubevirt_namespace  => namespace,
         :kubevirt_token      => token,
         :kubevirt_log        => logger,
         :kubevirt_verify_ssl => ca_cert.present?,
@@ -274,7 +276,8 @@ module ForemanKubevirt
     private
 
     def connection_details_ok?
-      errors[:url].empty? && errors[:user].empty? && errors[:password].empty?
+      errors[:api_port] << _("illegal port") if provider.api_port.to_i.to_s != provider.api_port
+      errors[:hostname].blank? && errors[:api_por].blank? && errors[:namespace].blank? && errors[:password].blank?
     end
   end
 end
