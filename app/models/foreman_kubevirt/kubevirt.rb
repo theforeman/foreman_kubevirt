@@ -50,7 +50,7 @@ module ForemanKubevirt
 
     def test_connection(options = {})
       super
-      connection_details_ok? && client.valid? && client.virt_supported?
+      client.valid? && client.virt_supported?
     rescue StandardError => e
       errors[:base] << e.message
     end
@@ -271,13 +271,6 @@ module ForemanKubevirt
       else
         raise e
       end
-    end
-
-    private
-
-    def connection_details_ok?
-      errors[:api_port] << _("illegal port") if provider.api_port.to_i.to_s != provider.api_port
-      errors[:hostname].blank? && errors[:api_por].blank? && errors[:namespace].blank? && errors[:password].blank?
     end
   end
 end
