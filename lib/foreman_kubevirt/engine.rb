@@ -36,8 +36,15 @@ module ForemanKubevirt
         require "fog/kubevirt"
         require "fog/compute/kubevirt/models/server"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/server", __dir__)
-
         Fog::Compute::Kubevirt::Server.send(:include, ::FogExtensions::Kubevirt::Server)
+
+        require "fog/compute/kubevirt/models/volume"
+        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/volume", __dir__)
+        Fog::Compute::Kubevirt::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
+
+        require "fog/compute/kubevirt/models/pvc"
+        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/pvc", __dir__)
+        Fog::Compute::Kubevirt::Pvc.send(:include, ::FogExtensions::Kubevirt::Pvc)
       rescue StandardError => e
         Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
       end
