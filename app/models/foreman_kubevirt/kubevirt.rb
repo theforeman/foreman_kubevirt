@@ -125,15 +125,14 @@ module ForemanKubevirt
         image = args["image_id"]
       else
         volume = args.dig(:volumes_attributes, :name)
-        # TODO: Support PVC
-        raise "VM should be created based on Persistent Volume Claim or Image" unless volume
+        pvc = args.dig(:volumes_attributes, :id)
+        raise "VM should be created based on Persistent Volume Claim or Image" unless (volume || pvc)
 
-        capacity = args.dig(:volumes_attributes, :capacity)
-        if capacity
+        # TODO: This supports a single PVC, but user might require for multiple pvcs
+        if pvc.nil?
+          capacity = args.dig(:volumes_attributes, :capacity)
           pvc = options[:name].gsub(/[._]+/,'-') + "-pvc-01"
           create_new_pvc(volume, capacity, pvc)
-        else
-          pvc = volume
         end
       end
 
