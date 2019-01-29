@@ -164,7 +164,7 @@ module ForemanKubevirt
         end
 
         # TODO: Consider replacing with 'free' boot order, also verify uniqueness
-        nic[:bootOrder] = 1 if iface["boot"] == '1'
+        nic[:bootOrder] = 1 if iface["provision"] == true
         nic[:macAddress] = iface["mac"] if iface["mac"]
         interfaces << nic
         networks << net
@@ -223,7 +223,7 @@ module ForemanKubevirt
     #
     def host_interfaces_attrs(host)
       host.interfaces.select(&:physical?).each.with_index.reduce({}) do |hash, (nic, index)|
-        hash.merge(index.to_s => nic.compute_attributes.merge(ip: nic.ip, mac: nic.mac))
+        hash.merge(index.to_s => nic.compute_attributes.merge(ip: nic.ip, mac: nic.mac, provision: nic.provision))
       end
     end
 
