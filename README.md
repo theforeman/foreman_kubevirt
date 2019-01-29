@@ -8,14 +8,22 @@ See [How_to_Install_a_Plugin](http://projects.theforeman.org/projects/foreman/wi
 for how to install Foreman plugins
 
 ## Usage
+KubeVirt is implemented as a compute resource, therefore it should be added under the 'Infrastructure --> Compute Resource' menu, by creating a new provider of type 'KubeVirt'.
 
-*Usage here*
+The compute resource UI expects a `token` as identifier of the user.
+In order to obtain the tokem from a running kubevirt cluster follow:
+```
+# list of secrets that contain the tokens
+kubectl get secrets
+
+# Replace KUBE_SECRET with the relevant secret name
+# the rest of the command will extract the token and decode it
+get secrets KUBE_SECRET -o yaml | grep token: | cut -d":" -f 2 | tr -d " "  | base64 -d
+```
 
 ## TODO
 
-* Support SSL communication with kubevirt server (requires adding SSL support for fog-kubevirt)
-* Implement Import Vm / Associate Vm / Console
-* Implement Host actions
+* Implement VM Console
 
 ## Contributing
 
