@@ -77,25 +77,210 @@ udp6       0      0 :::69                   :::*                                
 
 The same machine will be used to store also the installation media for Foreman, unless preferred using the web as the source.
 
-2. VM **kubevirt.example.tst** - this vm will have the kubernetes cluster and kubevirt.
-Create a guide for installing multus/flannel/ovs on top of Centos 7.5.
-The installation is based on the following guides:
-https://kubernetes.io/docs/setup/cri/#docker
-https://kubernetes.io/docs/setup/independent/install-kubeadm/
-https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
-http://kubevirt.io/2018/attaching-to-multiple-networks.html
+### VM **kubevirt.example.tst**
+This vm will have the kubernetes cluster and kubevirt addon installed.
+The instruction of installing this node relies on the following links, based on Centos 7.5:
+* https://kubernetes.io/docs/setup/independent/install-kubeadm/
+* https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
+* https://kubernetes.io/docs/setup/cri/#docker
+* http://kubevirt.io/2018/attaching-to-multiple-networks.html
 
-### Purge KubeVirt and Kubernetes
+#### Install open-vswitch
+openvswitch will be used for connecting the VM to host networking using veth pairs.
+* Install openvswitch >= 2.9 `yum install openvswitch` ( package can be taken from koji)
+* Create bridge named ***foreman*** and connect to eth1 (interface that is connected to libvirt's ***foreman*** network)
+```
+ovs-vsctl add-br foreman
+ovs-vsctl add-port foreman eth1
+```
 
+#### Firewall rules
+```
+firewall-cmd --permanent --zone=public --add-port=6443/tcp 
+firewall-cmd --permanent --zone=public --add-port=10250-10252/tcp 
+firewall-cmd --permanent --zone=public --add-port=2379-2380/tcp 
+firewall-cmd --permanent --zone=public --add-port=30000-32767/tcp
+firewall-cmd --reload
+# Verify the configured ports
+firewall-cmd --list-all
+```
+#### Enable IP Forwarding
+```
+cat <<EOF >  /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
+
+modprobe br_netfilter
+ ```
+ 
+ #### Install Kubernetes and KubeVirt
+ * Make sure to add kubernetes repository to /etc/yum.repos.d (see ![here](https://kubernetes.io/docs/setup/independent/install-kubeadm/))
+ 
+```
+kubeadm config images pull
+swapoff # should be disabled permanantly by commenting the swap on /etc/fstab
+kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.111.13
+systemctl enable kubelet
+```
+
+Copy kubernetes configuration file to home directory:
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+Let kubernetes master serve as a node:
+`kubectl taint nodes --all node-role.kubernetes.io/master-`
+
+Install KubeVirt, multus and flannel:
+```
+kubectl apply -f https://raw.githubusercontent.com/intel/multus-cni/master/images/multus-daemonset.yml
+mv /etc/cni/net.d/70-multus.conf /etc/cni/net.d/00-multus.conf
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+# Check for latest version
+RELEASE=v0.13.2
+kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/kubernetes-ovs-cni.yml
+```
+
+Download ***virtctl*** tool for managing VMs on kubevirt:
+```
+wget https://github.com/kubevirt/kubevirt/releases/download/v0.13.2/virtctl-v0.13.2-linux-amd64 -O /usr/local/bin/virtctl
+chmod +x /usr/local/bin/virtctl
+```
+
+Set CPU and Memory per slice:
+```
+cat > /etc/systemd/system/kubelet.service.d/11-cgroups.conf <<EOF
+[Service]
+CPUAccounting=true
+MemoryAccounting=true
+EOF
+```
+
+Start kubelet service:
+```
+systemctl starsystemctl daemon-reload
+systemctl restart kubelett kubelet
+```
+
+Define network attachment definition on k8s that supports 'foreman' ovs bridge:
+```
+cat <<EOF | kubectl create -f -
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: ovs-foreman
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "ovs",
+      "bridge": "foreman"
+    }'
+EOF
+```
+
+##### Create priviledged user with cluster-role
+The following will create a service account eligible for both k8s and virt resources:
+```
+cat <<EOF | kubectl create -f -
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: foreman-account
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: foreman-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: foreman-account
+  namespace: default
+EOF
+```
+
+Obtain the account's token by:
+```
+KUBE_SECRET=`kubectl get secrets  | grep foreman | cut -d" " -f1 `
+kubectl get secrets $KUBE_SECRET -o yaml | grep token: | cut -d":" -f 2 | tr -d " "  | base64 -d | xargs
+```
+
+### Test the environment
+
+Create VMI (Virtual Machine Instance):
+```
+cat <<EOF | kubectl create -f -
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-multus
+  name: vmi-multus
+spec:
+  domain:
+    cpu:
+      cores: 1
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: vmi-multus-pvc
+        bootOrder: 2
+      interfaces:
+      - bridge: {}
+        name: ovs-foreman-net
+        macAddress: de:00:00:11:11:de
+        bootOrder: 1
+    machine:
+      type: q35
+    resources:
+      requests:
+        memory: 512M
+  networks:
+  - multus:
+      networkName: ovs-foreman
+    name: ovs-foreman-net
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: vmi-multus-pvc
+    containerDisk:
+      image: kubevirt/fedora-cloud-registry-disk-demo
+status: {}
+EOF
+```
+
+To confirm the VMI was created check:
+```
+kubectl get vmi
+```
+
+To open a VNC console to the VM use:
+```
+virtctl vnc vmi-multus
+```
+
+#### Purge KubeVirt and Kubernetes
+For purging the KubeVirt environment, please follow the next steps:
 ```
 export LABEL=kubevirt.io
-export K8S_NAMESPACE=kube-system
 export KUBEVIRT_NAMESPACE=kubevirt
 
 for entity in deployment ds rs pods validatingwebhookconfiguration services pvc pv clusterrolebinding rolebinding roles clusterroles serviceaccounts configmaps secrets customresourcedefinitions
 do
   kubectl delete $entity -l $LABEL -n $NAMESPACE
-  kubectl delete $entity -l $LABEL -n $KUBEVIRT_NAMESPACE
 done
 
 kubectl delete network-attachment-definitions.k8s.cni.cncf.io --all
@@ -106,5 +291,12 @@ RELEASE=v0.13.2
 kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 
 kubectl delete -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/ovs-cni.yml
-\rm -rf /var/lib/etcd/*
+```
+
+For purging entire Kubernetes:
+```
+kubectl drain kubevirt.example.tst --delete-local-data --force --ignore-daemonsets
+kubectl delete node kubevirt.example.tst
+kubeadm reset --force
+rm -rf /var/lib/etcd/*
 ```
