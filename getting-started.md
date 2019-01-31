@@ -27,6 +27,8 @@ Two libvirt networks are defined:
   <ip address='192.168.111.1' netmask='255.255.255.0'/>
 </network>
 ```
+
+The following chart shows the different components of the development environment:
 ![dev env chart](development-setup.jpg)
 
 ---
