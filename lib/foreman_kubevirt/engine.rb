@@ -30,12 +30,20 @@ module ForemanKubevirt
       SETTINGS[:foreman_kubevirt] = { assets: { precompile: assets_to_precompile } }
     end
 
+    initializer "foreman_kubevirt.add_rabl_view_path" do
+      Rabl.configure do |config|
+        config.view_paths << ForemanKubevirt::Engine.root.join('app', 'views')
+      end
+    end
+
     # Include concerns in this config.to_prepare block
     config.to_prepare do
       begin
         require "fog/kubevirt"
         require "fog/compute/kubevirt/models/server"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/server", __dir__)
+
+        ::Api::V2::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
         Fog::Compute::Kubevirt::Server.send(:include, ::FogExtensions::Kubevirt::Server)
 
         require "fog/compute/kubevirt/models/volume"
