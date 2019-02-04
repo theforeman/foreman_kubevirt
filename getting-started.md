@@ -39,7 +39,7 @@ The domain: example.tst
 The network to connect the VMs and serves as PXE boot network: 192.168.111.0
 
 ### VM **foreman-proxy.example.tst**
-VM **foreman-proxy.example.tst** serves as the utilities vm and somewhat simulates foreman ![capsule](https://theforeman.org/plugins/katello/2.4/user_guide/capsules/index.html).
+VM **foreman-proxy.example.tst** serves as the utilities vm and somewhat simulates foreman [capsule](https://theforeman.org/plugins/katello/2.4/user_guide/capsules/index.html).
 Hostname: foreman-proxy.example.tst
 IP Address: 192.168.111.12
 Network interfaces:
