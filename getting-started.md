@@ -118,7 +118,7 @@ modprobe br_netfilter
  ```
  
  #### Install Kubernetes and KubeVirt
- * Make sure to add kubernetes repository to /etc/yum.repos.d (see ![here](https://kubernetes.io/docs/setup/independent/install-kubeadm/))
+ * Make sure to add kubernetes repository to /etc/yum.repos.d (see [here](https://kubernetes.io/docs/setup/independent/install-kubeadm/))
  
 ```
 kubeadm config images pull
