@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.license     = 'GPL-3.0'
   s.authors     = ['Moti Asayag']
   s.email       = ['masayag@redhat.com']
-  s.homepage    = 'http://TODO'
+  s.homepage    = 'https://github.com/masayag/foreman_kubevirt'
   s.summary     = 'Kubevirt as compute resource for The Foreman.'
   # also update locale/gemspec.rb
   s.description = 'This gem provides Kubevirt as compute resource for The Foreman.'
