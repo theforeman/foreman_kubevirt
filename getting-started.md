@@ -168,8 +168,8 @@ EOF
 
 Start kubelet service:
 ```
-systemctl starsystemctl daemon-reload
-systemctl restart kubelett kubelet
+systemctl daemon-reload
+systemctl restart kubelet
 ```
 
 Define network attachment definition on k8s that supports 'foreman' ovs bridge:
