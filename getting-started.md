@@ -215,8 +215,8 @@ EOF
 
 Obtain the account's token by:
 ```
-KUBE_SECRET=`kubectl get secrets  | grep foreman | cut -d" " -f1 `
-kubectl get secrets $KUBE_SECRET -o yaml | grep token: | cut -d":" -f 2 | tr -d " "  | base64 -d | xargs
+KUBE_SECRET=`kubectl get sa foreman-account -o jsonpath='{.secrets[0].name}'`
+kubectl get secrets $KUBE_SECRET -o jsonpath='{.data.token}' | base64 -d | xargs
 ```
 
 ### Test the environment
