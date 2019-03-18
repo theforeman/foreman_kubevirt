@@ -13,22 +13,6 @@ module ForemanKubevirt
           end
         end
       end
-
-      extend ActiveSupport::Concern
-
-      included do
-        include ApiPieExtensions
-
-        def create
-          @compute_resource = ComputeResource.new_provider(compute_resource_params)
-          @compute_resource.test_connection
-          process_response @compute_resource.save
-        end
-
-        def update
-          process_response @compute_resource.update_attributes(compute_resource_params)
-        end
-      end
     end
   end
 end
