@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.authors     = ['Moti Asayag']
   s.email       = ['masayag@redhat.com']
   s.homepage    = 'https://github.com/masayag/foreman_kubevirt'
-  s.summary     = 'Kubevirt as compute resource for The Foreman.'
+  s.summary     = 'Provision and manage Kubevirt Virtual Machines from Foreman'
   # also update locale/gemspec.rb
-  s.description = 'This gem provides Kubevirt as compute resource for The Foreman.'
+  s.description = 'Provision and manage Kubevirt Virtual Machines from Foreman.'
   s.files       = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
   s.test_files  = Dir['test/**/*']
 
