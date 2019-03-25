@@ -13,6 +13,12 @@ module ForemanKubevirt
           end
         end
       end
+
+      extend ActiveSupport::Concern
+
+      included do
+        include ApiPieExtensions
+      end
     end
   end
 end
