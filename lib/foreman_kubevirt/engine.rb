@@ -26,6 +26,10 @@ module ForemanKubevirt
       app.config.assets.precompile += assets_to_precompile
     end
 
+    initializer 'foreman_kubevirt.filter_parameters' do |app|
+      app.config.filter_parameters += [:token]
+    end
+
     initializer 'foreman_kubevirt.configure_assets', group: :assets do
       SETTINGS[:foreman_kubevirt] = { assets: { precompile: assets_to_precompile } }
     end
