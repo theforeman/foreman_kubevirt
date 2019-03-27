@@ -35,6 +35,8 @@ body:
       "memory": <memory, value in bytes>,
       "volumes_attributes" : {"name":"gluster-default-volume", "capacity":"1"}
     },
+    "operatingsystem_id": 2,
+    "architecture_id" : 1,
     "interfaces_attributes": {
        "0" : {"domain_id" : "1", "name" : "chase-prevett", "subnet_id" : "3", "mac" : "XX:XX:XX:XX:XX:XX", "ip":"XX.XX.XX.XX",
              "managed" : "1", "primary" : "1", "provision" : "1",
