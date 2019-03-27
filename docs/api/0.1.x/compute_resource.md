@@ -27,7 +27,14 @@ body:
      "token": "<token>" ,
      "namespace" : "<A kubernetes namespace authorized by the provided token>",
      "api_port" : "<port>",
-     "ca_crt": "<X509 Certification Authorities (optional)>"
+     "ca_crt": [
+          "<X509 Certification Authorities (optional)>",
+          "List of strings of lines from Certificate",
+          "---BEGIN-CERT---",
+          "abcde982134khlkflksa",
+          "judsjdsfjlsfdsafdsad",
+          "---ENC-CERT---"
+          ]
   }
 }
 
@@ -47,8 +54,14 @@ body:
      "token": "<token>",
      "namespace" : "<name_space>", 
      "api_port" : "<port>"
-     "ca_crt": "<X509 Certification Authorities (optional)>"
-
+     "ca_crt": [
+          "<X509 Certification Authorities (optional)>",
+          "List of strings of lines from Certificate",
+          "---BEGIN-CERT---",
+          "abcde982134khlkflksa",
+          "judsjdsfjlsfdsafdsad",
+          "---ENC-CERT---"
+          ]
   }
 }
 
