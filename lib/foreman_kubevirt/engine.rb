@@ -44,19 +44,19 @@ module ForemanKubevirt
     config.to_prepare do
       begin
         require "fog/kubevirt"
-        require "fog/compute/kubevirt/models/server"
+        require "fog/kubevirt/compute/models/server"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/server", __dir__)
 
         ::Api::V2::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
-        Fog::Compute::Kubevirt::Server.send(:include, ::FogExtensions::Kubevirt::Server)
+        Fog::Kubevirt::Compute::Server.send(:include, ::FogExtensions::Kubevirt::Server)
 
-        require "fog/compute/kubevirt/models/volume"
+        require "fog/kubevirt/compute/models/volume"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/volume", __dir__)
-        Fog::Compute::Kubevirt::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
+        Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
 
-        require "fog/compute/kubevirt/models/pvc"
+        require "fog/kubevirt/compute/models/pvc"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/pvc", __dir__)
-        Fog::Compute::Kubevirt::Pvc.send(:include, ::FogExtensions::Kubevirt::Pvc)
+        Fog::Kubevirt::Compute::Pvc.send(:include, ::FogExtensions::Kubevirt::Pvc)
       rescue StandardError => e
         Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
       end

@@ -57,7 +57,7 @@ module ForemanKubevirt
     def networks
       nets = client.networkattachmentdefs
       # Add explicitly 'default' POD network
-      nets << Fog::Compute::Kubevirt::Networkattachmentdef.new(name: 'default')
+      nets << Fog::Kubevirt::Compute::Networkattachmentdef.new(name: 'default')
       nets
     end
 
@@ -81,7 +81,7 @@ module ForemanKubevirt
 
     def new_volume(attr = {})
       return unless new_volume_errors.empty?
-      Fog::Compute::Kubevirt::Volume.new(attr)
+      Fog::Kubevirt::Compute::Volume.new(attr)
     end
 
     def new_volume_errors
@@ -125,7 +125,7 @@ module ForemanKubevirt
 
       # Add image as volume to the virtual machine
       if args["provision_method"] == "image"
-        volume = Fog::Compute::Kubevirt::Volume.new
+        volume = Fog::Kubevirt::Compute::Volume.new
         image = args["image_id"]
         raise "VM should be created based on an image" unless image
 
@@ -227,7 +227,7 @@ module ForemanKubevirt
     def create_vm_volume(pvc_name, capacity, storage_class, bootable)
       pvc = create_new_pvc(pvc_name, capacity, storage_class)
 
-      volume = Fog::Compute::Kubevirt::Volume.new
+      volume = Fog::Kubevirt::Compute::Volume.new
       volume.type = 'persistentVolumeClaim'
       volume.info = pvc_name
       volume.boot_order = 1 if bootable == "true"
@@ -290,7 +290,7 @@ module ForemanKubevirt
     def client
       return @client if @client
 
-      @client ||= Fog::Compute.new(
+      @client ||= Fog::Kubevirt::Compute.new(
         :provider            => "kubevirt",
         :kubevirt_hostname   => hostname,
         :kubevirt_port       => api_port,
