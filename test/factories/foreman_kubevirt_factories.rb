@@ -1,5 +1,5 @@
-FactoryBot.define do
-  factory :host do
-    name 'foreman_kubevirt'
-  end
-end
+#FactoryBot.define do
+  #factory :host do
+    #name 'foreman_kubevirt'
+  #end
+#end
