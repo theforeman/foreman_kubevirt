@@ -24,9 +24,8 @@ module ForemanKubevirt
       attrs[:api_port] = key
     end
 
-
     def capabilities
-      [:build, :image]
+      [:build, :image, :new_volume]
     end
 
     def provided_attributes
@@ -58,7 +57,7 @@ module ForemanKubevirt
     def networks
       nets = client.networkattachmentdefs
       # Add explicitly 'default' POD network
-      nets << Fog::Compute::Kubevirt::Networkattachmentdef.new(name: 'default')
+      nets << Fog::Kubevirt::Compute::Networkattachmentdef.new(name: 'default')
       nets
     end
 
@@ -72,22 +71,22 @@ module ForemanKubevirt
       client.volumes
     end
 
-    def available_volumes
-      volumes.select { |v| v.phase == 'Available' }
+    def storage_classes
+      client.storageclasses
     end
 
-    def volume_claims
-      client.pvcs
+    def storage_classes_for_select
+      storage_classes.map { |sc| OpenStruct.new({ id: sc.name, description: "#{sc.name} (#{sc.provisioner})" }) }
     end
 
     def new_volume(attr = {})
       return unless new_volume_errors.empty?
-      client.volumes.new(attr.merge(:capacity => '0G'))
+      Fog::Kubevirt::Compute::Volume.new(attr)
     end
 
     def new_volume_errors
       errors = []
-      errors.push _('no Persistent Volumes available on provider') if volumes.empty?
+      errors.push _('no Persistent Volumes available on provider') if storage_classes.empty?
       errors
     end
 
@@ -113,27 +112,38 @@ module ForemanKubevirt
     #             }
     #    }
     # volumes_attributes[Hash] - the attributes for the persistent volume claim:
-    #  If provided 'capacity' key, a new PVC will be created on volume with name
-    #  specified by 'name' key.
-    #  If provided only 'name', its value will be used as the PVC to servce as an
-    #  existing claim of the VM.
+    #    {
+    #      "storage_class" => "local-storage",
+    #      "name"          => "mypvc",
+    #      "capacity"      => "2",
+    #      "bootable"      => "true"
+    #    }
     def create_vm(args = {})
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
+      volumes = []
 
+      # Add image as volume to the virtual machine
       if args["provision_method"] == "image"
+        volume = Fog::Kubevirt::Compute::Volume.new
         image = args["image_id"]
+        raise "VM should be created based on an image" unless image
+
+        volume.info = image
+        volume.type = 'containerDisk'
+        volumes << volume
       else
-        volume = args.dig(:volumes_attributes, :name)
-        pvc = args.dig(:volumes_attributes, :id)
-        raise "VM should be created based on Persistent Volume Claim or Image" unless (volume || pvc)
+        # Add PVC as volumes to the virtual machine
+        pvc_name = args.dig(:volumes_attributes, :name)
+        raise "VM should be created based on Persistent Volume Claim" unless pvc_name
+
+        capacity = args.dig(:volumes_attributes, :capacity)
+        storage_class = args.dig(:volumes_attributes, :storage_class)
+        bootable = args.dig(:volumes_attributes, :bootable)
 
         # TODO: This supports a single PVC, but user might require for multiple pvcs
-        if pvc.blank?
-          capacity = args.dig(:volumes_attributes, :capacity)
-          pvc = options[:name].gsub(/[._]+/,'-') + "-pvc-01"
-          create_new_pvc(volume, capacity, pvc)
-        end
+        volume = create_vm_volume(pvc_name, capacity, storage_class, bootable)
+        volumes << volume
       end
 
       # FIXME Add cloud-init support
@@ -164,7 +174,14 @@ module ForemanKubevirt
         end
 
         # TODO: Consider replacing with 'free' boot order, also verify uniqueness
-        nic[:bootOrder] = 1 if iface["provision"] == true
+        # there is a bug with bootOrder https://bugzilla.redhat.com/show_bug.cgi?id=1687341
+        # therefore adding to the condition not to boot from netwotk device if already asked
+        # to boot from disk
+        nic[:bootOrder] = if iface["provision"] == true && volumes.select { |v| v.boot_order == 1}.empty?
+                            1
+                          else
+                            2
+                          end
         nic[:macAddress] = iface["mac"] if iface["mac"]
         interfaces << nic
         networks << net
@@ -174,25 +191,22 @@ module ForemanKubevirt
         client.vms.create(:vm_name     => options[:name],
                           :cpus        => options[:cpu_cores].to_i,
                           :memory_size => options[:memory].to_i / 2**20,
-                          :image       => image,
-                          :pvc         => pvc,
+                          :volumes     => volumes,
                           # :cloudinit   => init,
                           :networks    => networks,
                           :interfaces  => interfaces)
         client.servers.get(options[:name])
       rescue Fog::Kubevirt::Errors::ClientError => e
-        delete_pvc_by_name(pvc)
+        delete_pvc_by_name(pvc_name)
         raise e
       end
     end
 
-    def create_new_pvc(volume_name, capacity, pvc_name)
-      volume = volumes.get(volume_name)
+    def create_new_pvc(pvc_name, capacity, storage_class)
       client.pvcs.create(:name          => pvc_name,
                          :namespace     => namespace,
-                         :access_modes  => volume.access_modes,
-                         :volume_name   => volume.name,
-                         :storage_class => volume.storage_class,
+                         :storage_class => storage_class,
+                         :access_modes  => [ 'ReadWriteOnce' ],
                          :requests      => { :storage => capacity + "G" })
     end
 
@@ -208,6 +222,16 @@ module ForemanKubevirt
           logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
         end
       end
+    end
+
+    def create_vm_volume(pvc_name, capacity, storage_class, bootable)
+      pvc = create_new_pvc(pvc_name, capacity, storage_class)
+
+      volume = Fog::Kubevirt::Compute::Volume.new
+      volume.type = 'persistentVolumeClaim'
+      volume.info = pvc_name
+      volume.boot_order = 1 if bootable == "true"
+      volume
     end
 
     def destroy_vm(uuid)
@@ -266,7 +290,7 @@ module ForemanKubevirt
     def client
       return @client if @client
 
-      @client ||= Fog::Compute.new(
+      @client ||= Fog::Kubevirt::Compute.new(
         :provider            => "kubevirt",
         :kubevirt_hostname   => hostname,
         :kubevirt_port       => api_port,
