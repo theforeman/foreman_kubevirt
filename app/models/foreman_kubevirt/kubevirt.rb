@@ -181,6 +181,7 @@ module ForemanKubevirt
                           :interfaces  => interfaces)
         client.servers.get(options[:name])
       rescue Fog::Kubevirt::Errors::ClientError => e
+        delete_pvc_by_name(pvc)
         raise e
       end
     end
@@ -195,7 +196,22 @@ module ForemanKubevirt
                          :requests      => { :storage => capacity + "G" })
     end
 
+    def delete_pvc_by_name(pvc_name)
+      client.pvcs.delete(pvc_name)
+    end
+
+    def delete_vm_pvcs(vm_uuid)
+      find_vm_by_uuid(vm_uuid).volumes.each do |volume|
+        begin
+          delete_pvc_by_name(volume.info) if volume.type == "persistentVolumeClaim"
+        rescue Exception => e
+          logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
+        end
+      end
+    end
+
     def destroy_vm(uuid)
+      delete_vm_pvcs(uuid)
       find_vm_by_uuid(uuid).destroy
     rescue ActiveRecord::RecordNotFound
       true
