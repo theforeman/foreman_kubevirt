@@ -63,7 +63,8 @@ module ForemanKubevirt
 
     def find_vm_by_uuid(uuid)
       super
-    rescue Fog::Kubevirt::Errors::ClientError
+    rescue Fog::Kubevirt::Errors::ClientError => e
+      Foreman::Logging.exception("Failed retrieving KubeVirt vm by uuid #{uuid}", e)
       raise ActiveRecord::RecordNotFound
     end
 
