@@ -55,10 +55,14 @@ module ForemanKubevirt
     end
 
     def networks
-      nets = client.networkattachmentdefs
-      # Add explicitly 'default' POD network
+      begin
+        nets = client.networkattachmentdefs.all
+      rescue => e
+        logger.warn("Failed to retrieve network attachments definition from KubeVirt, make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed")
+        nets = []
+      end
+
       nets << Fog::Kubevirt::Compute::Networkattachmentdef.new(name: 'default')
-      nets
     end
 
     def find_vm_by_uuid(uuid)
