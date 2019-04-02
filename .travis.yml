@@ -1,4 +1,3 @@
-
 language: ruby
 
 rvm:
@@ -9,4 +8,5 @@ rvm:
 gemfile:
   - Gemfile
 
-
+notifications:
+  email: false
