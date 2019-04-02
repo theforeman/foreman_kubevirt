@@ -1,0 +1,12 @@
+
+language: ruby
+
+rvm:
+  - 2.3
+  - 2.4
+  - jruby-head
+
+gemfile:
+  - Gemfile
+
+
