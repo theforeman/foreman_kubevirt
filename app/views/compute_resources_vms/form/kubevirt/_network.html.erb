@@ -4,7 +4,7 @@
                     :label => _('CNI Provider'),
                     :label_size => "col-md-3" %>
 
-<%= select_f f, :network, compute_resource.networks, :name, :name, {},
+<%= select_f f, :network, compute_resource.networks, :id, :name, {},
                 :disabled => !new_vm,
                 :class => "kubevirt_network",
                 :label => _('Network'),

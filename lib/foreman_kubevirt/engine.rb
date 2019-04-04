@@ -61,6 +61,10 @@ module ForemanKubevirt
         require "fog/kubevirt/compute/models/vm_data"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/vmnic", __dir__)
         Fog::Kubevirt::Compute::VmData::VmNic.send(:include, ::FogExtensions::Kubevirt::VmNic)
+
+        require "fog/kubevirt/compute/models/networkattachmentdef"
+        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/network", __dir__)
+        Fog::Kubevirt::Compute::Networkattachmentdef.send(:include, ::FogExtensions::Kubevirt::Network)
       rescue StandardError => e
         Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
       end
