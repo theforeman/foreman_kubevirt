@@ -1,4 +1,5 @@
 require 'foreman/exception'
+require 'fog/kubevirt/compute/models/vm_data'
 
 module ForemanKubevirt
   class Kubevirt < ComputeResource
@@ -257,6 +258,10 @@ module ForemanKubevirt
         :memory    => 1024.megabytes,
         :cpu_cores => '1'
       }
+    end
+
+    def new_interface(attr = {})
+      Fog::Kubevirt::Compute::VmData::VmNic.new attr
     end
 
     #
