@@ -136,6 +136,7 @@ module ForemanKubevirt
         raise "VM should be created based on an image" unless image
 
         volume.info = image
+        volume.boot_order = 1
         volume.type = 'containerDisk'
         volumes << volume
       else
