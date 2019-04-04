@@ -310,16 +310,23 @@ module ForemanKubevirt
         :kubevirt_verify_ssl => ca_cert.present?,
         :kubevirt_ca_cert    => ca_cert
       )
+    rescue OpenSSL::X509::CertificateError => e
+      raise_certification_failure_exception
     rescue StandardError => e
       if e.message =~ /SSL_connect.*certificate verify failed/ ||
          e.message =~ /Peer certificate cannot be authenticated with given CA certificates/
-        raise Foreman::FingerprintException.new(
-          N_("The remote system presented a public key signed by an unidentified certificate authority. If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
-          ca_cert
-        )
+        raise_certification_failure_exception
       else
         raise e
       end
+    end
+
+    def raise_certification_failure_exception
+      raise Foreman::FingerprintException.new(
+          N_("The remote system presented a public key signed by an unidentified certificate authority.
+             If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
+          ca_cert
+        )
     end
   end
 end
