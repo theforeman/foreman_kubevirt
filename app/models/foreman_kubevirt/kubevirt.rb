@@ -129,23 +129,27 @@ module ForemanKubevirt
       logger.debug("creating VM with the following options: #{options.inspect}")
       volumes = []
 
+      image = args["image_id"]
+      pvc_name = args.dig(:volumes_attributes, :name)
+      raise "VM should be created based on Persistent Volume Claim or Image" unless (pvc_name || image)
+
       # Add image as volume to the virtual machine
-      if args["provision_method"] == "image"
+      image_provision = args["provision_method"] == "image"
+      if image_provision
         volume = Fog::Kubevirt::Compute::Volume.new
-        image = args["image_id"]
         raise "VM should be created based on an image" unless image
 
         volume.info = image
+        volume.boot_order = 1
         volume.type = 'containerDisk'
         volumes << volume
-      else
-        # Add PVC as volumes to the virtual machine
-        pvc_name = args.dig(:volumes_attributes, :name)
-        raise "VM should be created based on Persistent Volume Claim" unless pvc_name
+      end
 
+      if pvc_name
+        # Add PVC as volumes to the virtual machine
         capacity = args.dig(:volumes_attributes, :capacity)
         storage_class = args.dig(:volumes_attributes, :storage_class)
-        bootable = args.dig(:volumes_attributes, :bootable)
+        bootable = args.dig(:volumes_attributes, :bootable) && !image_provision
 
         # TODO: This supports a single PVC, but user might require for multiple pvcs
         volume = create_vm_volume(pvc_name, capacity, storage_class, bootable)
