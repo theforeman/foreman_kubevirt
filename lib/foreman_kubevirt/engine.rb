@@ -54,13 +54,9 @@ module ForemanKubevirt
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/volume", __dir__)
         Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
 
-        require "fog/kubevirt/compute/models/pvc"
-        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/pvc", __dir__)
-        Fog::Kubevirt::Compute::Pvc.send(:include, ::FogExtensions::Kubevirt::Pvc)
-
-        require "fog/kubevirt/compute/models/vm_data"
+        require "fog/kubevirt/compute/models/vmnic"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/vmnic", __dir__)
-        Fog::Kubevirt::Compute::VmData::VmNic.send(:include, ::FogExtensions::Kubevirt::VmNic)
+        Fog::Kubevirt::Compute::VmNic.send(:include, ::FogExtensions::Kubevirt::VmNic)
 
         require "fog/kubevirt/compute/models/networkattachmentdef"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/network", __dir__)
