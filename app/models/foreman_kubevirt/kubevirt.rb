@@ -301,7 +301,6 @@ module ForemanKubevirt
       return @client if @client
 
       @client ||= Fog::Kubevirt::Compute.new(
-        :provider            => "kubevirt",
         :kubevirt_hostname   => hostname,
         :kubevirt_port       => api_port,
         :kubevirt_namespace  => namespace,
