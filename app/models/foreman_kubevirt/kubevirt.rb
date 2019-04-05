@@ -1,5 +1,4 @@
 require 'foreman/exception'
-require 'fog/kubevirt/compute/models/vm_data'
 
 module ForemanKubevirt
   class Kubevirt < ComputeResource
@@ -117,21 +116,29 @@ module ForemanKubevirt
     #               "boot"    => "0"
     #             }
     #    }
-    # volumes_attributes[Hash] - the attributes for the persistent volume claim:
-    #    {
-    #      "storage_class" => "local-storage",
-    #      "name"          => "mypvc",
-    #      "capacity"      => "2",
-    #      "bootable"      => "true"
-    #    }
+    #
+    # volumes_attributes[Hash] - the attributes for the persistent volume claims:
+    #   {
+    #     "1554394214729" => {
+    #                          "storage_class" => "local-storage",
+    #                          "name"          => "alvin-hinojosa1",
+    #                          "capacity"      => "3",
+    #                          "bootable"=>"true"
+    #                        },
+    #     "1554394230987" => {
+    #                          "storage_class" => "local-storage",
+    #                          "name"          => "alvin-hinojosa",
+    #                          "capacity"=>"2"
+    #                        }
+    #   }
     def create_vm(args = {})
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
       volumes = []
 
       image = args["image_id"]
-      pvc_name = args.dig(:volumes_attributes, :name)
-      raise "VM should be created based on Persistent Volume Claim or Image" unless (pvc_name || image)
+      volumes_attributes = args["volumes_attributes"]
+      raise "VM should be created based on Persistent Volume Claim or Image" unless (volumes_attributes.present? || image)
 
       # Add image as volume to the virtual machine
       image_provision = args["provision_method"] == "image"
@@ -145,11 +152,12 @@ module ForemanKubevirt
         volumes << volume
       end
 
-      if pvc_name
+      volumes_attributes&.each_with_index do |(_, v), index|
         # Add PVC as volumes to the virtual machine
-        capacity = args.dig(:volumes_attributes, :capacity)
-        storage_class = args.dig(:volumes_attributes, :storage_class)
-        bootable = args.dig(:volumes_attributes, :bootable) && !image_provision
+        pvc_name = options[:name].gsub(/[._]+/,'-') + "-claim-" + (index+1).to_s
+        capacity = v["capacity"]
+        storage_class = v["storage_class"]
+        bootable = v["bootable"] && !image_provision
 
         # TODO: This supports a single PVC, but user might require for multiple pvcs
         volume = create_vm_volume(pvc_name, capacity, storage_class, bootable)
@@ -187,11 +195,9 @@ module ForemanKubevirt
         # there is a bug with bootOrder https://bugzilla.redhat.com/show_bug.cgi?id=1687341
         # therefore adding to the condition not to boot from netwotk device if already asked
         # to boot from disk
-        nic[:bootOrder] = if iface["provision"] == true && volumes.select { |v| v.boot_order == 1}.empty?
-                            1
-                          else
-                            2
-                          end
+        if iface["provision"] == true && volumes.select { |v| v.boot_order == 1}.empty?
+          nic[:bootOrder] = 1
+        end
         nic[:macAddress] = iface["mac"] if iface["mac"]
         interfaces << nic
         networks << net
@@ -207,7 +213,7 @@ module ForemanKubevirt
                           :interfaces  => interfaces)
         client.servers.get(options[:name])
       rescue Fog::Kubevirt::Errors::ClientError => e
-        delete_pvc_by_name(pvc_name)
+        delete_pvcs(volumes)
         raise e
       end
     end
@@ -220,14 +226,10 @@ module ForemanKubevirt
                          :requests      => { :storage => capacity + "G" })
     end
 
-    def delete_pvc_by_name(pvc_name)
-      client.pvcs.delete(pvc_name)
-    end
-
-    def delete_vm_pvcs(vm_uuid)
-      find_vm_by_uuid(vm_uuid).volumes.each do |volume|
+    def delete_pvcs(volumes)
+      volumes.each do |volume|
         begin
-          delete_pvc_by_name(volume.info) if volume.type == "persistentVolumeClaim"
+          client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
         rescue Exception => e
           logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
         end
@@ -244,9 +246,10 @@ module ForemanKubevirt
       volume
     end
 
-    def destroy_vm(uuid)
-      delete_vm_pvcs(uuid)
-      find_vm_by_uuid(uuid).destroy
+    def destroy_vm(vm_uuid)
+      vm = find_vm_by_uuid(vm_uuid)
+      delete_pvcs(vm.volumes)
+      vm.destroy
     rescue ActiveRecord::RecordNotFound
       true
     end
@@ -269,7 +272,7 @@ module ForemanKubevirt
     end
 
     def new_interface(attr = {})
-      Fog::Kubevirt::Compute::VmData::VmNic.new attr
+      Fog::Kubevirt::Compute::VmNic.new attr
     end
 
     #

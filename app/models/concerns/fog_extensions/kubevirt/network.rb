@@ -1,6 +1,6 @@
 module FogExtensions
   module Kubevirt
-    module Pvc
+    module Network
       extend ActiveSupport::Concern
 
       def id
