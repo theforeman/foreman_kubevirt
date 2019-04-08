@@ -6,19 +6,12 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
   end
 
   def new_kubevirt_vcr
-    ComputeResource.new_provider(
-      :provider => "Kubevirt",
-      :name => 'kubevirt-multus',
-      :hostname => "192.168.111.13",
-      :api_port => "6443",
-      :namespace => "default",
-      :token => "kubetoken"
-    )
+    ::FactoryBot.build(:compute_resource_kubevirt)
   end
 
   test "host_interfaces_attrs" do
     record = new_kubevirt_vcr
-    host = FactoryBot.build(:host_kubevirt, :with_interfaces)
+    host = ::FactoryBot.build(:host_kubevirt, :with_interfaces)
     result = record.host_interfaces_attrs(host)
     expected_res = {"0" => {"cni_provider" => "multus",
                           "network" => "ovs-foreman",
@@ -26,5 +19,54 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
                           :mac => "a2:b4:a2:b2:a2:a8",
                           :provision => true}}
     assert_equal expected_res, result
+  end
+
+  describe "networks" do
+    test "returns list of networksattachmentdefs with an additional default one" do
+      Fog.mock!
+      compute_resource = FactoryBot.build(:compute_resource_kubevirt)
+      res = compute_resource.networks
+      assert_equal 2, res.count
+      assert_equal '0e35b868-2464-11e9-93b4-525400c5a686', res.first.uid
+      assert_nil res.last.uid
+      assert_equal 'default', res.last.name
+    end
+
+    test "in case of exception, returns array with one default network" do
+      compute_resource = FactoryBot.build(:compute_resource_kubevirt)
+      client = stub()
+      compute_resource.stubs(:client).returns(client)
+      client.stubs(:networkattachmentdefs).raises("exception")
+      res = compute_resource.networks
+      assert_equal 1, res.count
+      assert_equal 'default', res.last.name
+    end
+  end
+
+  describe "find_vm_by_uuid" do
+    test "it finds the vm" do
+      Fog.mock!
+      compute_resource = FactoryBot.build(:compute_resource_kubevirt)
+      res = compute_resource.find_vm_by_uuid("robin-rykert.example.com")
+      assert_equal "robin-rykert.example.com", res.name
+      assert_equal "default", res.namespace
+    end
+
+    test "it raises RecordNotFound when it fails" do
+      Fog.mock!
+      compute_resource = FactoryBot.build(:compute_resource_kubevirt)
+      assert_raises ActiveRecord::RecordNotFound do
+        compute_resource.find_vm_by_uuid("not_found.example.com")
+      end
+    end
+  end
+
+  test "test_connection should fail if client does not support virt" do
+    client = stub()
+    client.stubs(:virt_supported?).returns(false)
+    client.stubs(:valid?).returns(true)
+    record = new_kubevirt_vcr
+    record.stubs(:client).returns(client)
+    assert_equal false, record.test_connection
   end
 end

@@ -47,10 +47,4 @@ FactoryBot.define do
       interfaces { build_list :nic_kubevirt, 1 }
     end
   end
-
-  #factory :host_kubevirt_with_interfaces, parent: :host_kubevirt do |host_kubevirt|
-    #association :interfaces, factory: :nic_kubevirt, strategy: :build
-    #features {}
-    #host_kubevirt.after_build
-  #end
 end

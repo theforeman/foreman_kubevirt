@@ -6,6 +6,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
   end
 
   def new_kubevirt_vcr
+    ::FactoryBot.build(:compute_resource_kubevirt)
     ComputeResource.new_provider(
       :provider => "Kubevirt",
       :name => 'kubevirt-multus',
@@ -15,15 +16,6 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       :token => "kubetoken"
     )
   end
-
-  #test "test_connection should fail if client does not support virt" do
-    #client = stub()
-    #client.stubs(:virt_supported?).returns(false)
-    #client.stubs(:valid?).returns(true)
-    #record = new_kubevirt_vcr
-    #record.stubs(:client).returns(client)
-    #assert_equal false, record.test_connection
-  #end
 
   require 'kubeclient'
 
