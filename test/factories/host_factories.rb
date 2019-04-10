@@ -41,7 +41,6 @@ FactoryBot.define do
     pxe_loader "PXELinux BIOS"
     initiated_at nil
     build_errors nil
-    discovery_rule_id nil
 
     trait :with_interfaces do
       interfaces { build_list :nic_kubevirt, 1 }
