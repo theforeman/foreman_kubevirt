@@ -284,6 +284,26 @@ module ForemanKubevirt
       end
     end
 
+    #
+    # Overrding base class implementation since 'pvc' is required
+    #
+    def set_vm_volumes_attributes(vm, vm_attrs)
+      volumes = vm.volumes.collect do |vol|
+        if vol.type == 'persistentVolumeClaim'
+          begin
+            vol.pvc = client.pvcs.get(vol.info)
+            vol
+          rescue Exception => e
+            # An import of a VM where one of its PVC doesn't exist
+            Foreman::Logging.exception("Import VM fail: The PVC #{vol.info} does not exist for VM #{vm.name}", e)
+            nil
+          end
+        end
+      end.compact
+      vm_attrs[:volumes_attributes] = Hash[volumes.each_with_index.map { |volume, idx| [idx.to_s, volume.attributes] }]
+      vm_attrs
+    end
+
     def associated_host(vm)
       associate_by("mac", vm.mac)
     end

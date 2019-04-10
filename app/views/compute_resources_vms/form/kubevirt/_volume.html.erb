@@ -1,19 +1,21 @@
-<% storage_classes = compute_resource.storage_classes %>
+<% if f.object.type.nil? || f.object.type == 'persistentVolumeClaim' %>
+  <% storage_classes = compute_resource.storage_classes %>
 
-<%= select_f f, :storage_class,
-                compute_resource.storage_classes_for_select,
-                :id,
-                :description,
-                { },
-                :label => _('Storage Class'),
-                :label_size => "col-md-2",
-                :disabled => !new_vm,
-                :class => "col-md-2" %>
+  <%= select_f f, :storage_class,
+                  compute_resource.storage_classes_for_select,
+                  :id,
+                  :description,
+                  { },
+                  :label => _('Storage Class'),
+                  :label_size => "col-md-2",
+                  :disabled => !new_vm,
+                  :class => "col-md-2" %>
 
-<%= text_f f,:capacity, :label => _('Size (GB)'), :value => "", :label_size => "col-md-2", :disabled => !new_vm, :class => "col-md-2 pvc-size" %>
+  <%= text_f f,:capacity, :label => _('Size (GB)'), :label_size => "col-md-2", :disabled => !new_vm, :class => "col-md-2 pvc-size" %>
 
-<% bootable = false %>
-<%= field(f, :bootable, :label => _('Bootable'), :label_size => "col-md-2") do
-  radio_button_f f, :bootable, {:disabled => !new_vm, :value=> 'true', :checked => bootable == 'true', :onclick => 'bootableRadio(this)',
-  :text => _('Only one volume can be bootable')}
-end %>
+  <% bootable = f.object.boot_order.nil? ? false : f.object.bootable %>
+  <%= field(f, :bootable, :label => _('Bootable'), :label_size => "col-md-2") do
+    radio_button_f f, :bootable, {:disabled => !new_vm, :checked => bootable, :onclick => 'bootableRadio(this)',
+    :text => _('Only one volume can be bootable')}
+  end %>
+<% end %>
