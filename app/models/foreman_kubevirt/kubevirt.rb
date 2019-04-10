@@ -73,11 +73,11 @@ module ForemanKubevirt
     end
 
     def volumes
-      client.volumes
+      client.volumes.all
     end
 
     def storage_classes
-      client.storageclasses
+      client.storageclasses.all
     end
 
     def storage_classes_for_select
