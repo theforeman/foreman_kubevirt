@@ -1,12 +1,15 @@
 <%= selectable_f f, :cni_provider, compute_resource.cni_providers, {},
-                    :class => "kubevirt_cni_provider",
+                    :class => "col-md-3 kubevirt-cni-provider",
                     :disabled => !new_vm,
                     :label => _('CNI Provider'),
-                    :label_size => "col-md-3" %>
+                    :label_size => "col-md-3",
+                    :onchange => "cniProviderSelected(this)" %>
 
-<%= select_f f, :network, compute_resource.networks, :id, :name, {},
-                :disabled => !new_vm,
-                :class => "kubevirt_network",
+<%= select_f f, :network, compute_resource.networks,
+                :id,
+                :name,
+                {},
+                :disabled => !new_vm || f.object.cni_provider == 'pod',
+                :class => "col-md-3 kubevirt-network",
                 :label => _('Network'),
                 :label_size => "col-md-3" %>
-

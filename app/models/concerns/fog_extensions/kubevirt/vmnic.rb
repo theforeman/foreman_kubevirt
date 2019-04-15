@@ -4,9 +4,6 @@ module FogExtensions
       extend ActiveSupport::Concern
       attr_accessor  :id
 
-      attr_accessor :cni_provider
-      attr_accessor :network
-
       def id
         name
       end
