@@ -13,11 +13,11 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     record = new_kubevirt_vcr
     host = ::FactoryBot.build(:host_kubevirt, :with_interfaces)
     result = record.host_interfaces_attrs(host)
-    expected_res = {"0" => {"cni_provider" => "multus",
+    expected_res = { "0" => { "cni_provider" => "multus",
                           "network" => "ovs-foreman",
                           :ip => "192.168.111.200",
                           :mac => "a2:b4:a2:b2:a2:a8",
-                          :provision => true}}
+                          :provision => true } }
     assert_equal expected_res, result
   end
 
@@ -32,7 +32,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
     test "in case of exception, returns an empty array" do
       compute_resource = FactoryBot.build(:compute_resource_kubevirt)
-      client = stub()
+      client = stub
       compute_resource.stubs(:client).returns(client)
       client.stubs(:networkattachmentdefs).raises("exception")
       res = compute_resource.networks
@@ -59,7 +59,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
   end
 
   test "test_connection should fail if client does not support virt" do
-    client = stub()
+    client = stub
     client.stubs(:virt_supported?).returns(false)
     client.stubs(:valid?).returns(true)
     record = new_kubevirt_vcr
