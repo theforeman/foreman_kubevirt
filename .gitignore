@@ -14,3 +14,5 @@ Gemfile.lock
 .rvmrc*
 .ruby-version*
 .ruby-gemset*
+doc/
+rdoc/
