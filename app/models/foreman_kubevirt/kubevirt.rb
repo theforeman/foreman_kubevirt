@@ -56,13 +56,11 @@ module ForemanKubevirt
 
     def networks
       begin
-        nets = client.networkattachmentdefs.all
+        client.networkattachmentdefs.all
       rescue => e
         logger.warn("Failed to retrieve network attachments definition from KubeVirt, make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed")
-        nets = []
+        []
       end
-
-      nets << Fog::Kubevirt::Compute::Networkattachmentdef.new(name: 'default')
     end
 
     def find_vm_by_uuid(uuid)
@@ -96,7 +94,7 @@ module ForemanKubevirt
     end
 
     def cni_providers
-      [[_("multus"), :multus ], [_("genie"), :genie]]
+      [[_("multus"), :multus ], [_("genie"), :genie], [_("pod"), :pod]]
     end
 
     # @param args[Hash] contains VM creation parameters
@@ -112,8 +110,8 @@ module ForemanKubevirt
     #               "cni_provider" => "multus"
     #             },
     #      "1" => {
-    #               "network" => "default",
-    #               "boot"    => "0"
+    #               "cni_provider" => "pod"
+    #               "boot"         => "0"
     #             }
     #    }
     #
@@ -171,13 +169,13 @@ module ForemanKubevirt
       networks = []
 
       args["interfaces_attributes"].values.each do |iface|
-        if iface["network"] == 'default'
+        if iface["cni_provider"] == 'pod'
           nic = {
             :bridge => {},
-            :name   => 'default'
+            :name   => 'pod'
           }
 
-          net = { :name => 'default', :pod => {} }
+          net = { :name => 'pod', :pod => {} }
         else
           nic = {
             :bridge => {},
@@ -301,6 +299,22 @@ module ForemanKubevirt
         end
       end.compact
       vm_attrs[:volumes_attributes] = Hash[volumes.each_with_index.map { |volume, idx| [idx.to_s, volume.attributes] }]
+
+      vm_attrs
+    end
+
+    def vm_compute_attributes(vm)
+      vm_attrs = super
+      interfaces = vm.interfaces || []
+      vm_attrs[:interfaces_attributes] = vm.interfaces.each_with_index.each_with_object({}) do |(interface, index), hsh|
+        interface_attrs = {}
+        interface_attrs[:compute_attributes] = {}
+        interface_attrs[:mac] = interface.mac
+        interface_attrs[:compute_attributes][:network] = interface.network
+        interface_attrs[:compute_attributes][:cni_provider] = interface.cni_provider
+        hsh[index.to_s] = interface_attrs
+      end
+
       vm_attrs
     end
 

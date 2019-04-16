@@ -22,24 +22,21 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
   end
 
   describe "networks" do
-    test "returns list of networksattachmentdefs with an additional default one" do
+    test "returns list of networksattachmentdefs" do
       Fog.mock!
       compute_resource = FactoryBot.build(:compute_resource_kubevirt)
       res = compute_resource.networks
-      assert_equal 2, res.count
+      assert_equal 1, res.count
       assert_equal '0e35b868-2464-11e9-93b4-525400c5a686', res.first.uid
-      assert_nil res.last.uid
-      assert_equal 'default', res.last.name
     end
 
-    test "in case of exception, returns array with one default network" do
+    test "in case of exception, returns an empty array" do
       compute_resource = FactoryBot.build(:compute_resource_kubevirt)
       client = stub()
       compute_resource.stubs(:client).returns(client)
       client.stubs(:networkattachmentdefs).raises("exception")
       res = compute_resource.networks
-      assert_equal 1, res.count
-      assert_equal 'default', res.last.name
+      assert_equal 0, res.count
     end
   end
 
