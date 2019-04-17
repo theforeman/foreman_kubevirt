@@ -22,9 +22,10 @@ function toggleNetworkElement(toggle) {
   }
 }
 
-function toggle_network_options() {
+function toggleNetworkOptions() {
+  debbuger;
   selected = $('select.kubevirt-cni-provider').val().toLowerCase();
   toggleNetworkElement(selected != "pod");
 }
 
-$(document).ready(toggle_network_options);
+$(document).ready(toggleNetworkOptions);
