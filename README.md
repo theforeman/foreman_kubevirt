@@ -123,6 +123,13 @@ Or by retrieving from the secret of service account *my-account* under the *defa
 # kubectl get secret $KUBE_SECRET -n default -o jsonpath='{.data.ca\.crt}' | base64 -d
 ```
 
+## Tests
+
+Tests should be invoked from the *foreman* directory by:
+```
+# bundle exec rake test:foreman_kubevirt
+```
+
 ## TODO
 
 * Implement VM Console
