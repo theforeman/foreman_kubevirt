@@ -29,7 +29,7 @@ Two libvirt networks are defined:
 ```
 
 The following chart shows the different components of the development environment:
-![dev env chart](development-setup.jpg)
+![dev env chart](images/development-setup.jpg)
 
 ---
 
