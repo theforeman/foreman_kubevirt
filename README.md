@@ -57,7 +57,7 @@ To verify that the installation was successful, go to Foreman, top bar **Adminis
 
 | Foreman Version | Plugin Version |
 | --------------- | --------------:|
-| >= 1.7.x        | ~> 0.1.x       |
+| >= 1.21.x       | ~> 0.1.x       |
 
 ## Usage
 Go to **Infrastructure > Compute Resources** and click on **New Compute Resource**.
