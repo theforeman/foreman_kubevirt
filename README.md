@@ -133,7 +133,6 @@ Tests should be invoked from the *foreman* directory by:
 ## TODO
 
 * Implement VM Console
-* Add support for StorageClass for creating VM storage
 
 ## Contributing
 
