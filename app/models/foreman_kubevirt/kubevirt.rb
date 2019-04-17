@@ -250,10 +250,10 @@ module ForemanKubevirt
       true
     end
 
-    # TODO: remove if not changed - used for debug purpose
-    def new_vm(attr = {})
-      vm = super
-      vm
+    def host_compute_attrs(host)
+      attrs = super
+      attrs[:interfaces_attributes].each_value { |nic| nic["network"] = nil if nic["cni_provider"] == "pod" }
+      attrs
     end
 
     #
