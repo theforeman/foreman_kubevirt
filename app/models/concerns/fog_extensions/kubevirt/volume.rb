@@ -3,8 +3,8 @@ module FogExtensions
     module Volume
       extend ActiveSupport::Concern
 
-      attr_accessor :storage_class
-      attr_accessor :capacity
+      attr_writer :storage_class
+      attr_writer :capacity
 
       def capacity
         pvc.requests[:storage] unless pvc.nil?
