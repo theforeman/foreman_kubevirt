@@ -44,7 +44,7 @@ module FogExtensions
       end
 
       def vm_description
-        _("%{cpu_cores} Cores and %{memory} memory") % {:cpu_cores => cpu_cores, :memory => number_to_human_size(memory.to_i)}
+        _("%{cpu_cores} Cores and %{memory} memory") % { :cpu_cores => cpu_cores, :memory => number_to_human_size(memory.to_i) }
       end
 
       def select_nic(fog_nics, _nic)

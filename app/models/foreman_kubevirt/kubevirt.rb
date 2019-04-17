@@ -226,7 +226,7 @@ module ForemanKubevirt
       volumes.each do |volume|
         begin
           client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
-        rescue Exception => e
+        rescue StandardError => e
           logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
         end
       end
@@ -290,7 +290,7 @@ module ForemanKubevirt
         begin
           vol.pvc = client.pvcs.get(vol.info)
           vol
-        rescue Exception => e
+        rescue StandardError => e
           # An import of a VM where one of its PVC doesn't exist
           Foreman::Logging.exception("Import VM fail: The PVC #{vol.info} does not exist for VM #{vm.name}", e)
           nil
