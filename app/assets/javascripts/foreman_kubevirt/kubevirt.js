@@ -11,10 +11,11 @@ bootableRadio = function (item) {
 
 cniProviderSelected = function (item) {
   const selected = $(item).val().toLowerCase();
-  toggleNetworkElement(selected != "pod");
+  podSelected = selected == "pod";
+  changeNetworkElementVisibility(!podSelected);
 }
 
-function toggleNetworkElement(toggle) {
+function changeNetworkElementVisibility(toggle) {
   if (toggle) {
     $('.kubevirt-network').parents('.form-group').css('display', '');
   } else {
@@ -22,9 +23,9 @@ function toggleNetworkElement(toggle) {
   }
 }
 
-function toggle_network_options() {
+function changeNetworkElementVisibilityOnLoad() {
   selected = $('select.kubevirt-cni-provider').val().toLowerCase();
-  toggleNetworkElement(selected != "pod");
+  changeNetworkElementVisibility(selected != "pod");
 }
 
-$(document).ready(toggle_network_options);
+$(document).ready(changeNetworkElementVisibilityOnLoad);

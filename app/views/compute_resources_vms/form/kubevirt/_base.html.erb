@@ -23,5 +23,5 @@
   </div>
 <% end %>
 
-<%= compute_specific_js(compute_resource, "nic_info") %>
-<%= compute_specific_js(compute_resource, "kubevirt") %>
+<%= javascript_include_tag("foreman_kubevirt/nic_info.js") %>
+<%= javascript_include_tag("foreman_kubevirt/kubevirt.js") %>
