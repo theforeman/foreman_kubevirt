@@ -25,7 +25,7 @@ module ForemanKubevirt
     end
 
     def capabilities
-      [:build, :image, :new_volume]
+      %i[build image new_volume]
     end
 
     def provided_attributes
@@ -48,19 +48,17 @@ module ForemanKubevirt
       ComputeResource.model_name
     end
 
-    def test_connection(options = {})
-      client && client.valid? && client.virt_supported?
+    def test_connection(_options = {})
+      client&.valid? && client&.virt_supported?
     rescue StandardError => e
       errors[:base] << e.message
     end
 
     def networks
-      begin
-        client.networkattachmentdefs.all
-      rescue => e
-        logger.warn("Failed to retrieve network attachments definition from KubeVirt, make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed")
-        []
-      end
+      client.networkattachmentdefs.all
+    rescue StandardError => e
+      logger.warn("Failed to retrieve network attachments definition from KubeVirt, make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed: #{e.message}")
+      []
     end
 
     def find_vm_by_uuid(uuid)
@@ -79,11 +77,12 @@ module ForemanKubevirt
     end
 
     def storage_classes_for_select
-      storage_classes.map { |sc| OpenStruct.new({ id: sc.name, description: "#{sc.name} (#{sc.provisioner})" }) }
+      storage_classes.map { |sc| OpenStruct.new(id: sc.name, description: "#{sc.name} (#{sc.provisioner})") }
     end
 
     def new_volume(attr = {})
       return unless new_volume_errors.empty?
+
       Fog::Kubevirt::Compute::Volume.new(attr)
     end
 
@@ -94,7 +93,7 @@ module ForemanKubevirt
     end
 
     def cni_providers
-      [[_("multus"), :multus ], [_("genie"), :genie], [_("pod"), :pod]]
+      [[_("multus"), :multus], [_("genie"), :genie], [_("pod"), :pod]]
     end
 
     # @param args[Hash] contains VM creation parameters
@@ -152,18 +151,17 @@ module ForemanKubevirt
 
       volumes_attributes&.each_with_index do |(_, v), index|
         # Add PVC as volumes to the virtual machine
-        pvc_name = options[:name].gsub(/[._]+/,'-') + "-claim-" + (index+1).to_s
+        pvc_name = options[:name].gsub(/[._]+/, '-') + "-claim-" + (index + 1).to_s
         capacity = v["capacity"]
         storage_class = v["storage_class"]
         bootable = v["bootable"] && !image_provision
 
-        # TODO: This supports a single PVC, but user might require for multiple pvcs
         volume = create_vm_volume(pvc_name, capacity, storage_class, bootable)
         volumes << volume
       end
 
-      # FIXME Add cloud-init support
-      #init = { 'userData' => "#!/bin/bash\necho \"fedora\" | passwd fedora --stdin"}
+      # FIXME: Add cloud-init support
+      # init = { 'userData' => "#!/bin/bash\necho \"fedora\" | passwd fedora --stdin"}
 
       interfaces = []
       networks = []
@@ -179,7 +177,7 @@ module ForemanKubevirt
         else
           nic = {
             :bridge => {},
-            :name   => iface["network"],
+            :name   => iface["network"]
           }
 
           cni = iface["cni_provider"].to_sym
@@ -193,7 +191,7 @@ module ForemanKubevirt
         # there is a bug with bootOrder https://bugzilla.redhat.com/show_bug.cgi?id=1687341
         # therefore adding to the condition not to boot from netwotk device if already asked
         # to boot from disk
-        if iface["provision"] == true && volumes.select { |v| v.boot_order == 1}.empty?
+        if iface["provision"] == true && volumes.select { |v| v.boot_order == 1 }.empty?
           nic[:bootOrder] = 1
         end
         nic[:macAddress] = iface["mac"] if iface["mac"]
@@ -220,7 +218,7 @@ module ForemanKubevirt
       client.pvcs.create(:name          => pvc_name,
                          :namespace     => namespace,
                          :storage_class => storage_class,
-                         :access_modes  => [ 'ReadWriteOnce' ],
+                         :access_modes  => ['ReadWriteOnce'],
                          :requests      => { :storage => capacity + "G" })
     end
 
@@ -235,7 +233,7 @@ module ForemanKubevirt
     end
 
     def create_vm_volume(pvc_name, capacity, storage_class, bootable)
-      pvc = create_new_pvc(pvc_name, capacity, storage_class)
+      create_new_pvc(pvc_name, capacity, storage_class)
 
       volume = Fog::Kubevirt::Compute::Volume.new
       volume.type = 'persistentVolumeClaim'
@@ -287,15 +285,15 @@ module ForemanKubevirt
     #
     def set_vm_volumes_attributes(vm, vm_attrs)
       volumes = vm.volumes.collect do |vol|
-        if vol.type == 'persistentVolumeClaim'
-          begin
-            vol.pvc = client.pvcs.get(vol.info)
-            vol
-          rescue Exception => e
-            # An import of a VM where one of its PVC doesn't exist
-            Foreman::Logging.exception("Import VM fail: The PVC #{vol.info} does not exist for VM #{vm.name}", e)
-            nil
-          end
+        next unless vol.type == 'persistentVolumeClaim'
+
+        begin
+          vol.pvc = client.pvcs.get(vol.info)
+          vol
+        rescue Exception => e
+          # An import of a VM where one of its PVC doesn't exist
+          Foreman::Logging.exception("Import VM fail: The PVC #{vol.info} does not exist for VM #{vm.name}", e)
+          nil
         end
       end.compact
       vm_attrs[:volumes_attributes] = Hash[volumes.each_with_index.map { |volume, idx| [idx.to_s, volume.attributes] }]
@@ -306,7 +304,7 @@ module ForemanKubevirt
     def vm_compute_attributes(vm)
       vm_attrs = super
       interfaces = vm.interfaces || []
-      vm_attrs[:interfaces_attributes] = vm.interfaces.each_with_index.each_with_object({}) do |(interface, index), hsh|
+      vm_attrs[:interfaces_attributes] = interfaces.each_with_index.each_with_object({}) do |(interface, index), hsh|
         interface_attrs = {}
         interface_attrs[:compute_attributes] = {}
         interface_attrs[:mac] = interface.mac
@@ -350,7 +348,7 @@ module ForemanKubevirt
         :kubevirt_verify_ssl => ca_cert.present?,
         :kubevirt_ca_cert    => ca_cert
       )
-    rescue OpenSSL::X509::CertificateError => e
+    rescue OpenSSL::X509::CertificateError
       raise_certification_failure_exception
     rescue StandardError => e
       if e.message =~ /SSL_connect.*certificate verify failed/ ||
@@ -363,10 +361,10 @@ module ForemanKubevirt
 
     def raise_certification_failure_exception
       raise Foreman::FingerprintException.new(
-          N_("The remote system presented a public key signed by an unidentified certificate authority.
-             If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
+        N_("The remote system presented a public key signed by an unidentified certificate authority.
+           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
           ca_cert
-        )
+      )
     end
   end
 end

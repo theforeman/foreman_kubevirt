@@ -11,7 +11,7 @@ module FogExtensions
       end
 
       def storage_class
-        pvc.storage_class unless pvc.nil?
+        pvc&.storage_class
       end
 
       def bootable

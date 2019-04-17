@@ -2,7 +2,7 @@ module FogExtensions
   module Kubevirt
     module VmNic
       extend ActiveSupport::Concern
-      attr_accessor  :id
+      attr_accessor :id
 
       def id
         name

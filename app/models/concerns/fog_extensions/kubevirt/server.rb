@@ -47,7 +47,7 @@ module FogExtensions
         _("%{cpu_cores} Cores and %{memory} memory") % {:cpu_cores => cpu_cores, :memory => number_to_human_size(memory.to_i)}
       end
 
-      def select_nic(fog_nics, nic)
+      def select_nic(fog_nics, _nic)
         fog_nics.select { |iface| !iface.mac.nil? }[0]
       end
     end

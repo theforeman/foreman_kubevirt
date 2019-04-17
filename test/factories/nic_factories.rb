@@ -24,7 +24,7 @@ FactoryBot.define do
     bond_options ""
     primary true
     provision true
-    compute_attributes {{"cni_provider"=>"multus", "network"=>"ovs-foreman"}}
+    compute_attributes { { "cni_provider" => "multus", "network" => "ovs-foreman" } }
     ip6 ""
     subnet6_id nil
   end

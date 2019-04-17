@@ -1,5 +1,5 @@
 module ForemanKubevirt
- module Concerns
+  module Concerns
     module Api::ComputeResourcesControllerExtensions
       module ApiPieExtensions
         extend ::Apipie::DSL::Concern
@@ -20,5 +20,5 @@ module ForemanKubevirt
         include ApiPieExtensions
       end
     end
-  end
+   end
 end
