@@ -83,7 +83,9 @@ module ForemanKubevirt
     def new_volume(attr = {})
       return unless new_volume_errors.empty?
 
-      Fog::Kubevirt::Compute::Volume.new(attr)
+      vol = Fog::Kubevirt::Compute::Volume.new(attr)
+      vol.boot_order = 1 if attr[:bootable] == "on" || attr[:bootable] == "true"
+      vol
     end
 
     def new_volume_errors
@@ -314,6 +316,15 @@ module ForemanKubevirt
       end
 
       vm_attrs
+    end
+
+    def new_vm(attr = {})
+      vm = super
+      interfaces = nested_attributes_for :interfaces, attr[:interfaces_attributes]
+      interfaces.map { |i| vm.interfaces << new_interface(i)}
+      volumes = nested_attributes_for :volumes, attr[:volumes_attributes]
+      volumes.map { |v| vm.volumes << new_volume(v) }
+      vm
     end
 
     def associated_host(vm)
