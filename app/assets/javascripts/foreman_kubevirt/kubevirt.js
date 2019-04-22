@@ -11,21 +11,24 @@ bootableRadio = function (item) {
 
 cniProviderSelected = function (item) {
   const selected = $(item).val().toLowerCase();
-  podSelected = selected == "pod";
-  changeNetworkElementVisibility(!podSelected);
-}
+  const networks = $(item).parentsUntil('.fields').parent().find('#networks');
 
-function changeNetworkElementVisibility(toggle) {
-  if (toggle) {
-    $('.kubevirt-network').parents('.form-group').css('display', '');
+  if (selected == "pod") {
+    disableDropdown(networks);
   } else {
-    $('.kubevirt-network').parents('.form-group').css('display', 'none');
+    enableDropdown(networks);
   }
 }
 
-function changeNetworkElementVisibilityOnLoad() {
-  selected = $('select.kubevirt-cni-provider').val().toLowerCase();
-  changeNetworkElementVisibility(selected != "pod");
+function disableDropdown(item) {
+  item.hide();
+  item.attr('disabled', true);
+  $(item).closest('.removable-item').find('.kubevirt-network').prop('disabled', true);
 }
 
-$(document).ready(changeNetworkElementVisibilityOnLoad);
+function enableDropdown(item) {
+  $(item).closest('.removable-item').find('.kubevirt-network').prop('disabled', false);
+  item.attr('disabled', false);
+  item.find(':input').attr('disabled', false);
+  item.show();
+}
