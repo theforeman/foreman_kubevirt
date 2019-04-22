@@ -150,7 +150,7 @@ module ForemanKubevirt
         volume.type = 'containerDisk'
         volumes << volume
       end
-      volumes_attributes.each {|_,v|  raise ::Foreman::Exception.new(N_('Capacity was not found')) if v["capacity"].empty? }
+      volumes_attributes.each { |_, v| raise ::Foreman::Exception.new(N_('Capacity was not found')) if v["capacity"].empty? }
       volumes_attributes&.each_with_index do |(_, v), index|
         # Add PVC as volumes to the virtual machine
         pvc_name = options[:name].gsub(/[._]+/, '-') + "-claim-" + (index + 1).to_s
