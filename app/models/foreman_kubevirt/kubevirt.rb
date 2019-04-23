@@ -130,6 +130,12 @@ module ForemanKubevirt
     #                          "capacity"=>"2"
     #                        }
     #   }
+
+    def verify_booting_from_image_is_possible(volumes)
+      raise Foreman::Exception.new(N_('It is not possible to set a bootable volume and image based provisioning.')) if
+          volumes.any? { |_,v| v["bootable"] == "true" }
+    end
+
     def create_vm(args = {})
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
@@ -142,6 +148,7 @@ module ForemanKubevirt
       # Add image as volume to the virtual machine
       image_provision = args["provision_method"] == "image"
       if image_provision
+        verify_booting_from_image_is_possible(volumes_attributes)
         volume = Fog::Kubevirt::Compute::Volume.new
         raise "VM should be created based on an image" unless image
 
@@ -150,6 +157,7 @@ module ForemanKubevirt
         volume.type = 'containerDisk'
         volumes << volume
       end
+
       volumes_attributes.each { |_, v| raise ::Foreman::Exception.new(N_('Capacity was not found')) if v["capacity"].empty? }
       volumes_attributes&.each_with_index do |(_, v), index|
         # Add PVC as volumes to the virtual machine

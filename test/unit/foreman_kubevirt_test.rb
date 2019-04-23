@@ -32,7 +32,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
   end
 
   test "create_vm image based" do
-    vm_args = { "cpu_cores" => "1", "memory" => "1073741824", "start" => "1", "volumes_attributes" => { "1554649143334" => { "_delete" => "", "storage_class" => "local-storage", "capacity" => "1", "bootable" => "true" } }, "image_id" => "kubevirt/fedora-cloud-registry-disk-demo", "name" => "olive-kempter.example.com", "provision_method" => "image", "firmware_type" => :bios, "interfaces_attributes" => { "0" => { "cni_provider" => "multus", "network" => "ovs-foreman", "ip" => "192.168.111.184", "mac" => "a2:a4:a2:b2:a2:b6", "provision" => true } } }
+    vm_args = { "cpu_cores" => "1", "memory" => "1073741824", "start" => "1", "volumes_attributes" => { "1554649143334" => { "_delete" => "", "storage_class" => "local-storage", "capacity" => "1", "bootable" => "false" } }, "image_id" => "kubevirt/fedora-cloud-registry-disk-demo", "name" => "olive-kempter.example.com", "provision_method" => "image", "firmware_type" => :bios, "interfaces_attributes" => { "0" => { "cni_provider" => "multus", "network" => "ovs-foreman", "ip" => "192.168.111.184", "mac" => "a2:a4:a2:b2:a2:b6", "provision" => true } } }
     Fog.mock!
     compute_resource = new_kubevirt_vcr
     server = compute_resource.create_vm(vm_args)
@@ -41,5 +41,15 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     assert_equal 2, server.volumes.count
     assert_equal 2, server.disks.count
     assert_equal 1, server.interfaces.count
+  end
+
+  test "should fail when creating a VM with_bootable flag and image based" do
+    vm_args = { "cpu_cores" => "1", "memory" => "1073741824", "start" => "1", "volumes_attributes" => { "1554649143334" => { "_delete" => "", "storage_class" => "local-storage", "capacity" => "1", "bootable" => "true" } }, "image_id" => "kubevirt/fedora-cloud-registry-disk-demo", "name" => "olive-kempter.example.com", "provision_method" => "image", "firmware_type" => :bios, "interfaces_attributes" => { "0" => { "cni_provider" => "multus", "network" => "ovs-foreman", "ip" => "192.168.111.184", "mac" => "a2:a4:a2:b2:a2:b6", "provision" => true } } }
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    assert_raise(Foreman::Exception) do
+      compute_resource.create_vm(vm_args)
+    end
+
   end
 end
