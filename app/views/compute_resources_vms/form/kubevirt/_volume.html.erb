@@ -15,7 +15,7 @@
 
   <% bootable = f.object.boot_order.nil? ? false : f.object.bootable %>
   <%= field(f, :bootable, :label => _('Bootable'), :label_size => "col-md-2") do
-    radio_button_f f, :bootable, {:disabled => !new_vm, :checked => bootable, :onclick => 'bootableRadio(this)',
+    radio_button_f f, :bootable, {:disabled => !new_vm, :value=> 'true', :checked => bootable, :onclick => 'bootableRadio(this)',
     :text => _('Only one volume can be bootable')}
   end %>
 <% end %>
