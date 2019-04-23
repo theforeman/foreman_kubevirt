@@ -3,10 +3,10 @@ require File.expand_path('lib/foreman_kubevirt/version', __dir__)
 Gem::Specification.new do |s|
   s.name        = 'foreman_kubevirt'
   s.version     = ForemanKubevirt::VERSION
-  s.license     = 'GPL-3.0'
+  s.license     = 'GPLv3'
   s.authors     = ['Moti Asayag']
   s.email       = ['masayag@redhat.com']
-  s.homepage    = 'https://github.com/masayag/foreman_kubevirt'
+  s.homepage    = 'https://github.com/theforeman/foreman_kubevirt'
   s.summary     = 'Provision and manage Kubevirt Virtual Machines from Foreman'
   # also update locale/gemspec.rb
   s.description = 'Provision and manage Kubevirt Virtual Machines from Foreman.'
