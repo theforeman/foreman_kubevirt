@@ -4,7 +4,7 @@
 The ```foreman_kubevirt ``` plugin enables managing of [KubeVirt](https://kubevirt.io) as a Compute Resource in Foreman.
 
 * Website: [TheForeman.org](http://theforeman.org)
-* Wiki: [Foreman wiki](http://projects.theforeman.org/projects/foreman/wiki/About)
+* Issues: [foreman Redmine](http://projects.theforeman.org/projects/kubevirt/issues/)
 * Community and support: #theforeman for general support, #theforeman-dev for development chat in [Freenode](irc.freenode.net)
 * Mailing lists:
     * [foreman-users](https://groups.google.com/forum/?fromgroups#!forum/foreman-users)
@@ -19,7 +19,7 @@ Please see the Foreman manual for appropriate instructions:
 
 
 ### Building the plugin from source
-    # git clone https://github.com/masayag/foreman_kubevirt.git
+    # git clone https://github.com/theforeman/foreman_kubevirt
     # cd foreman_kubevirt
     # gem build foreman_kubevirt.gemspec # the output will be gem named foreman_kubevirt-x.y.z.gem, where x.y.z should be replaced with the actual version
 
@@ -122,6 +122,10 @@ Or by retrieving from the secret of service account *my-account* under the *defa
 # KUBE_SECRET=`oc get sa my-account -n default -o jsonpath='{.secrets[0].name}'`
 # kubectl get secret $KUBE_SECRET -n default -o jsonpath='{.data.ca\.crt}' | base64 -d
 ```
+
+## Documentation
+
+See the [Foreman Kubevirt manuals](https://theforeman.org/plugins/foreman_kubevirt/) on the Foreman web site.
 
 ## Tests
 
