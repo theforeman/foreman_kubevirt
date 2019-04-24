@@ -43,6 +43,9 @@ Style/FormatStringToken:
 Style/FormatString:
   Enabled: false
 
+Style/RaiseArgs:
+  Enabled: false
+
 Naming/UncommunicativeMethodParamName:
   Enabled: false
 
