@@ -86,6 +86,7 @@ The instruction of installing this node relies on the following links, based on 
 * https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/
 * https://kubernetes.io/docs/setup/cri/#docker
 * http://kubevirt.io/2018/attaching-to-multiple-networks.html
+* https://github.com/kubevirt/cluster-network-addons-operator
 
 #### Install open-vswitch
 openvswitch will be used for connecting the VM to host networking using veth pairs.
@@ -116,13 +117,13 @@ sysctl --system
 
 modprobe br_netfilter
  ```
- 
+
  #### Install Kubernetes and KubeVirt
  * Make sure to add kubernetes repository to /etc/yum.repos.d (see [here](https://kubernetes.io/docs/setup/independent/install-kubeadm/))
- 
+
 ```
 kubeadm config images pull
-swapoff # should be disabled permanantly by commenting the swap on /etc/fstab
+swapoff -a # should be disabled permanantly by commenting the swap on /etc/fstab
 kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.111.13
 systemctl enable kubelet
 ```
@@ -137,23 +138,36 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 Let kubernetes master serve as a node:
 `kubectl taint nodes --all node-role.kubernetes.io/master-`
 
-Install KubeVirt, multus and flannel:
+Install KubeVirt, Flannel and Cluster Network Operator:
 ```
-kubectl apply -f https://raw.githubusercontent.com/intel/multus-cni/master/images/multus-daemonset.yml
-mv /etc/cni/net.d/70-multus.conf /etc/cni/net.d/00-multus.conf
-
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
 # Check for latest version
-RELEASE=v0.13.2
+RELEASE=v0.16.0
 kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 
 kubectl apply -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/kubernetes-ovs-cni.yml
+
+NET_RELEASE=0.5.0
+kubectl apply -f https://raw.githubusercontent.com/kubevirt/cluster-network-addons-operator/master/manifests/cluster-network-addons/${NET_RELEASE}/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubevirt/cluster-network-addons-operator/master/manifests/cluster-network-addons/${NET_RELEASE}/network-addons-config.crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubevirt/cluster-network-addons-operator/master/manifests/cluster-network-addons/${NET_RELEASE}/operator.yaml
+
+cat <<EOF | kubectl create -f -
+---
+apiVersion: networkaddonsoperator.network.kubevirt.io/v1alpha1
+kind: NetworkAddonsConfig
+metadata:
+  name: cluster
+spec:
+  imagePullPolicy: Always
+  kubeMacPool: {}
+  multus: {}
 ```
 
 Download ***virtctl*** tool for managing VMs on kubevirt:
 ```
-wget https://github.com/kubevirt/kubevirt/releases/download/v0.13.2/virtctl-v0.13.2-linux-amd64 -O /usr/local/bin/virtctl
+wget https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/virtctl-v${RELEASE}-linux-amd64 -O /usr/local/bin/virtctl
 chmod +x /usr/local/bin/virtctl
 ```
 
@@ -182,8 +196,16 @@ metadata:
 spec:
   config: '{
       "cniVersion": "0.3.1",
-      "type": "ovs",
-      "bridge": "foreman"
+      "name": "ovs-foreman",
+      "plugins" : [
+        {
+          "type": "ovs",
+          "bridge": "foreman"
+        },
+        {
+          "type": "tuning"
+        }
+      ]
     }'
 EOF
 ```
@@ -289,7 +311,7 @@ kubectl delete network-attachment-definitions.k8s.cni.cncf.io --all
 kubectl delete -f https://raw.githubusercontent.com/intel/multus-cni/master/images/multus-daemonset.yml
 kubectl delete -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
-RELEASE=v0.13.2
+RELEASE=v0.16.0
 kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 
 kubectl delete -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/ovs-cni.yml
