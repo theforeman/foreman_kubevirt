@@ -132,8 +132,8 @@ module ForemanKubevirt
     #   }
 
     def verify_booting_from_image_is_possible(volumes)
-      raise Foreman::Exception.new(N_('It is not possible to set a bootable volume and image based provisioning.')) if
-          volumes.any? { |_,v| v["bootable"] == "true" }
+      raise ::Foreman::Exception.new N_('It is not possible to set a bootable volume and image based provisioning.') if
+          volumes.any? { |_, v| v["bootable"] == "true" }
     end
 
     def create_vm(args = {})
@@ -143,14 +143,14 @@ module ForemanKubevirt
 
       image = args["image_id"]
       volumes_attributes = args["volumes_attributes"]
-      raise "VM should be created based on Persistent Volume Claim or Image" unless (volumes_attributes.present? || image)
+      raise ::Foreman::Exception.new N_('VM should be created based on Persistent Volume Claim or Image') unless (volumes_attributes.present? || image)
 
       # Add image as volume to the virtual machine
       image_provision = args["provision_method"] == "image"
       if image_provision
         verify_booting_from_image_is_possible(volumes_attributes)
         volume = Fog::Kubevirt::Compute::Volume.new
-        raise "VM should be created based on an image" unless image
+        raise ::Foreman::Exception.new N_('VM should be created based on an image') unless image
 
         volume.info = image
         volume.boot_order = 1
@@ -158,7 +158,7 @@ module ForemanKubevirt
         volumes << volume
       end
 
-      volumes_attributes.each { |_, v| raise ::Foreman::Exception.new(N_('Capacity was not found')) if v["capacity"].empty? }
+      volumes_attributes.each { |_, v| raise ::Foreman::Exception.new N_('Capacity was not found') if v["capacity"].empty? }
       volumes_attributes&.each_with_index do |(_, v), index|
         # Add PVC as volumes to the virtual machine
         pvc_name = options[:name].gsub(/[._]+/, '-') + "-claim-" + (index + 1).to_s
@@ -329,7 +329,7 @@ module ForemanKubevirt
     def new_vm(attr = {})
       vm = super
       interfaces = nested_attributes_for :interfaces, attr[:interfaces_attributes]
-      interfaces.map { |i| vm.interfaces << new_interface(i)}
+      interfaces.map { |i| vm.interfaces << new_interface(i) }
       volumes = nested_attributes_for :volumes, attr[:volumes_attributes]
       volumes.map { |v| vm.volumes << new_volume(v) }
       vm

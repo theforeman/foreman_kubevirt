@@ -50,6 +50,23 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     assert_raise(Foreman::Exception) do
       compute_resource.create_vm(vm_args)
     end
+  end
 
+  test "should fail when creating a VM without an image or pvc " do
+    vm_args = { "cpu_cores" => "1", "memory" => "1073741824", "start" => "1", "volumes_attributes" => {}, "name" => "olive-kempter.example.com", "provision_method" => "image", "firmware_type" => :bios, "interfaces_attributes" => { "0" => { "cni_provider" => "multus", "network" => "ovs-foreman", "ip" => "192.168.111.184", "mac" => "a2:a4:a2:b2:a2:b6", "provision" => true } } }
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    assert_raise(Foreman::Exception) do
+      compute_resource.create_vm(vm_args)
+    end
+  end
+
+  test "should fail when creating a VM with PVC and not providing a capacity" do
+    vm_args = { "cpu_cores" => "1", "memory" => "1073741824", "start" => "1", "volumes_attributes" => { "1554649143334" => { "_delete" => "", "storage_class" => "local-storage", "bootable" => "false" } }, "image_id" => "kubevirt/fedora-cloud-registry-disk-demo", "name" => "olive-kempter.example.com", "provision_method" => "image", "firmware_type" => :bios, "interfaces_attributes" => { "0" => { "cni_provider" => "multus", "network" => "ovs-foreman", "ip" => "192.168.111.184", "mac" => "a2:a4:a2:b2:a2:b6", "provision" => true } } }
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    assert_raise(Foreman::Exception) do
+      compute_resource.create_vm(vm_args)
+    end
   end
 end
