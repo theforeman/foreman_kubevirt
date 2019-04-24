@@ -90,7 +90,7 @@ module ForemanKubevirt
 
     def new_volume_errors
       errors = []
-      errors.push _('no Persistent Volumes available on provider') if storage_classes.empty?
+      errors.push _('no Storage Classes available on provider') if storage_classes.empty?
       errors
     end
 
