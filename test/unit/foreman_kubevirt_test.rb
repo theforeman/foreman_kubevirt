@@ -51,7 +51,8 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     }
   }.freeze
 
-  test "create_vm network based" do
+
+  test "create_vm network based should pass" do
     Fog.mock!
     compute_resource = new_kubevirt_vcr
     server = compute_resource.create_vm(NETWORK_BASED_VM_ARGS)
@@ -62,7 +63,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     assert_equal 1, server.interfaces.count
   end
 
-  test "create_vm image based" do
+  test "create_vm image based should pass" do
     Fog.mock!
     compute_resource = new_kubevirt_vcr
     server = compute_resource.create_vm(IMAGE_BASED_VM_ARGS)
