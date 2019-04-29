@@ -57,7 +57,8 @@ module ForemanKubevirt
     def networks
       client.networkattachmentdefs.all
     rescue StandardError => e
-      logger.warn("Failed to retrieve network attachments definition from KubeVirt, make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed: #{e.message}")
+      logger.warn("Failed to retrieve network attachments definition from KubeVirt,
+        make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed: #{e.message}")
       []
     end
 
@@ -139,41 +140,7 @@ module ForemanKubevirt
       # FIXME: Add cloud-init support
       # init = { 'userData' => "#!/bin/bash\necho \"fedora\" | passwd fedora --stdin"}
 
-      interfaces = []
-      networks = []
-
-      options[:interfaces_attributes].values.each do |iface|
-        if iface[:cni_provider] == 'pod'
-          nic = {
-            :bridge => {},
-            :name   => 'pod'
-          }
-
-          net = { :name => 'pod', :pod => {} }
-        else
-          nic = {
-            :bridge => {},
-            :name   => iface[:network]
-          }
-
-          cni = iface[:cni_provider].to_sym
-          net = {
-            :name => iface[:network],
-            cni   => { :networkName => iface[:network] }
-          }
-        end
-
-        # TODO: Consider replacing with 'free' boot order, also verify uniqueness
-        # there is a bug with bootOrder https://bugzilla.redhat.com/show_bug.cgi?id=1687341
-        # therefore adding to the condition not to boot from netwotk device if already asked
-        # to boot from disk
-        if iface[:provision] == true && volumes.select { |v| v.boot_order == 1 }.empty?
-          nic[:bootOrder] = 1
-        end
-        nic[:macAddress] = iface[:mac] if iface[:mac]
-        interfaces << nic
-        networks << net
-      end
+      interfaces, networks = create_network_devices_for_vm(options, volumes)
 
       begin
         client.vms.create(:vm_name     => options[:name],
@@ -187,24 +154,6 @@ module ForemanKubevirt
       rescue Fog::Kubevirt::Errors::ClientError => e
         delete_pvcs(volumes)
         raise e
-      end
-    end
-
-    def create_new_pvc(pvc_name, capacity, storage_class)
-      client.pvcs.create(:name          => pvc_name,
-                         :namespace     => namespace,
-                         :storage_class => storage_class,
-                         :access_modes  => ['ReadWriteOnce'],
-                         :requests      => { :storage => capacity + "G" })
-    end
-
-    def delete_pvcs(volumes)
-      volumes.each do |volume|
-        begin
-          client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
-        rescue StandardError => e
-          logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
-        end
       end
     end
 
@@ -379,6 +328,24 @@ module ForemanKubevirt
       raise ::Foreman::Exception.new N_('Only one volume can be bootable') if volumes_attributes.select { |_, v| v[:bootable] == "true" }.count > 1
     end
 
+    def create_new_pvc(pvc_name, capacity, storage_class)
+      client.pvcs.create(:name          => pvc_name,
+                         :namespace     => namespace,
+                         :storage_class => storage_class,
+                         :access_modes  => ['ReadWriteOnce'],
+                         :requests      => { :storage => capacity + "G" })
+    end
+
+    def delete_pvcs(volumes)
+      volumes.each do |volume|
+        begin
+          client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
+        rescue StandardError => e
+          logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
+        end
+      end
+    end
+
     def create_vm_volume(pvc_name, capacity, storage_class, bootable)
       create_new_pvc(pvc_name, capacity, storage_class)
 
@@ -425,6 +392,41 @@ module ForemanKubevirt
 
       volumes << add_volume_for_image_provision(options) if image_provision
       volumes.concat(add_volumes_based_on_pvcs(options, image_provision))
+    end
+
+    def create_pod_network_element
+      nic = { bridge: {}, name: 'pod' }
+      net = { name: 'pod', pod: {} }
+      [nic, net]
+    end
+
+    def create_network_element(iface)
+      nic = { bridge: {}, name: iface[:network] }
+      cni = iface[:cni_provider].to_sym
+      net = { :name => iface[:network], cni => { :networkName => iface[:network] } }
+      [nic, net]
+    end
+
+    def create_network_devices_for_vm(options, volumes)
+      interfaces = []
+      networks = []
+
+      options[:interfaces_attributes].values.each do |iface|
+        if iface[:cni_provider] == 'pod'
+          nic, net = create_pod_network_element
+        else
+          nic, net = create_network_element(iface)
+        end
+
+        if iface[:provision] == true && volumes.select { |v| v.boot_order == 1 }.empty?
+          nic[:bootOrder] = 1
+        end
+        nic[:macAddress] = iface[:mac] if iface[:mac]
+        interfaces << nic
+        networks << net
+      end
+
+      [interfaces, networks]
     end
   end
 end

@@ -115,14 +115,14 @@ Style/ParallelAssignment:
   Enabled: false
 
 Style/PreferredHashMethods:
-  Enabled: false
+  Enabled: true
 
 # Won't work with sqlite
 Rails/BulkChangeTable:
-  Enabled: false
+  Enabled: true
 
 Style/MultipleComparison:
-  Enabled: false
+  Enabled: true
 
 Rails/RefuteMethods:
-  Enabled: false
+  Enabled: true
