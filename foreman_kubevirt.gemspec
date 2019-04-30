@@ -3,7 +3,7 @@ require File.expand_path('lib/foreman_kubevirt/version', __dir__)
 Gem::Specification.new do |s|
   s.name        = 'foreman_kubevirt'
   s.version     = ForemanKubevirt::VERSION
-  s.license     = 'GPLv3'
+  s.license     = 'GPL-3.0'
   s.authors     = ['Moti Asayag']
   s.email       = ['masayag@redhat.com']
   s.homepage    = 'https://github.com/theforeman/foreman_kubevirt'
