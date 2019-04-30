@@ -1,5 +1,5 @@
 bootableRadio = function (item) {
-  const disabled = $('[id$=_bootable_true]:disabled:checked:visible');
+  disabled = $('[id$=_bootable_true]:disabled:checked:visible');
 
   $('[id$=_bootable_true]').prop('checked', false);
   if (disabled.length > 0) {
@@ -10,8 +10,8 @@ bootableRadio = function (item) {
 }
 
 cniProviderSelected = function (item) {
-  const selected = $(item).val().toLowerCase();
-  const networks = $(item).parentsUntil('.fields').parent().find('#networks');
+  selected = $(item).val().toLowerCase();
+  networks = $(item).parentsUntil('.fields').parent().find('#networks');
 
   if (selected == "pod") {
     disableDropdown(networks);
