@@ -51,7 +51,6 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     }
   }.freeze
 
-
   test "create_vm network based should pass" do
     Fog.mock!
     compute_resource = new_kubevirt_vcr
@@ -108,6 +107,17 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
   test "should fail when creating a VM with PVC and not providing a capacity" do
     vm_args = NETWORK_BASED_VM_ARGS.deep_dup
     vm_args["volumes_attributes"]["0"]["capacity"] = nil
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    assert_raise(Foreman::Exception) do
+      compute_resource.create_vm(vm_args)
+    end
+  end
+
+  test "should fail when creating a VM with two bootable PVCs" do
+    vm_args = NETWORK_BASED_VM_ARGS.deep_dup
+    vm_args["volumes_attributes"]["0"]["bootable"] = "true"
+    vm_args["volumes_attributes"]["1"]["bootable"] = "true"
     Fog.mock!
     compute_resource = new_kubevirt_vcr
     assert_raise(Foreman::Exception) do

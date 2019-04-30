@@ -57,7 +57,8 @@ module ForemanKubevirt
     def networks
       client.networkattachmentdefs.all
     rescue StandardError => e
-      logger.warn("Failed to retrieve network attachments definition from KubeVirt, make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed: #{e.message}")
+      logger.warn("Failed to retrieve network attachments definition from KubeVirt,
+        make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed: #{e.message}")
       []
     end
 
@@ -130,84 +131,16 @@ module ForemanKubevirt
     #                          "capacity"=>"2"
     #                        }
     #   }
-
-    def verify_booting_from_image_is_possible(volumes)
-      raise ::Foreman::Exception.new N_('It is not possible to set a bootable volume and image based provisioning.') if
-          volumes.any? { |_, v| v["bootable"] == "true" }
-    end
-
     def create_vm(args = {})
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
-      volumes = []
 
-      image = args["image_id"]
-      volumes_attributes = args["volumes_attributes"]
-      raise ::Foreman::Exception.new N_('VM should be created based on Persistent Volume Claim or Image') unless (volumes_attributes.present? || image)
-
-      # Add image as volume to the virtual machine
-      image_provision = args["provision_method"] == "image"
-      if image_provision
-        verify_booting_from_image_is_possible(volumes_attributes)
-        volume = Fog::Kubevirt::Compute::Volume.new
-        raise ::Foreman::Exception.new N_('VM should be created based on an image') unless image
-
-        volume.info = image
-        volume.boot_order = 1
-        volume.type = 'containerDisk'
-        volumes << volume
-      end
-
-      volumes_attributes.each { |_, v| raise ::Foreman::Exception.new N_('Capacity was not found') if v["capacity"].empty? }
-      volumes_attributes&.each_with_index do |(_, v), index|
-        # Add PVC as volumes to the virtual machine
-        pvc_name = options[:name].gsub(/[._]+/, '-') + "-claim-" + (index + 1).to_s
-        capacity = v["capacity"]
-        storage_class = v["storage_class"]
-        bootable = v["bootable"] && !image_provision
-
-        volume = create_vm_volume(pvc_name, capacity, storage_class, bootable)
-        volumes << volume
-      end
+      volumes = create_volumes_for_vm(options)
 
       # FIXME: Add cloud-init support
       # init = { 'userData' => "#!/bin/bash\necho \"fedora\" | passwd fedora --stdin"}
 
-      interfaces = []
-      networks = []
-
-      args["interfaces_attributes"].values.each do |iface|
-        if iface["cni_provider"] == 'pod'
-          nic = {
-            :bridge => {},
-            :name   => 'pod'
-          }
-
-          net = { :name => 'pod', :pod => {} }
-        else
-          nic = {
-            :bridge => {},
-            :name   => iface["network"]
-          }
-
-          cni = iface["cni_provider"].to_sym
-          net = {
-            :name => iface["network"],
-            cni   => { :networkName => iface["network"] }
-          }
-        end
-
-        # TODO: Consider replacing with 'free' boot order, also verify uniqueness
-        # there is a bug with bootOrder https://bugzilla.redhat.com/show_bug.cgi?id=1687341
-        # therefore adding to the condition not to boot from netwotk device if already asked
-        # to boot from disk
-        if iface["provision"] == true && volumes.select { |v| v.boot_order == 1 }.empty?
-          nic[:bootOrder] = 1
-        end
-        nic[:macAddress] = iface["mac"] if iface["mac"]
-        interfaces << nic
-        networks << net
-      end
+      interfaces, networks = create_network_devices_for_vm(options, volumes)
 
       begin
         client.vms.create(:vm_name     => options[:name],
@@ -222,34 +155,6 @@ module ForemanKubevirt
         delete_pvcs(volumes)
         raise e
       end
-    end
-
-    def create_new_pvc(pvc_name, capacity, storage_class)
-      client.pvcs.create(:name          => pvc_name,
-                         :namespace     => namespace,
-                         :storage_class => storage_class,
-                         :access_modes  => ['ReadWriteOnce'],
-                         :requests      => { :storage => capacity + "G" })
-    end
-
-    def delete_pvcs(volumes)
-      volumes.each do |volume|
-        begin
-          client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
-        rescue StandardError => e
-          logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
-        end
-      end
-    end
-
-    def create_vm_volume(pvc_name, capacity, storage_class, bootable)
-      create_new_pvc(pvc_name, capacity, storage_class)
-
-      volume = Fog::Kubevirt::Compute::Volume.new
-      volume.type = 'persistentVolumeClaim'
-      volume.info = pvc_name
-      volume.boot_order = 1 if bootable == "true"
-      volume
     end
 
     def destroy_vm(vm_uuid)
@@ -315,11 +220,13 @@ module ForemanKubevirt
       vm_attrs = super
       interfaces = vm.interfaces || []
       vm_attrs[:interfaces_attributes] = interfaces.each_with_index.each_with_object({}) do |(interface, index), hsh|
-        interface_attrs = {}
-        interface_attrs[:compute_attributes] = {}
-        interface_attrs[:mac] = interface.mac
-        interface_attrs[:compute_attributes][:network] = interface.network
-        interface_attrs[:compute_attributes][:cni_provider] = interface.cni_provider
+        interface_attrs = {
+          mac: interface.mac,
+          compute_attributes: {
+            network: interface.network,
+            cni_provider: interface.cni_provider
+          }
+        }
         hsh[index.to_s] = interface_attrs
       end
 
@@ -384,6 +291,142 @@ module ForemanKubevirt
            If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
           ca_cert
       )
+    end
+
+    private
+
+    def verify_at_least_one_volume_provided(options)
+      image = options[:image_id]
+      volumes_attributes = options[:volumes_attributes]
+      raise ::Foreman::Exception.new N_('VM should be created based on Persistent Volume Claim or Image') unless
+        (volumes_attributes.present? || image)
+    end
+
+    def verify_booting_from_image_is_possible(volumes)
+      raise ::Foreman::Exception.new N_('It is not possible to set a bootable volume and image based provisioning.') if
+        volumes.any? { |_, v| v[:bootable] == "true" }
+    end
+
+    def add_volume_for_image_provision(options)
+      image = options[:image_id]
+      raise ::Foreman::Exception.new N_('VM should be created based on an image') unless image
+
+      verify_booting_from_image_is_possible(options[:volumes_attributes])
+
+      volume = Fog::Kubevirt::Compute::Volume.new
+      volume.info = image
+      volume.boot_order = 1
+      volume.type = 'containerDisk'
+      volume
+    end
+
+    def validate_volume_capacity(volumes_attributes)
+      volumes_attributes.each { |_, v| raise ::Foreman::Exception.new N_('Capacity was not found') if v[:capacity].empty? }
+    end
+
+    def validate_only_single_bootable_volume(volumes_attributes)
+      raise ::Foreman::Exception.new N_('Only one volume can be bootable') if volumes_attributes.select { |_, v| v[:bootable] == "true" }.count > 1
+    end
+
+    def create_new_pvc(pvc_name, capacity, storage_class)
+      client.pvcs.create(:name          => pvc_name,
+                         :namespace     => namespace,
+                         :storage_class => storage_class,
+                         :access_modes  => ['ReadWriteOnce'],
+                         :requests      => { :storage => capacity + "G" })
+    end
+
+    def delete_pvcs(volumes)
+      volumes.each do |volume|
+        begin
+          client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
+        rescue StandardError => e
+          logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
+        end
+      end
+    end
+
+    def create_vm_volume(pvc_name, capacity, storage_class, bootable)
+      create_new_pvc(pvc_name, capacity, storage_class)
+
+      volume = Fog::Kubevirt::Compute::Volume.new
+      volume.type = 'persistentVolumeClaim'
+      volume.info = pvc_name
+      volume.boot_order = 1 if bootable == "true"
+      volume
+    end
+
+    def add_volumes_based_on_pvcs(options, image_provision)
+      volumes_attributes = options[:volumes_attributes]
+      return [] if volumes_attributes.blank?
+
+      validate_volume_capacity(volumes_attributes)
+      validate_only_single_bootable_volume(volumes_attributes)
+
+      volumes = []
+      vm_name = options[:name].gsub(/[._]+/, '-')
+      volumes_attributes.each_with_index do |(_, v), index|
+        # Add PVC as volumes to the virtual machine
+        pvc_name = vm_name + "-claim-" + (index + 1).to_s
+        capacity = v[:capacity]
+        storage_class = v[:storage_class]
+        bootable = v[:bootable] && !image_provision
+
+        volume = create_vm_volume(pvc_name, capacity, storage_class, bootable)
+        volumes << volume
+      end
+
+      volumes
+    end
+
+    # Creates volume elements for the VM based on provided parameters
+    #
+    # @param options[Hash] contains VM creation parameters
+    #
+    def create_volumes_for_vm(options)
+      verify_at_least_one_volume_provided(options)
+
+      # Add image as volume to the virtual machine
+      volumes = []
+      image_provision = options[:provision_method] == "image"
+
+      volumes << add_volume_for_image_provision(options) if image_provision
+      volumes.concat(add_volumes_based_on_pvcs(options, image_provision))
+    end
+
+    def create_pod_network_element
+      nic = { bridge: {}, name: 'pod' }
+      net = { name: 'pod', pod: {} }
+      [nic, net]
+    end
+
+    def create_network_element(iface)
+      nic = { bridge: {}, name: iface[:network] }
+      cni = iface[:cni_provider].to_sym
+      net = { :name => iface[:network], cni => { :networkName => iface[:network] } }
+      [nic, net]
+    end
+
+    def create_network_devices_for_vm(options, volumes)
+      interfaces = []
+      networks = []
+
+      options[:interfaces_attributes].values.each do |iface|
+        if iface[:cni_provider] == 'pod'
+          nic, net = create_pod_network_element
+        else
+          nic, net = create_network_element(iface)
+        end
+
+        if iface[:provision] == true && volumes.select { |v| v.boot_order == 1 }.empty?
+          nic[:bootOrder] = 1
+        end
+        nic[:macAddress] = iface[:mac] if iface[:mac]
+        interfaces << nic
+        networks << net
+      end
+
+      [interfaces, networks]
     end
   end
 end
