@@ -1,3 +1,12 @@
+### 0.1.2 / 2019-04-30
+
+* Clear assets precompile error
+* Set license format as gem expects (#93)
+* Refactor create vm (#92)
+* Update getting-started.md (#90)
+* Add more unit tests (#89)
+
+
 ### 0.1.1 / 2019-04-24
 
 * Raise error in case of booting from volume and from image (#81)
