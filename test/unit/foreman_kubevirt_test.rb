@@ -112,9 +112,6 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     vm_args["volumes_attributes"]["0"]["capacity"] = nil
     Fog.mock!
     compute_resource = new_kubevirt_vcr
-    exception = assert_raise(Foreman::Exception) do
-      compute_resource.create_vm(vm_args)
-    end
     assert_match(/Capacity was not found/, exception.message)
   end
 
@@ -125,7 +122,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     Fog.mock!
     compute_resource = new_kubevirt_vcr
     exception = assert_raise(Foreman::Exception) do
-      compute_resource.create_vm(vm_args)
+      compute_resource.create_vm(m_args)
     end
     assert_match(/Only one volume can be bootable/, exception.message)
   end
