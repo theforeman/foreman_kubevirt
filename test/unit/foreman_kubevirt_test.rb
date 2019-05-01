@@ -129,4 +129,26 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     end
     assert_match(/Only one volume can be bootable/, exception.message)
   end
+
+  test "create_vm without CPU should pass" do
+    vm_args = NETWORK_BASED_VM_ARGS.deep_dup
+    vm_args["cpu_cores"] = nil
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    server = compute_resource.create_vm(vm_args)
+
+    # verify default CPU value is set
+    assert_equal 1, server.cpu_cores
+  end
+
+  test "create_vm without memory should pass" do
+    vm_args = NETWORK_BASED_VM_ARGS.deep_dup
+    vm_args["memory"] = nil
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    server = compute_resource.create_vm(vm_args)
+
+    # verify default memory value is set
+    assert_equal "1024M", server.memory
+  end
 end
