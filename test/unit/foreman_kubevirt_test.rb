@@ -78,30 +78,33 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     vm_args["volumes_attributes"]["0"]["bootable"] = "true"
     Fog.mock!
     compute_resource = new_kubevirt_vcr
-    assert_raise(Foreman::Exception) do
+    exception = assert_raise(Foreman::Exception) do
       compute_resource.create_vm(vm_args)
     end
+    assert_match(/It is not possible to set a bootable volume and image based provisioning./, exception.message)
   end
 
   test "should fail when creating a VM without an image or pvc" do
-    vm_args = IMAGE_BASED_VM_ARGS.deep_dup
-    vm_args["image_id"] = nil
-    Fog.mock!
-    compute_resource = new_kubevirt_vcr
-    assert_raise(Foreman::Exception) do
-      compute_resource.create_vm(vm_args)
-    end
-  end
-
-  test "should fail when creating image-based VM without an image" do
     vm_args = IMAGE_BASED_VM_ARGS.deep_dup
     vm_args["volumes_attributes"] = {}
     vm_args["image_id"] = nil
     Fog.mock!
     compute_resource = new_kubevirt_vcr
-    assert_raise(Foreman::Exception) do
+    exception = assert_raise(Foreman::Exception) do
       compute_resource.create_vm(vm_args)
     end
+    assert_match(/VM should be created based on Persistent Volume Claim or Image/, exception.message)
+  end
+
+  test "should fail when creating image-based VM without an image" do
+    vm_args = IMAGE_BASED_VM_ARGS.deep_dup
+    vm_args["image_id"] = nil
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    exception = assert_raise(Foreman::Exception) do
+      compute_resource.create_vm(vm_args)
+    end
+    assert_match(/VM should be created based on an image/, exception.message)
   end
 
   test "should fail when creating a VM with PVC and not providing a capacity" do
@@ -109,9 +112,10 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     vm_args["volumes_attributes"]["0"]["capacity"] = nil
     Fog.mock!
     compute_resource = new_kubevirt_vcr
-    assert_raise(Foreman::Exception) do
+    exception = assert_raise(Foreman::Exception) do
       compute_resource.create_vm(vm_args)
     end
+    assert_match(/Capacity was not found/, exception.message)
   end
 
   test "should fail when creating a VM with two bootable PVCs" do
@@ -120,8 +124,9 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     vm_args["volumes_attributes"]["1"]["bootable"] = "true"
     Fog.mock!
     compute_resource = new_kubevirt_vcr
-    assert_raise(Foreman::Exception) do
+    exception = assert_raise(Foreman::Exception) do
       compute_resource.create_vm(vm_args)
     end
+    assert_match(/Only one volume can be bootable/, exception.message)
   end
 end
