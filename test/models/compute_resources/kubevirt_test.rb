@@ -66,4 +66,19 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     record.stubs(:client).returns(client)
     assert_equal false, record.test_connection
   end
+
+  test "Verify client raises StandardError exception" do
+    record = new_kubevirt_vcr
+    record.stubs(:client).raises(StandardError.new('test'))
+    record.test_connection
+    assert_equal ['test'], record.errors[:base]
+  end
+
+  test "Verify client raises FingerprintException exception" do
+    record = new_kubevirt_vcr
+    record.stubs(:client).raises(Foreman::FingerprintException.new('test'))
+    record.test_connection
+    assert_includes record.errors[:base][0], "[Foreman::FingerprintException]: test"
+  end
+
 end
