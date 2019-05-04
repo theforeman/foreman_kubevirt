@@ -80,5 +80,4 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     record.test_connection
     assert_includes record.errors[:base][0], "[Foreman::FingerprintException]: test"
   end
-
 end
