@@ -132,7 +132,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
   test "create_vm without CPU should pass" do
     vm_args = NETWORK_BASED_VM_ARGS.deep_dup
-    vm_args["cpu_cores"] = nil
+    vm_args.delete("cpu_cores")
     Fog.mock!
     compute_resource = new_kubevirt_vcr
     server = compute_resource.create_vm(vm_args)
@@ -143,12 +143,22 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
   test "create_vm without memory should pass" do
     vm_args = NETWORK_BASED_VM_ARGS.deep_dup
-    vm_args["memory"] = nil
+    vm_args.delete("memory")
     Fog.mock!
     compute_resource = new_kubevirt_vcr
     server = compute_resource.create_vm(vm_args)
 
     # verify default memory value is set
     assert_equal "1024M", server.memory
+  end
+
+  test "converts memory to byte" do
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    assert_equal 1.gigabytes, compute_resource.convert_memory_to_bytes("1Gi")
+    assert_equal 1.megabytes, compute_resource.convert_memory_to_bytes("1Mi")
+    assert_equal 1_000_000_000, compute_resource.convert_memory_to_bytes("1G")
+    assert_equal 1_000_000, compute_resource.convert_memory_to_bytes("1M")
+    assert_equal 0, compute_resource.convert_memory_to_bytes("0b")
   end
 end

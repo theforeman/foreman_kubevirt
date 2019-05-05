@@ -20,8 +20,7 @@
       </tr>
       <tr>
         <td><%= _('Memory') %></td>
-        <td><%= number_to_human_size @vm.memory %>
-        </td>
+        <td><%= number_to_human_size @compute_resource.convert_memory_to_bytes(@vm.memory) %></td>
       </tr>
       <tr>
         <td><%= _('Namespace') %></td>

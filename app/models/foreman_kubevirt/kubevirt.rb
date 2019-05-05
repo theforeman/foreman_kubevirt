@@ -145,7 +145,7 @@ module ForemanKubevirt
       begin
         client.vms.create(:vm_name     => options[:name],
                           :cpus        => options[:cpu_cores].to_i,
-                          :memory_size => options[:memory].to_i / 2**20,
+                          :memory_size => convert_memory(options[:memory] + "b", :m).to_s,
                           :volumes     => volumes,
                           # :cloudinit   => init,
                           :networks    => networks,
@@ -177,7 +177,7 @@ module ForemanKubevirt
     # return 'false'
     def vm_instance_defaults
       {
-        :memory    => 1024.megabytes,
+        :memory    => 1024.megabytes.to_s,
         :cpu_cores => '1'
       }
     end
@@ -258,6 +258,14 @@ module ForemanKubevirt
 
     def max_memory
       64.gigabytes
+    end
+
+    # Converts a given memory to bytes
+    #
+    # @param memory - The memory of the VM to convert
+    #
+    def convert_memory_to_bytes(memory)
+      convert_memory(memory, :b)
     end
 
     protected
@@ -427,6 +435,10 @@ module ForemanKubevirt
       end
 
       [interfaces, networks]
+    end
+
+    def convert_memory(memory, unit)
+      ::Fog::Kubevirt::Compute::Shared::UnitConverter.convert(memory, unit).to_i
     end
   end
 end
