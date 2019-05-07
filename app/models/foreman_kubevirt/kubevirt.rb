@@ -28,6 +28,10 @@ module ForemanKubevirt
       %i[build image new_volume]
     end
 
+    def user_data_supported?
+      true
+    end
+
     def provided_attributes
       { :uuid => :name, :mac => :mac }
     end
@@ -136,18 +140,16 @@ module ForemanKubevirt
       logger.debug("creating VM with the following options: #{options.inspect}")
 
       volumes = create_volumes_for_vm(options)
-
-      # FIXME: Add cloud-init support
-      # init = { 'userData' => "#!/bin/bash\necho \"fedora\" | passwd fedora --stdin"}
-
       interfaces, networks = create_network_devices_for_vm(options, volumes)
+      # Add clound init user data
+      user_data = options[:user_data].present? ? { "userData" => options[:user_data] } : nil
 
       begin
         client.vms.create(:vm_name     => options[:name],
                           :cpus        => options[:cpu_cores].to_i,
                           :memory_size => convert_memory(options[:memory] + "b", :m).to_s,
                           :volumes     => volumes,
-                          # :cloudinit   => init,
+                          :cloudinit   => user_data,
                           :networks    => networks,
                           :interfaces  => interfaces)
         client.servers.get(options[:name])
