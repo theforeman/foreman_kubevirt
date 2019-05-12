@@ -312,7 +312,7 @@ module ForemanKubevirt
 
     def verify_booting_from_image_is_possible(volumes)
       raise ::Foreman::Exception.new N_('It is not possible to set a bootable volume and image based provisioning.') if
-        volumes.any? { |_, v| v[:bootable] == "true" }
+        volumes&.any? { |_, v| v[:bootable] == "true" }
     end
 
     def add_volume_for_image_provision(options)

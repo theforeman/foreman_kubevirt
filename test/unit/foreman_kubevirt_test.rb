@@ -73,6 +73,17 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     assert_equal 1, server.interfaces.count
   end
 
+  test "create_vm image based without additional volumes should pass" do
+    vm_args = IMAGE_BASED_VM_ARGS.deep_dup
+    vm_args.delete("volumes_attributes")
+
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    server = compute_resource.create_vm(vm_args)
+
+    assert_equal "olive-kempter.example.com", server.name
+  end
+
   test "should fail when creating a VM with_bootable flag and image based" do
     vm_args = IMAGE_BASED_VM_ARGS.deep_dup
     vm_args["volumes_attributes"]["0"]["bootable"] = "true"
