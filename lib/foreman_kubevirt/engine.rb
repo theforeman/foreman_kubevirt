@@ -44,6 +44,7 @@ module ForemanKubevirt
     config.to_prepare do
       begin
         require "fog/kubevirt"
+        require "fog/kubevirt/compute/utils/unit_converter"
         require "fog/kubevirt/compute/models/server"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/server", __dir__)
 
