@@ -1,3 +1,12 @@
+### 0.1.3 / 2019-05-15
+
+* Support User Data (#103)
+* Fix #26784: Create VM with image only should pass (#102)
+* Fixes #26656 - Fix memory issues (#100)
+* Add compute resource tests (#99)
+* Add tests for default values (#98)
+* Add message expectation to tests (#97)
+
 ### 0.1.2 / 2019-04-30
 
 * Clear assets precompile error
