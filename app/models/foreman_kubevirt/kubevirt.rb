@@ -142,7 +142,7 @@ module ForemanKubevirt
       volumes = create_volumes_for_vm(options)
       interfaces, networks = create_network_devices_for_vm(options, volumes)
       # Add clound init user data
-      user_data = options[:user_data].present? ? { "userData" => options[:user_data] } : nil
+      user_data = { "userData" => options[:user_data] } if options[:user_data].present?
 
       begin
         client.vms.create(:vm_name     => options[:name],
