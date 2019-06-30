@@ -1,7 +1,7 @@
-<%= text_f f, :hostname, :label => _("Hostname") %>
+<%= text_f f, :hostname, :label => _("Hostname"), :required => true %>
 <%= text_f f, :api_port, :label => _("API Port"), :required => true %>
 <%= text_f f, :namespace, :label => _("Namespace"), :required => true %>
-<%= password_f f, :password, :label => _("Token"), :required => true,
+<%= password_f f, :token, :label => _("Token"), :required => true,
               :keep_value => true, :unset => unset_password?,
               :help_block => _("e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."),
               :help_inline => documentation_button('/foreman_kubevirt/0.x/index.html#4.1SettingComputeResourceTokenandX509CAvalues',
