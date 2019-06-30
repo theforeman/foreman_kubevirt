@@ -1,3 +1,8 @@
+### 0.1.4 / 2019-06-30
+
+*  Align values to expected format
+*  Fixes #27189 - change the token to be required in save/test validation
+
 ### 0.1.3 / 2019-05-15
 
 * Support User Data (#103)
