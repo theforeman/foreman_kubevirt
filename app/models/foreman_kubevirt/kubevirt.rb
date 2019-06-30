@@ -6,7 +6,7 @@ module ForemanKubevirt
     alias_attribute :token, :password
     alias_attribute :namespace, :user
     validates :hostname, :api_port, :namespace, :token, :presence => true
-    validate :test_connection
+    before_save :test_connection
 
     def ca_cert
       attrs[:ca_cert]
@@ -53,6 +53,7 @@ module ForemanKubevirt
     end
 
     def test_connection(_options = {})
+      validate!
       client&.valid? && client&.virt_supported?
     rescue StandardError => e
       errors[:base] << e.message
