@@ -16,5 +16,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rake', '~> 12.3')
   s.add_development_dependency('rubocop', '~> 0.64')
 
-  s.add_dependency('fog-kubevirt', '~>1.3')
+  s.add_dependency('fog-kubevirt', '~>1.3.1')
 end
