@@ -272,6 +272,29 @@ module ForemanKubevirt
       convert_memory(memory, :b)
     end
 
+    def plain_kubevirt_protocol
+      "plain.kubevirt.io".freeze
+    end
+
+    def token_protocol(token)
+      "base64url.bearer.authorization.k8s.io.#{token}"
+    end
+
+    def console(uuid)
+      vm = find_vm_by_uuid(uuid)
+      vnc_details = client.vminstances.get_vnc_console_details(vm.name, namespace)
+      token = Base64.encode64(vnc_details[:token]).delete!("\n").delete("==")
+      {
+          :host => vnc_details[:host],
+          :port => vnc_details[:port],
+          :path => vnc_details[:path],
+          :token_protocol => token_protocol(token),
+          :plain_protocol => plain_kubevirt_protocol,
+          :type => 'vnc',
+          :encrypt => true
+      }
+    end
+
     protected
 
     def client
