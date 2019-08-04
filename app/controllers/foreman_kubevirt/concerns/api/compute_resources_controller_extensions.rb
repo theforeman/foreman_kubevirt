@@ -2,7 +2,6 @@ module ForemanKubevirt
   module Concerns
     module Api
       module ComputeResourcesControllerExtensions
-        module ApiPieExtensions
           extend ::Apipie::DSL::Concern
           update_api(:create, :update) do
             param :compute_resource, Hash do
@@ -14,13 +13,6 @@ module ForemanKubevirt
             end
           end
         end
-      end
-
-      extend ActiveSupport::Concern
-
-      included do
-        include ApiPieExtensions
-      end
     end
   end
 end
