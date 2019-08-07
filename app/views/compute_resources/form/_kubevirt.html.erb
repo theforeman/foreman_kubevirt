@@ -5,7 +5,9 @@
               :keep_value => true, :unset => unset_password?,
               :help_block => _("e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."),
               :help_inline => documentation_button('/foreman_kubevirt/0.x/index.html#4.1SettingComputeResourceTokenandX509CAvalues',
-                                                   root_url: 'https://theforeman.org/plugins') %>
+              :root_url => 'https://theforeman.org/plugins'),
+              :id => "compute_resource_password"
+%>
 
 <%= textarea_f f, :ca_cert, :label => _("X509 Certification Authorities"),
   :placeholder => _("Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.") %>
