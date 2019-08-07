@@ -6,7 +6,7 @@ module ForemanKubevirt
     alias_attribute :token, :password
     alias_attribute :namespace, :user
     validates :hostname, :api_port, :namespace, :token, :presence => true
-    before_save :test_connection
+    after_validation :validate_connectivity unless Rails.env.test?
 
     def ca_cert
       attrs[:ca_cert]
@@ -52,12 +52,29 @@ module ForemanKubevirt
       ComputeResource.model_name
     end
 
-    def test_connection(_options = {})
-      validate!
+    def test_connection(options = {})
+      super
+      validate_connectivity(options)
+    end
+
+
+    def validate_connectivity(options = {})
+      return unless connection_properties_valid?
+      return false if errors.any?
       client&.valid? && client&.virt_supported?
     rescue StandardError => e
-      errors[:base] << e.message
+       if e.message =~ /401/
+        errors[:base] << _('The compute resource could not be authenticated')
+       else
+         errors[:base] << e.message
+       end
     end
+
+    def connection_properties_valid?
+      errors[:hostname].empty? && errors[:token].empty? && errors[:namespace].empty? && errors[:api_port].empty?
+    end
+
+
 
     def networks
       client.networkattachmentdefs.all
