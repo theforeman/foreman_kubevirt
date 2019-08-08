@@ -57,6 +57,9 @@ module ForemanKubevirt
       validate_connectivity(options)
     end
 
+    def caching_enabled
+      false
+    end
 
     def validate_connectivity(options = {})
       return unless connection_properties_valid?
