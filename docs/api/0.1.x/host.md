@@ -16,10 +16,10 @@ Creation of a host from pxe
 
 
 ```clickhouse
-{
 POST http://<foreman_hostname>:<port>/api/hosts/
 
 body:
+{
   "location_id" : "<location_id>",
   "organization_id" : "<organization_id>",
   "host" : {
@@ -31,7 +31,7 @@ body:
     "compute_resource_id" : <compute_resource_id>,
     "provision_method":"build",
     "compute_attributes" : {
-      "cores" : "1",
+      "cpu_cores" : "1",
       "memory": <memory, value in bytes>,
       "volumes_attributes" : {"name":"gluster-default-volume", "capacity":"1"}
     },
