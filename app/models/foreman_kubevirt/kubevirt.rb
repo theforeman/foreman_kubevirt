@@ -160,12 +160,12 @@ module ForemanKubevirt
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
 
-      volumes = create_volumes_for_vm(options)
-      interfaces, networks = create_network_devices_for_vm(options, volumes)
       # Add clound init user data
       user_data = { "userData" => options[:user_data] } if options[:user_data].present?
 
       begin
+        volumes = create_volumes_for_vm(options)
+        interfaces, networks = create_network_devices_for_vm(options, volumes)
         client.vms.create(:vm_name     => options[:name],
                           :cpus        => options[:cpu_cores].to_i,
                           :memory_size => convert_memory(options[:memory] + "b", :mi).to_s,
@@ -175,8 +175,8 @@ module ForemanKubevirt
                           :networks    => networks,
                           :interfaces  => interfaces)
         client.servers.get(options[:name])
-      rescue Fog::Kubevirt::Errors::ClientError => e
-        delete_pvcs(volumes)
+      rescue Exception  => e
+        delete_pvcs(volumes) if volumes
         raise e
       end
     end
@@ -465,8 +465,8 @@ module ForemanKubevirt
     def create_network_devices_for_vm(options, volumes)
       interfaces = []
       networks = []
-
       options[:interfaces_attributes].values.each do |iface|
+        raise ::Foreman::Exception.new N_('cni_provider or network are missing') unless (iface.key?(:cni_provider) && iface.key?(:network))
         if iface[:cni_provider] == 'pod'
           nic, net = create_pod_network_element
         else
