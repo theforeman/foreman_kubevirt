@@ -62,6 +62,8 @@ module ForemanKubevirt
         require "fog/kubevirt/compute/models/networkattachmentdef"
         require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/network", __dir__)
         Fog::Kubevirt::Compute::Networkattachmentdef.send(:include, ::FogExtensions::Kubevirt::Network)
+        ComputeAttribute.send :include, ForemanKubevirt::ComputeAttributeExtensions
+
       rescue StandardError => e
         Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
       end
