@@ -126,8 +126,21 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     exception = assert_raise(Foreman::Exception) do
       compute_resource.create_vm(vm_args)
     end
-    assert_match(/Capacity was not found/, exception.message)
+    assert_match(/Volume size  is not valid/, exception.message)
   end
+
+
+  test "should fail when creating a VM with not valid capacity" do
+    vm_args = NETWORK_BASED_VM_ARGS.deep_dup
+    vm_args["volumes_attributes"]["0"]["capacity"] = "TG"
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    exception = assert_raise(Foreman::Exception) do
+      compute_resource.create_vm(vm_args)
+    end
+    assert_match(/Volume size TG is not valid/, exception.message)
+  end
+
 
   test "should fail when creating a VM with two bootable PVCs" do
     vm_args = NETWORK_BASED_VM_ARGS.deep_dup

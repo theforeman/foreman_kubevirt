@@ -106,11 +106,13 @@ module ForemanKubevirt
       storage_classes.map { |sc| OpenStruct.new(id: sc.name, description: "#{sc.name} (#{sc.provisioner})") }
     end
 
-    def new_volume(attr = {})
-      return unless new_volume_errors.empty?
 
-      vol = Fog::Kubevirt::Compute::Volume.new(attr)
-      vol.boot_order = 1 if attr[:bootable] == "on" || attr[:bootable] == "true"
+    def new_volume(attrs = {})
+      return unless new_volume_errors.empty?
+      capacity = attrs.delete(:capacity)
+      args = {capacity: capacity}.merge(attrs)
+      vol = Fog::Kubevirt::Compute::Volume.new(args)
+      vol.boot_order = 1 if args[:bootable] == "on" || args[:bootable] == "true"
       vol
     end
 
@@ -376,7 +378,11 @@ module ForemanKubevirt
     end
 
     def validate_volume_capacity(volumes_attributes)
-      volumes_attributes.each { |_, v| raise ::Foreman::Exception.new N_('Capacity was not found') if v[:capacity].empty? }
+      volumes_attributes.each do |_, vol|
+        if vol[:capacity].to_s.empty? || /\A\d+G?\Z/.match(vol[:capacity].to_s).nil?
+          raise Foreman::Exception.new(N_("Volume size #{vol[:capacity]} is not valid"))
+        end
+      end
     end
 
     def validate_only_single_bootable_volume(volumes_attributes)
