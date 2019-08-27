@@ -1,3 +1,14 @@
+### 0.1.5 / 2019-08-27
+
+* bump fog kubevirt version to 1.3.2 (#119)
+* Fixes #27684 - Add validation for PVC (#117)
+* Fixes #27703- Add validation for capacity in profile (#118)
+* Fixes #27655 - fix cores to cpu_cores in the api documention (#116)
+* Fixes #27320 - Add support for vnc console (#111)
+* Fixes #27543 - Remove refresh_cache button (#114)
+* Fixes #27494 - Fix validation and test_connection (#113)
+* Fix update api params in kubevirt (#112)
+
 ### 0.1.4 / 2019-06-30
 
 *  Align values to expected format
