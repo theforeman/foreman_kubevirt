@@ -1,3 +1,7 @@
+### 0.1.6 / 2019-09-24
+
+* Fixes #27929 - Fix capacity validation to work only on kubevirt CR (#121)
+
 ### 0.1.5 / 2019-08-27
 
 * bump fog kubevirt version to 1.3.2 (#119)
