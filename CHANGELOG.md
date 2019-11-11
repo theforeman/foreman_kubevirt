@@ -1,3 +1,8 @@
+### 0.1.7 / 2019-11-11
+
+* Add kubevirt API version to readme (#124)
+* Use v1alpha3 version (#123)
+
 ### 0.1.6 / 2019-09-24
 
 * Fixes #27929 - Fix capacity validation to work only on kubevirt CR (#121)
