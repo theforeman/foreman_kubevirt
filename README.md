@@ -55,9 +55,11 @@ To verify that the installation was successful, go to Foreman, top bar **Adminis
 
 ## Compatibility
 
-| Foreman Version | Plugin Version |
-| --------------- | --------------:|
-| >= 1.21.x       | ~> 0.1.x       |
+
+
+| Foreman Version | Plugin Version |  Kubevirt API Version |
+| --------------- | --------------:|  -------------------- |
+| >= 1.21.x       | ~> 0.1.x       |  v1alpha3             |
 
 ## Usage
 Go to **Infrastructure > Compute Resources** and click on **New Compute Resource**.
