@@ -77,7 +77,7 @@ Style/TernaryParentheses:
 Style/InverseMethods:
   Enabled: false
 
-Layout/FirstParameterIndentation:
+Layout/IndentFirstArgument:
   EnforcedStyle: consistent
 
 Bundler/OrderedGems:
