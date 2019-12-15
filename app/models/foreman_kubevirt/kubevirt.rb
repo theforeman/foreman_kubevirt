@@ -66,18 +66,16 @@ module ForemanKubevirt
       return false if errors.any?
       client&.valid? && client&.virt_supported?
     rescue StandardError => e
-       if e.message =~ /401/
+      if e.message =~ /401/
         errors[:base] << _('The compute resource could not be authenticated')
-       else
-         errors[:base] << e.message
-       end
+      else
+        errors[:base] << e.message
+      end
     end
 
     def connection_properties_valid?
       errors[:hostname].empty? && errors[:token].empty? && errors[:namespace].empty? && errors[:api_port].empty?
     end
-
-
 
     def networks
       client.networkattachmentdefs.all
@@ -105,7 +103,6 @@ module ForemanKubevirt
     def storage_classes_for_select
       storage_classes.map { |sc| OpenStruct.new(id: sc.name, description: "#{sc.name} (#{sc.provisioner})") }
     end
-
 
     def new_volume(attrs = {})
       return unless new_volume_errors.empty?
@@ -177,7 +174,7 @@ module ForemanKubevirt
                           :networks    => networks,
                           :interfaces  => interfaces)
         client.servers.get(options[:name])
-      rescue Exception  => e
+      rescue Exception => e
         delete_pvcs(volumes) if volumes
         raise e
       end
@@ -307,13 +304,13 @@ module ForemanKubevirt
       vnc_details = client.vminstances.get_vnc_console_details(vm.name, namespace)
       token = Base64.encode64(vnc_details[:token]).delete!("\n").delete("==")
       {
-          :host => vnc_details[:host],
-          :port => vnc_details[:port],
-          :path => vnc_details[:path],
-          :token_protocol => token_protocol(token),
-          :plain_protocol => plain_kubevirt_protocol,
-          :type => 'vnc',
-          :encrypt => true
+        :host => vnc_details[:host],
+        :port => vnc_details[:port],
+        :path => vnc_details[:path],
+        :token_protocol => token_protocol(token),
+        :plain_protocol => plain_kubevirt_protocol,
+        :type => 'vnc',
+        :encrypt => true
       }
     end
 
@@ -386,7 +383,7 @@ module ForemanKubevirt
     end
 
     def validate_only_single_bootable_volume(volumes_attributes)
-      raise ::Foreman::Exception.new N_('Only one volume can be bootable') if volumes_attributes.select { |_, v| v[:bootable] == "true" }.count > 1
+      raise ::Foreman::Exception.new N_('Only one volume can be bootable') if volumes_attributes.count { |_, v| v[:bootable] == "true" } > 1
     end
 
     def create_new_pvc(pvc_name, capacity, storage_class)
