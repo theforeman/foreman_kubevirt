@@ -1,4 +1,4 @@
-Layout/AlignArguments:
+Layout/ArgumentAlignment:
   Enabled: false
 
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
@@ -23,6 +23,15 @@ Naming/RescuedExceptionsVariableName:
   Enabled: false
 
 Style/GuardClause:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/HashTransformKeys:
+  Enabled: false
+
+Style/HashTransformValues:
   Enabled: false
 
 Style/Next:

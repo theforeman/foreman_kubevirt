@@ -46,10 +46,13 @@ Style/FormatString:
 Style/RaiseArgs:
   Enabled: false
 
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 
 Metrics:
+  Enabled: false
+
+Layout/LineLength:
   Enabled: false
 
 Performance/Casecmp:
@@ -77,7 +80,7 @@ Style/TernaryParentheses:
 Style/InverseMethods:
   Enabled: false
 
-Layout/IndentFirstArgument:
+Layout/FirstArgumentIndentation:
   EnforcedStyle: consistent
 
 Bundler/OrderedGems:
@@ -101,10 +104,10 @@ Style/EmptyMethod:
 Style/ParenthesesAroundCondition:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   Enabled: false
 
 # disabled until we can configure "+" as concat sign

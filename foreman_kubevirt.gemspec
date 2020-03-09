@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.test_files  = Dir['test/**/*']
 
   s.add_development_dependency('rake', '~> 12.3')
-  s.add_development_dependency('rubocop', '~> 0.64')
+  s.add_development_dependency('rubocop', '~> 0.80.0')
 
   s.add_dependency('fog-kubevirt', '~>1.3.3')
 end
