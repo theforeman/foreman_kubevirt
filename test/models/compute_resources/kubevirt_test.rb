@@ -64,7 +64,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     client.stubs(:valid?).returns(true)
     record = new_kubevirt_vcr
     record.stubs(:client).returns(client)
-    assert_equal false, record.test_connection
+    assert_not record.test_connection
   end
 
   test "Verify client raises StandardError exception" do
