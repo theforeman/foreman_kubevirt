@@ -1,2 +1,2 @@
 # Matches foreman_kubevirt.gemspec
-_('KubeVirt as a compute resource for Foreman')
+_('Provision and manage Kubevirt Virtual Machines from Foreman.')
