@@ -1,19 +1,243 @@
-# foreman_kubevirt
-#
-# This file is distributed under the same license as foreman_kubevirt.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the foreman_kubevirt package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: version 0.0.1\n"
+"Project-Id-Version: foreman_kubevirt 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-20 08:46+0100\n"
-"PO-Revision-Date: 2014-08-20 08:46+0100\n"
-"Last-Translator: Foreman Team <foreman-dev@googlegroups.com>\n"
-"Language-Team: Foreman Team <foreman-dev@googlegroups.com>\n"
+"POT-Creation-Date: 2020-04-22 08:28-0400\n"
+"PO-Revision-Date: 2020-04-22 08:28-0400\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#:
+#: ../app/controllers/foreman_kubevirt/concerns/api/compute_resources_controller_extensions.rb:8
+msgid "Token for KubeVirt only"
+msgstr ""
+
+#:
+#: ../app/controllers/foreman_kubevirt/concerns/api/compute_resources_controller_extensions.rb:9
+msgid "Host name for KubeVirt only"
+msgstr ""
+
+#:
+#: ../app/controllers/foreman_kubevirt/concerns/api/compute_resources_controller_extensions.rb:10
+msgid "Namespace for KubeVirt only"
+msgstr ""
+
+#:
+#: ../app/controllers/foreman_kubevirt/concerns/api/compute_resources_controller_extensions.rb:11
+msgid "CA crt for KubeVirt only"
+msgstr ""
+
+#:
+#: ../app/controllers/foreman_kubevirt/concerns/api/compute_resources_controller_extensions.rb:12
+msgid "API port for KubeVirt only"
+msgstr ""
+
+#: ../app/models/concerns/fog_extensions/kubevirt/server.rb:47
+msgid "%{cpu_cores} Cores and %{memory} memory"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:70
+msgid "The compute resource could not be authenticated"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:118
+msgid "no Storage Classes available on provider"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:123
+msgid "multus"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:123
+msgid "genie"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:123
+msgid "pod"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:344
+msgid ""
+"The remote system presented a public key signed by an unidentified certificate"
+" authority.\n"
+"           If you are sure the remote system is authentic, go to the compute r"
+"esource edit page, press the 'Test Connection' button and submit"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:355
+msgid "VM should be created based on Persistent Volume Claim or Image"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:360
+msgid "It is not possible to set a bootable volume and image based provisioning."
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:366
+msgid "VM should be created based on an image"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:386
+#: ../app/views/compute_resources_vms/form/kubevirt/_volume.html.erb:22
+msgid "Only one volume can be bootable"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:472
+msgid "cni_provider or network are missing"
+msgstr ""
+
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:1
+#: ../app/views/compute_resources/show/_kubevirt.html.erb:2
+msgid "Hostname"
+msgstr ""
+
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:2
+#: ../app/views/compute_resources/show/_kubevirt.html.erb:7
+msgid "API Port"
+msgstr ""
+
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:3
+#: ../app/views/compute_resources/show/_kubevirt.html.erb:12
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:26
+msgid "Namespace"
+msgstr ""
+
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:4
+msgid "Token"
+msgstr ""
+
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:6
+msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
+msgstr ""
+
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:12
+msgid "X509 Certification Authorities"
+msgstr ""
+
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:13
+msgid ""
+"Optionally provide a CA, or a correctly ordered CA chain or a path to a file. "
+"If left blank - insecure."
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:3
+#: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:3
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:10
+msgid "Name"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:5
+#: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:4
+msgid "CPUs"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:7
+#: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:5
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:22
+msgid "Memory"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:10
+msgid "Power ON this machine"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:10
+msgid "Start"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:21
+msgid "Please select an image"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:22
+#: ../app/views/images/form/_kubevirt.html.erb:4
+msgid "Image"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_network.html.erb:4
+msgid "CNI Provider"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_network.html.erb:18
+msgid "Network"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_volume.html.erb:13
+msgid "Storage Class"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_volume.html.erb:17
+msgid "Size (GB)"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/form/kubevirt/_volume.html.erb:20
+msgid "Bootable"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:6
+msgid "Power"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:7
+msgid "Actions"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:6
+msgid "Properties"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:14
+msgid "VCPU(s)"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:18
+msgid "UUID"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:30
+msgid "Type"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:36
+msgid "NIC"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:43
+msgid "Disk"
+msgstr ""
+
+#: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:49
+msgid "Running on"
+msgstr ""
+
+#: ../app/views/images/form/_kubevirt.html.erb:1
+msgid ""
+"The user that is used to ssh into the instance, normally cloud-user, ec2-user,"
+" ubuntu, root etc"
+msgstr ""
+
+#: ../app/views/images/form/_kubevirt.html.erb:2
+msgid "Password to authenticate with - used for SSH finish step."
+msgstr ""
+
+#: ../app/views/images/form/_kubevirt.html.erb:3
+msgid "Does this image support user data input (e.g. via cloud-init)?"
+msgstr ""
+
+#: ../app/views/images/form/_kubevirt.html.erb:4
+msgid "The name of the image in the registry."
+msgstr ""
+
+#: gemspec.rb:1
+msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
+msgstr ""
