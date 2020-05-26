@@ -1,0 +1,170 @@
+# Spanish translations for foreman_kubevirt package.
+# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the foreman_kubevirt package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2020-05-26 13:16+0530\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"\n"
+
+msgid "%{cpu_cores} Cores and %{memory} memory"
+msgstr ""
+
+msgid "API Port"
+msgstr ""
+
+msgid "API port for KubeVirt only"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Bootable"
+msgstr ""
+
+msgid "CA crt for KubeVirt only"
+msgstr ""
+
+msgid "CNI Provider"
+msgstr ""
+
+msgid "CPUs"
+msgstr ""
+
+msgid "Disk"
+msgstr ""
+
+msgid "Does this image support user data input (e.g. via cloud-init)?"
+msgstr ""
+
+msgid "Host name for KubeVirt only"
+msgstr ""
+
+msgid "Hostname"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "It is not possible to set a bootable volume and image based provisioning."
+msgstr ""
+
+msgid "Memory"
+msgstr ""
+
+msgid "NIC"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Namespace"
+msgstr ""
+
+msgid "Namespace for KubeVirt only"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "Only one volume can be bootable"
+msgstr ""
+
+msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
+msgstr ""
+
+msgid "Password to authenticate with - used for SSH finish step."
+msgstr ""
+
+msgid "Please select an image"
+msgstr ""
+
+msgid "Power"
+msgstr ""
+
+msgid "Power ON this machine"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
+msgstr ""
+
+msgid "Running on"
+msgstr ""
+
+msgid "Size (GB)"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Storage Class"
+msgstr ""
+
+msgid "The compute resource could not be authenticated"
+msgstr ""
+
+msgid "The name of the image in the registry."
+msgstr ""
+
+msgid ""
+"The remote system presented a public key signed by an unidentified certificate authority.\n"
+"           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
+msgstr ""
+
+msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
+msgstr ""
+
+msgid "Token"
+msgstr ""
+
+msgid "Token for KubeVirt only"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "UUID"
+msgstr ""
+
+msgid "VCPU(s)"
+msgstr ""
+
+msgid "VM should be created based on Persistent Volume Claim or Image"
+msgstr ""
+
+msgid "VM should be created based on an image"
+msgstr ""
+
+msgid "X509 Certification Authorities"
+msgstr ""
+
+msgid "cni_provider or network are missing"
+msgstr ""
+
+msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
+msgstr ""
+
+msgid "genie"
+msgstr ""
+
+msgid "multus"
+msgstr ""
+
+msgid "no Storage Classes available on provider"
+msgstr ""
+
+msgid "pod"
+msgstr ""
