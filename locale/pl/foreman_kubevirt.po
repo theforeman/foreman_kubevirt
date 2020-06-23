@@ -1,22 +1,27 @@
-# Polish translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# sziolkow <sziolkow@gmail.com>, 2020
+# Michał Foryt <michal.foryt@gmail.com>, 2020
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.7\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Polish\n"
-"Language: pl\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Michał Foryt <michal.foryt@gmail.com>, 2020\n"
+"Language-Team: Polish (https://www.transifex.com/foreman/teams/114/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 ||"
-" n%100>=20) ? 1 : 2;\n"
-"\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12"
+" || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n"
+"%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
@@ -28,10 +33,10 @@ msgid "API port for KubeVirt only"
 msgstr ""
 
 msgid "Actions"
-msgstr ""
+msgstr "Akcja"
 
 msgid "Bootable"
-msgstr ""
+msgstr "Bootowalny"
 
 msgid "CA crt for KubeVirt only"
 msgstr ""
@@ -40,34 +45,34 @@ msgid "CNI Provider"
 msgstr ""
 
 msgid "CPUs"
-msgstr ""
+msgstr "Procesory"
 
 msgid "Disk"
-msgstr ""
+msgstr "Dysk"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "Czy obraz wspiera wejściowe dane użytkownika (np. przez cloud-init)?"
 
 msgid "Host name for KubeVirt only"
 msgstr ""
 
 msgid "Hostname"
-msgstr ""
+msgstr "Nazwa hostu"
 
 msgid "Image"
-msgstr ""
+msgstr "Obraz"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
 msgstr ""
 
 msgid "Memory"
-msgstr ""
+msgstr "Pamięć"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "Nazwa"
 
 msgid "Namespace"
 msgstr ""
@@ -76,40 +81,40 @@ msgid "Namespace for KubeVirt only"
 msgstr ""
 
 msgid "Network"
-msgstr ""
+msgstr "Sieć"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "Tylko jeden wolumin może być bootowalny"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
 msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "Hasło do uwierzytelnienia - używalne przez SSH przy końcowych krokach"
 
 msgid "Please select an image"
-msgstr ""
+msgstr "Proszę wybrać obraz"
 
 msgid "Power"
-msgstr ""
+msgstr "Zasilanie"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "Moc na tym komputerze"
 
 msgid "Properties"
-msgstr ""
+msgstr "Ustawienia"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr ""
 
 msgid "Running on"
-msgstr ""
+msgstr "Działa na"
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "Rozmiar (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 msgid "Storage Class"
 msgstr ""
@@ -126,22 +131,22 @@ msgid ""
 msgstr ""
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
-msgstr ""
+msgstr "Użytkownik który loguje się przez ssh do maszyny zazwyczaj nazywa się cloud-user, ec2-user, ubuntu, root etc"
 
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 msgid "Token for KubeVirt only"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "VCPU(s)"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
@@ -150,7 +155,7 @@ msgid "VM should be created based on an image"
 msgstr ""
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "X509 Certification Authorities"
 
 msgid "cni_provider or network are missing"
 msgstr ""

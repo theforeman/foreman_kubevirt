@@ -1,22 +1,31 @@
-# Russian translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# Yulia <yulia.poyarkova@redhat.com>, 2020
+# Alexander Savchenko, 2020
+# 0868a4d1af5275b3f70b0a6dac4c99a4, 2020
+# Andrei Burd <burdandrei@gmail.com>, 2020
+# Bryan Kearney <bryan.kearney@gmail.com>, 2020
+# Vladimir Pavlov <v.pavlov@i-teco.ru>, 2020
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.7\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Russian\n"
-"Language: ru\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Vladimir Pavlov <v.pavlov@i-teco.ru>, 2020\n"
+"Language-Team: Russian (https://www.transifex.com/foreman/teams/114/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4"
-" && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=1"
+"1 && n%100<=14)? 2 : 3);\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
@@ -28,10 +37,10 @@ msgid "API port for KubeVirt only"
 msgstr ""
 
 msgid "Actions"
-msgstr ""
+msgstr "Действия"
 
 msgid "Bootable"
-msgstr ""
+msgstr "Загрузочный"
 
 msgid "CA crt for KubeVirt only"
 msgstr ""
@@ -40,34 +49,34 @@ msgid "CNI Provider"
 msgstr ""
 
 msgid "CPUs"
-msgstr ""
+msgstr "Процессоры"
 
 msgid "Disk"
-msgstr ""
+msgstr "Диск"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "Разрешить предоставление пользовательских данных (например, с помощью cloud-init)"
 
 msgid "Host name for KubeVirt only"
 msgstr ""
 
 msgid "Hostname"
-msgstr ""
+msgstr "Имя узла"
 
 msgid "Image"
-msgstr ""
+msgstr "Образ"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
 msgstr ""
 
 msgid "Memory"
-msgstr ""
+msgstr "Память"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 msgid "Namespace"
 msgstr ""
@@ -76,40 +85,40 @@ msgid "Namespace for KubeVirt only"
 msgstr ""
 
 msgid "Network"
-msgstr ""
+msgstr "Сеть"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "Только один том может быть загрузочным"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
 msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "Пароль SSH"
 
 msgid "Please select an image"
-msgstr ""
+msgstr "Выберите образ"
 
 msgid "Power"
-msgstr ""
+msgstr "Питание"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "Включить машину"
 
 msgid "Properties"
-msgstr ""
+msgstr "Свойства "
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr ""
 
 msgid "Running on"
-msgstr ""
+msgstr "Выполняется на"
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "Размер (ГБ)"
 
 msgid "Start"
-msgstr ""
+msgstr "Запуск"
 
 msgid "Storage Class"
 msgstr ""
@@ -126,22 +135,22 @@ msgid ""
 msgstr ""
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
-msgstr ""
+msgstr "Пользователь, который будет устанавливать SSH-соединение с экземпляром (cloud-user, ec2-user, ubuntu, root и т.п.)"
 
 msgid "Token"
-msgstr ""
+msgstr "Токен"
 
 msgid "Token for KubeVirt only"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "Виртуальные процессоры"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
@@ -150,7 +159,7 @@ msgid "VM should be created based on an image"
 msgstr ""
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "Сертификат X509"
 
 msgid "cni_provider or network are missing"
 msgstr ""

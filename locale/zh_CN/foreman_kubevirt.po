@@ -1,170 +1,177 @@
-# Chinese translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# 0868a4d1af5275b3f70b0a6dac4c99a4, 2020
+# Bryan Kearney <bryan.kearney@gmail.com>, 2020
+# tim123, 2020
+# Amit Upadhye <aupadhye@redhat.com>, 2020
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.7\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Chinese\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2020\n"
+"Language-Team: Chinese (China) (https://www.transifex.com/foreman/teams/114/zh"
+"_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
-msgstr ""
+msgstr "%{cores} 内核及 %{memory} 内存"
 
 msgid "API Port"
-msgstr ""
+msgstr "API 端口"
 
 msgid "API port for KubeVirt only"
-msgstr ""
+msgstr "仅限 KubeVirt 的 API 端口"
 
 msgid "Actions"
-msgstr ""
+msgstr "操作"
 
 msgid "Bootable"
-msgstr ""
+msgstr "可引导的"
 
 msgid "CA crt for KubeVirt only"
-msgstr ""
+msgstr "仅限 KubeVirt 的 CA crt"
 
 msgid "CNI Provider"
-msgstr ""
+msgstr "CNI 供应商"
 
 msgid "CPUs"
-msgstr ""
+msgstr "CPU"
 
 msgid "Disk"
-msgstr ""
+msgstr "磁盘"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "这个映像是否支持用户数据输入（例如：通过 cloud-init）？"
 
 msgid "Host name for KubeVirt only"
-msgstr ""
+msgstr "仅限 KubeVirt 的主机名"
 
 msgid "Hostname"
-msgstr ""
+msgstr "主机名"
 
 msgid "Image"
-msgstr ""
+msgstr "图片"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr ""
+msgstr "无法基于置备设置引导卷和镜像。"
 
 msgid "Memory"
-msgstr ""
+msgstr "记忆"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 msgid "Namespace"
-msgstr ""
+msgstr "命名空间"
 
 msgid "Namespace for KubeVirt only"
-msgstr ""
+msgstr "仅限 KubeVirt 的命名空间"
 
 msgid "Network"
-msgstr ""
+msgstr "网络"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "只能引导一个卷"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr ""
+msgstr "（可选）提供一个 CA，或正确排序的 CA 链，或文件的路径。如果留为空白-不安全。"
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "用來進行認證的密碼 - 用於 SSH 完成步驟。"
 
 msgid "Please select an image"
-msgstr ""
+msgstr "请选择介质"
 
 msgid "Power"
-msgstr ""
+msgstr "电源"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "打开本机电源"
 
 msgid "Properties"
-msgstr ""
+msgstr "属性"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
-msgstr ""
+msgstr "通过 Foreman 置备并管理 Kubevirt 虚拟机。"
 
 msgid "Running on"
-msgstr ""
+msgstr "執行於"
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "大小 (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "开始"
 
 msgid "Storage Class"
-msgstr ""
+msgstr "储存类"
 
 msgid "The compute resource could not be authenticated"
-msgstr ""
+msgstr "无法验证计算资源"
 
 msgid "The name of the image in the registry."
-msgstr ""
+msgstr "registry 中的镜像名称。"
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"
 "           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
-msgstr ""
+msgstr "显示由无法识别证书授权签名的公钥的远程系统。如果您确定该远程系统可信，请进入计算资源编辑页面，按“测试连接”按纽并提交。"
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
-msgstr ""
+msgstr "使用 ssh 进入该实例的用户，通常为 cloud-user, ec2-user, ubuntu, root 等等。"
 
 msgid "Token"
-msgstr ""
+msgstr "令牌"
 
 msgid "Token for KubeVirt only"
-msgstr ""
+msgstr "仅限 KubeVirt 的令牌"
 
 msgid "Type"
-msgstr ""
+msgstr "類型"
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "VCPU(s)"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
-msgstr ""
+msgstr "虚拟机应基于持久卷声明或镜像创建"
 
 msgid "VM should be created based on an image"
-msgstr ""
+msgstr "VM 应基于镜像创建"
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "X509 证书授权"
 
 msgid "cni_provider or network are missing"
-msgstr ""
+msgstr "cni_provider 或网络丢失"
 
 msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
-msgstr ""
+msgstr "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 
 msgid "genie"
-msgstr ""
+msgstr "genie"
 
 msgid "multus"
-msgstr ""
+msgstr "multus"
 
 msgid "no Storage Classes available on provider"
-msgstr ""
+msgstr "供应商没有存储类"
 
 msgid "pod"
-msgstr ""
+msgstr "pod"
