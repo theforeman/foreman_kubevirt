@@ -1,3 +1,12 @@
+### 0.1.8 / 2020-06-23
+
+* i18n - pulling from tx (#133)
+* Fixes #30197 - Fix travis pgsql (#132)
+* Fixes #29593 - update strings for translation (#130)
+* Fixes #29406 - Add rubocop-minitest fix (#129)
+* Fixes #29289 - Update Rubocop to 0.80 (#128)
+*  Fix Rubocop (#127)
+
 ### 0.1.7 / 2019-11-11
 
 * Add kubevirt API version to readme (#124)
