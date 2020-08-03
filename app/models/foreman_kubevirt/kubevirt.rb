@@ -387,11 +387,12 @@ module ForemanKubevirt
     end
 
     def create_new_pvc(pvc_name, capacity, storage_class)
+      capacity = capacity + "G" unless capacity.end_with? "G"
       client.pvcs.create(:name          => pvc_name,
                          :namespace     => namespace,
                          :storage_class => storage_class,
                          :access_modes  => ['ReadWriteOnce'],
-                         :requests      => { :storage => capacity + "G" })
+                         :requests      => { :storage => capacity })
     end
 
     def delete_pvcs(volumes)
