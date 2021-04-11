@@ -143,15 +143,24 @@ Install KubeVirt, Flannel and Cluster Network Operator:
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
 # Check for latest version
-RELEASE=v0.16.0
-kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/kubernetes-ovs-cni.yml
+# On other OS you might need to define it like
+export KUBEVIRT_VERSION="v0.18.0"
+# On Linux you can obtain it using 'curl' via:
+export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases | grep tag_name | grep -v -- - | sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
 
-NET_RELEASE=0.5.0
-kubectl apply -f https://raw.githubusercontent.com/kubevirt/cluster-network-addons-operator/master/manifests/cluster-network-addons/${NET_RELEASE}/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubevirt/cluster-network-addons-operator/master/manifests/cluster-network-addons/${NET_RELEASE}/network-addons-config.crd.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubevirt/cluster-network-addons-operator/master/manifests/cluster-network-addons/${NET_RELEASE}/operator.yaml
+kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml
+kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml
+
+# before moving to next step, please make sure that kubevirt pods are running:
+kubectl get pods -n kubevirt -A
+kubectl apply -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/ovs-cni.yml
+
+export NET_RELEASE=$(curl -s https://api.github.com/repos/kubevirt/cluster-network-addons-operator/releases | grep tag_name | grep -v -- - | sort -V  | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
+
+kubectl apply -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/namespace.yaml
+kubectl apply -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/network-addons-config.crd.yaml
+kubectl apply -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/operator.yaml
 
 cat <<EOF | kubectl create -f -
 ---
@@ -161,13 +170,17 @@ metadata:
   name: cluster
 spec:
   imagePullPolicy: Always
-  kubeMacPool: {}
-  multus: {}
+/home/mshira/git/foreman/app/controllers/hosts_controller.rb  multus: {}
+  
+EOF  
 ```
+
+kubectl wait networkaddonsconfig cluster --for condition=Available #  you might need to run a couple times until condition met
+
 
 Download ***virtctl*** tool for managing VMs on kubevirt:
 ```
-wget https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/virtctl-v${RELEASE}-linux-amd64 -O /usr/local/bin/virtctl
+wget https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/virtctl-${KUBEVIRT_VERSION}-linux-amd64 -O /usr/local/bin/virtctl
 chmod +x /usr/local/bin/virtctl
 ```
 
@@ -199,7 +212,7 @@ spec:
       "name": "ovs-foreman",
       "plugins" : [
         {
-          "type": "ovs",
+          "type": "bridge",
           "bridge": "foreman"
         },
         {
@@ -207,7 +220,9 @@ spec:
         }
       ]
     }'
+
 EOF
+
 ```
 
 ##### Create priviledged user with cluster-role
@@ -240,7 +255,60 @@ Obtain the account's token by:
 KUBE_SECRET=`kubectl get sa foreman-account -o jsonpath='{.secrets[0].name}'`
 kubectl get secrets $KUBE_SECRET -o jsonpath='{.data.token}' | base64 -d | xargs
 ```
+##### Create priviledged user with cluster-role
 
+
+#####Create NFS storage class
+```clickhouse
+cat <<EOF | kubectl create -f -
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+EOF
+
+```
+
+### Create PVs
+```clickhouse
+
+export KUBEVIRT_HOST_NAME=kubevirt.kubevirt.com
+export DIR_PATH_PREFIX=/mnt/localstorage/vol
+
+LOCAL_PV_TEMPALTE=$(cat <<-END
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv-XXX
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: DIR_PATH_PREFIX
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - KUBEVIRT_HOST_NAME
+END
+)
+
+for f in {1..5}
+do
+  local_pv=$(echo "$LOCAL_PV_TEMPALTE" | sed -e "s/XXX/$f/" -e "s/KUBEVIRT_HOST_NAME/${KUBEVIRT_HOST_NAME}/" -e "s#DIR_PATH_PREFIX#${DIR_PATH_PREFIX}$f#")
+  mkdir -p ${DIR_PATH_PREFIX}$f
+  echo "$local_pv" | kubectl create -f -
+done
+```
 ### Test the environment
 
 Create VMI (Virtual Machine Instance):
@@ -300,21 +368,31 @@ virtctl vnc vmi-multus
 For purging the KubeVirt environment, please follow the next steps:
 ```
 export LABEL=kubevirt.io
-export KUBEVIRT_NAMESPACE=kubevirt
+export NAMESPACE=kubevirt
 
 for entity in deployment ds rs pods validatingwebhookconfiguration services pvc pv clusterrolebinding rolebinding roles clusterroles serviceaccounts configmaps secrets customresourcedefinitions
 do
-  kubectl delete $entity -l $LABEL -n $NAMESPACE
+    kubectl delete $entity -l $LABEL -n $NAMESPACE
 done
 
 kubectl delete network-attachment-definitions.k8s.cni.cncf.io --all
 kubectl delete -f https://raw.githubusercontent.com/intel/multus-cni/master/images/multus-daemonset.yml
-kubectl delete -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl delete -f https://raw.githubusercontent.com/intel/multus-cni/master/images/multus-daemonset.yml
 
-RELEASE=v0.16.0
-kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
+export NET_RELEASE=$(curl -s https://api.github.com/repos/kubevirt/cluster-network-addons-operator/releases | grep tag_name | grep -v -- - | sort -V  | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
+# kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${NET_RELEASE}/kubevirt.yaml
+kubectl delete -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/operator.yaml
+kubectl delete -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/network-addons-config.crd.yaml
+kubectl delete -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/namespace.yaml
+
 
 kubectl delete -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/ovs-cni.yml
+
+kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml
+kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml
+
+
+
 ```
 
 For purging entire Kubernetes:
