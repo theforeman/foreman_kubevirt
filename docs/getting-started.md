@@ -16,7 +16,7 @@ Two libvirt networks are defined:
 ```
 <network ipv6='yes'>
   <name>foreman</name>
-  <forward mode='nat'/>
+  <forward mode='nat'>
     <nat>
       <port start='1024' end='65535'/>
     </nat>
