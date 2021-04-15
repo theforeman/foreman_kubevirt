@@ -119,8 +119,9 @@ modprobe br_netfilter
  ```
 
  #### Install Kubernetes and KubeVirt
- * Make sure to add kubernetes repository to /etc/yum.repos.d (see [here](https://kubernetes.io/docs/setup/independent/install-kubeadm/))
-
+ * Before moving to the next step, please Make sure to:
+    - Add kubernetes repository to /etc/yum.repos.d and install kubeadm, kubelet and kubectl (see [here](https://kubernetes.io/docs/setup/independent/install-kubeadm/))
+    - Install docker end make sure to run docker service (see [here](https://docs.docker.com/engine/install/))
 ```
 kubeadm config images pull
 swapoff -a # should be disabled permanantly by commenting the swap on /etc/fstab
@@ -170,7 +171,8 @@ metadata:
   name: cluster
 spec:
   imagePullPolicy: Always
-/home/mshira/git/foreman/app/controllers/hosts_controller.rb  multus: {}
+  kubeMacPool: {}
+  multus: {}
   
 EOF  
 ```
