@@ -4,16 +4,20 @@
 In order to contribute to foreman-kubevirt integration, there is a need to setup a development environment.
 The development environment should contain two VMs running on the development machine (i.e. laptop).
 
-### Development machine configuration
+### On your PC (Development machine configuration)
 The virtual machines are scheduled on the development machine.
 Foreman development environment is located on the development machine, created by following [Foreman's guide](https://theforeman.org/contribute.html) .
 
-Two libvirt networks are defined:
+Two libvirt networks should be defined:
 * default - provides external connectivity
 * foreman - inner network that connects the VMs (foreman <--> kubevirt <--> foreman-proxy). The network will serve for booting KubeVirt's VM from a PXE server.
   * Address on development machine: 192.168.111.1
-  * The domain *example.tst*
+  * The domain *kubevirt.tst*
+
+#### create foreman linux bridge:
 ```
+cat > br10.xml <<EOF
+
 <network ipv6='yes'>
   <name>foreman</name>
   <forward mode='nat'>
@@ -23,63 +27,116 @@ Two libvirt networks are defined:
   </forward>
   <bridge name='foreman' stp='on' delay='0'/>
   <mac address='54:54:00:47:13:0b'/>
-  <domain name='example.tst'/>
+  <domain name='kubevirt.tst'/>
   <ip address='192.168.111.1' netmask='255.255.255.0'/>
 </network>
+EOF
+```
+
+```clickhouse
+sudo virsh net-define  br10.xml
+```
+
+Make sure the bridge was created:
+```clickhouse
+sudo virsh -r net-dumpxml foreman
+
+```
+
+Auto start the bridge:
+```clickhouse
+sudo virsh net-autostart foreman
+
+```
+Start the bridge:
+```clickhouse
+sudo virsh net-start foreman
+
 ```
 
 The following chart shows the different components of the development environment:
 ![dev env chart](images/development-setup.jpg)
 
----
 
-The VMs will be created based on the following settings:
-Operating system: CentOS 7.5
-The domain: example.tst
-The network to connect the VMs and serves as PXE boot network: 192.168.111.0
 
-### VM **foreman-proxy.example.tst**
-VM **foreman-proxy.example.tst** serves as the utilities vm and somewhat simulates foreman [capsule](https://theforeman.org/plugins/katello/2.4/user_guide/capsules/index.html).
-Hostname: foreman-proxy.example.tst
-IP Address: 192.168.111.12
-Network interfaces:
-* eth0 connected to *default* network
-* eth1 connected to 'foreman' network
-The following service should be installed and configured:
-* foreman-proxy - connects foreman's to the required services listed below
-* dhcpd - manages IP addresses for the created hosts
-* tftp - manages boot files for PXE boot from foreman
-* named - manages host names 
-* vsftp - stores local installation media
+### VM **ns1.kubevirt.tst**
+VM **ns1.kubevirt.tst** serves as the utilities vm and somewhat simulates foreman [capsule](https://theforeman.org/plugins/katello/2.4/user_guide/capsules/index.html).
 
-The output of avaiable service on such machine should look like:
+####requirements:
+- Cpu: 2
+- Memory: 4096
+- Volumes:
+- Disk: 20 GB
+- Nics:
+  - NIC1 : foreman
+  - NIC2: default
+
+####Set the hostname:
 ```
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 192.168.111.12:8000     0.0.0.0:*               LISTEN      1015/ruby
-tcp        0      0 0.0.0.0:7911            0.0.0.0:*               LISTEN      1021/dhcpd
-tcp        0      0 192.168.111.12:53       0.0.0.0:*               LISTEN      1056/named
-tcp        0      0 127.0.0.1:53            0.0.0.0:*               LISTEN      1056/named
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1014/sshd
-tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      1431/master
-tcp        0      0 127.0.0.1:953           0.0.0.0:*               LISTEN      1056/named
-tcp6       0      0 :::8140                 :::*                    LISTEN      1069/java
-tcp6       0      0 ::1:53                  :::*                    LISTEN      1056/named
-tcp6       0      0 :::21                   :::*                    LISTEN      1025/vsftpd
-tcp6       0      0 :::22                   :::*                    LISTEN      1014/sshd
-tcp6       0      0 ::1:25                  :::*                    LISTEN      1431/master
-tcp6       0      0 ::1:953                 :::*                    LISTEN      1056/named
-udp        0      0 192.168.111.12:53       0.0.0.0:*                           1056/named
-udp        0      0 127.0.0.1:53            0.0.0.0:*                           1056/named
-udp        0      0 0.0.0.0:67              0.0.0.0:*                           1021/dhcpd
-udp        0      0 0.0.0.0:68              0.0.0.0:*                           15150/dhclient
-udp        0      0 0.0.0.0:69              0.0.0.0:*                           1026/xinetd
-udp6       0      0 ::1:53                  :::*                                1056/named
-udp6       0      0 :::69                   :::*                                1/systemd
+hostnamectl set-hostname ns1.kubevirt.tst
 ```
+
+####configure the nic:
+*Note - please make sure you have the same DEVICE name, if not change the DEVICE according the name of your DEVICE 
+```clickhouse
+cat > /etc/sysconfig/network-scripts/ifcfg-enp	 <<EOF
+
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp1s0
+DEVICE=enp1s0
+ONBOOT=yes
+GATEWAY=192.168.111.1
+IPADDR=192.168.111.12
+NETMASK=255.255.255.0
+DNS=192.168.111.12
+EOF
+
+```
+
+####Connect the ns1 to the dns:
+
+1. Check if /etc/resolv.conf exist, if not  run: dhclient
+2. Edit file /etc/resolv.conf and add this line to the end:
+```
+    Nameserver 192.168.111.1
+```
+3. Check you are connected: ping github.com
+
+####Install smart proxy features:
+* Tftp - https://computingforgeeks.com/how-to-setup-a-tftp-server-on-centos-rhel-8/
+* Dhcp - https://linuxhint.com/dhcp_server_centos8/
+* Dns  - https://www.linuxtechi.com/setup-bind-server-centos-8-rhel-8/
+
+#### Install Foreman smart proxy:
+Install and configure foreman smart proxy: https://github.com/theforeman/smart-proxy
+
 
 The same machine will be used to store also the installation media for Foreman, unless preferred using the web as the source.
 
-### VM **kubevirt.example.tst**
+### VM **kubevirt.kubevirt.tst**
+
+####requirements:
+- Cpu: 4
+- Memory: 6144
+- Volumes:
+- Volumes :
+  Disk1: 20 GB
+  Disk2: 20 GB
+- Nics:
+  - NIC1 : default
+  - NIC2: foreman
+
+
 This vm will have the kubernetes cluster and kubevirt addon installed.
 The instruction of installing this node relies on the following links, based on Centos 7.5:
 * https://kubernetes.io/docs/setup/independent/install-kubeadm/
@@ -88,16 +145,73 @@ The instruction of installing this node relies on the following links, based on 
 * http://kubevirt.io/2018/attaching-to-multiple-networks.html
 * https://github.com/kubevirt/cluster-network-addons-operator
 
-#### Install open-vswitch
-openvswitch will be used for connecting the VM to host networking using veth pairs.
-* Install openvswitch >= 2.9 `yum install openvswitch` ( package can be taken from koji)
-* Create bridge named ***foreman*** and connect to eth1 (interface that is connected to libvirt's ***foreman*** network)
-```
-ovs-vsctl add-br foreman
-ovs-vsctl add-port foreman eth1
+#### Create the nics
+*Note - please make sure you have the same DEVICE name, if not change the DEVICE and the file name according the name of your DEVICE
+
+
+```clickhouse
+cat >  /etc/sysconfig/network-scripts/ifcfg-enp2s0 <<EOF
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp2s0
+UUID=9af55927-30ce-41a7-9eef-5d7e5555601f
+DEVICE=enp2s0
+ONBOOT=yes
+BRIDGE=foreman
+EOF
+
 ```
 
-#### Firewall rules
+
+* Create bridge named ***foreman*** and connect to eth1 (interface that is connected to libvirt's ***foreman*** network)
+```
+cat > /etc/sysconfig/network-scripts/ifcfg-foreman <<EOF
+
+TYPE=Bridge
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+IPADDR=192.168.111.13
+NETMASK=255.255.255.0
+GATEWAY=192.168.111.1
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=foreman
+DEVICE=foreman
+ONBOOT=yes
+DNS=192.168.111.12
+ZONE=public
+HOTPLUG=no
+EOF
+```
+
+### Connect the kubevirt to the dns(ns1):
+Note - if /etc/resolv.conf doesn’t exists run: dhclient
+Edit file /etc/resolv.conf and add this line to the end:
+```
+Nameserver 192.168.111.12
+```
+
+### Change the hostname:
+```clickhouse
+hostnamectl set-hostname kubevirt.kubevirt.tst
+
+```
+
+#### Configure the Firewall rules:
 ```
 firewall-cmd --permanent --zone=public --add-port=6443/tcp 
 firewall-cmd --permanent --zone=public --add-port=10250-10252/tcp 
@@ -107,7 +221,7 @@ firewall-cmd --reload
 # Verify the configured ports
 firewall-cmd --list-all
 ```
-#### Enable IP Forwarding
+#### Enable IP Forwarding:
 ```
 cat <<EOF >  /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -118,7 +232,8 @@ sysctl --system
 modprobe br_netfilter
  ```
 
- #### Install Kubernetes and KubeVirt
+#### Install Kubernetes and KubeVirt:
+
  * Before moving to the next step, please Make sure to:
     - Add kubernetes repository to /etc/yum.repos.d and install kubeadm, kubelet and kubectl (see [here](https://kubernetes.io/docs/setup/independent/install-kubeadm/))
     - Install docker end make sure to run docker service (see [here](https://docs.docker.com/engine/install/))
@@ -155,13 +270,13 @@ kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEV
 
 # before moving to next step, please make sure that kubevirt pods are running:
 kubectl get pods -n kubevirt -A
-kubectl apply -f https://raw.githubusercontent.com/kubevirt/ovs-cni/master/examples/ovs-cni.yml
 
 export NET_RELEASE=$(curl -s https://api.github.com/repos/kubevirt/cluster-network-addons-operator/releases | grep tag_name | grep -v -- - | sort -V  | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
 
 kubectl apply -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/namespace.yaml
 kubectl apply -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/network-addons-config.crd.yaml
 kubectl apply -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/operator.yaml
+kubectl apply -f https://github.com/kubevirt/cluster-network-addons-operator/releases/download/${NET_RELEASE}/kubemacpool.yaml
 
 cat <<EOF | kubectl create -f -
 ---
@@ -173,7 +288,7 @@ spec:
   imagePullPolicy: Always
   kubeMacPool: {}
   multus: {}
-  
+  linuxBridge: {}
 EOF  
 ```
 
@@ -276,7 +391,7 @@ EOF
 ### Create PVs
 ```clickhouse
 
-export KUBEVIRT_HOST_NAME=kubevirt.kubevirt.com
+export KUBEVIRT_HOST_NAME=kubevirt.kubevirt.tst
 export DIR_PATH_PREFIX=/mnt/localstorage/vol
 
 LOCAL_PV_TEMPALTE=$(cat <<-END
@@ -399,8 +514,8 @@ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEV
 
 For purging entire Kubernetes:
 ```
-kubectl drain kubevirt.example.tst --delete-local-data --force --ignore-daemonsets
-kubectl delete node kubevirt.example.tst
+kubectl drain kubevirt.kubevirt.tst --delete-local-data --force --ignore-daemonsets
+kubectl delete node kubevirt.kubevirt.tst
 kubeadm reset --force
 rm -rf /var/lib/etcd/*
 ```
