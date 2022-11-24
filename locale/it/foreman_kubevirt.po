@@ -1,21 +1,27 @@
-# Italian translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# 0868a4d1af5275b3f70b0a6dac4c99a4, 2020
+# Bryan Kearney <bryan.kearney@gmail.com>, 2020
+# Giuseppe Pignataro <rogepix@gmail.com>, 2020
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Italian\n"
-"Language: it\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Giuseppe Pignataro <rogepix@gmail.com>, 2020\n"
+"Language-Team: Italian (https://www.transifex.com/foreman/teams/114/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"\n"
+"Language: it\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 :"
+" 2;\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
@@ -27,10 +33,10 @@ msgid "API port for KubeVirt only"
 msgstr ""
 
 msgid "Actions"
-msgstr ""
+msgstr "Azioni"
 
 msgid "Bootable"
-msgstr ""
+msgstr "Avviabile"
 
 msgid "CA crt for KubeVirt only"
 msgstr ""
@@ -39,34 +45,34 @@ msgid "CNI Provider"
 msgstr ""
 
 msgid "CPUs"
-msgstr ""
+msgstr "CPU"
 
 msgid "Disk"
-msgstr ""
+msgstr "Disco"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "Questa immagine supporta l'input dei dati utente (es. tramite cloud-init)?"
 
 msgid "Host name for KubeVirt only"
 msgstr ""
 
 msgid "Hostname"
-msgstr ""
+msgstr "Hostname"
 
 msgid "Image"
-msgstr ""
+msgstr "Immagine"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
 msgstr ""
 
 msgid "Memory"
-msgstr ""
+msgstr "Memoria"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 msgid "Namespace"
 msgstr ""
@@ -75,40 +81,40 @@ msgid "Namespace for KubeVirt only"
 msgstr ""
 
 msgid "Network"
-msgstr ""
+msgstr "Rete"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "È possibile avviare un solo volume"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
 msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "Password per un'autenticazione con -used per la fase finale di SSH."
 
 msgid "Please select an image"
-msgstr ""
+msgstr "Selezionare una immagine"
 
 msgid "Power"
-msgstr ""
+msgstr "Alimentazione"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "Attiva questa macchina"
 
 msgid "Properties"
-msgstr ""
+msgstr "Proprietà"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr ""
 
 msgid "Running on"
-msgstr ""
+msgstr "In esecuzione su"
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "Dimensione (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "Inizio"
 
 msgid "Storage Class"
 msgstr ""
@@ -125,22 +131,22 @@ msgid ""
 msgstr ""
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
-msgstr ""
+msgstr "L'utente usato per una operazione ssh in una istanza, normalmente cloud-user, ec2-user, ubuntu, root ecc"
 
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 msgid "Token for KubeVirt only"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "VCPU"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
@@ -149,7 +155,7 @@ msgid "VM should be created based on an image"
 msgstr ""
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "X509 Certification Authorities"
 
 msgid "cni_provider or network are missing"
 msgstr ""

@@ -8,43 +8,44 @@
 # 0868a4d1af5275b3f70b0a6dac4c99a4, 2020
 # Bryan Kearney <bryan.kearney@gmail.com>, 2020
 # Luiz Henrique Vasconcelos <luizvasconceloss@yahoo.com.br>, 2020
-# Bruno Emanuel Silva <bemanuel.pe@gmail.com>, 2020
+# Amit Upadhye <aupadhye@redhat.com>, 2022
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.1.7\n"
+"Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
-"Last-Translator: Bruno Emanuel Silva <bemanuel.pe@gmail.com>, 2020\n"
+"Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2022\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/foreman/teams/11"
 "4/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 100000"
+"0 == 0 ? 1 : 2;\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
-msgstr ""
+msgstr "%{cpu_cores} Núcleos e %{memory} memória"
 
 msgid "API Port"
-msgstr ""
+msgstr "Porto API"
 
 msgid "API port for KubeVirt only"
-msgstr ""
+msgstr "Porta API somente para KubeVirt"
 
 msgid "Actions"
 msgstr "Ações"
 
 msgid "Bootable"
-msgstr "Inicializável"
+msgstr "Inicializavel"
 
 msgid "CA crt for KubeVirt only"
-msgstr ""
+msgstr "CA crt somente para KubeVirt"
 
 msgid "CNI Provider"
-msgstr ""
+msgstr "Fornecedor da CNI"
 
 msgid "CPUs"
 msgstr "CPUs"
@@ -56,16 +57,16 @@ msgid "Does this image support user data input (e.g. via cloud-init)?"
 msgstr "Esta imagem suporta a entrada de dados do usuário (ex.: via cloud-init)?"
 
 msgid "Host name for KubeVirt only"
-msgstr ""
+msgstr "Nome do anfitrião somente para KubeVirt"
 
 msgid "Hostname"
-msgstr "Nome do host"
+msgstr "Nome da máquina"
 
 msgid "Image"
 msgstr "Imagem"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr ""
+msgstr "Não é possível definir um volume de inicialização e um provisionamento baseado em imagem."
 
 msgid "Memory"
 msgstr "Memória"
@@ -77,10 +78,10 @@ msgid "Name"
 msgstr "Nome"
 
 msgid "Namespace"
-msgstr ""
+msgstr "Namespace"
 
 msgid "Namespace for KubeVirt only"
-msgstr ""
+msgstr "Espaço de nomes somente para KubeVirt"
 
 msgid "Network"
 msgstr "Rede"
@@ -89,10 +90,10 @@ msgid "Only one volume can be bootable"
 msgstr "Somente um volume pode ser inicializável"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr ""
+msgstr "Opcionalmente, fornecer uma CA, ou uma corrente CA corretamente ordenada ou um caminho para um arquivo. Se deixado em branco - inseguro."
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr "Senha para autenticar-se - usada para o passo final do SSH."
+msgstr "Senha para autenticar-se - usada para o passo final do SSH"
 
 msgid "Please select an image"
 msgstr "Por favor selecione uma imagem"
@@ -107,7 +108,7 @@ msgid "Properties"
 msgstr "Propriedades"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
-msgstr ""
+msgstr "Fornecer e administrar as máquinas virtuais Kubevirt da Foreman."
 
 msgid "Running on"
 msgstr "Executando em"
@@ -116,21 +117,21 @@ msgid "Size (GB)"
 msgstr "Tamanho (GB)"
 
 msgid "Start"
-msgstr "Início"
+msgstr "Iniciar"
 
 msgid "Storage Class"
-msgstr ""
+msgstr "Classe de armazenagem"
 
 msgid "The compute resource could not be authenticated"
-msgstr ""
+msgstr "O recurso de computação não pôde ser autenticado"
 
 msgid "The name of the image in the registry."
-msgstr ""
+msgstr "O nome da imagem no registro."
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"
 "           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
-msgstr ""
+msgstr "O sistema remoto apresentou uma chave pública assinada por uma autoridade de certificação não identificada. Se você tem certeza que o sistema remoto é autêntico, vá para a página de edição de recursos de computação, pressione o botão 'Testar conexão' ou o botão 'Datacenters Load' e submeta"
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
 msgstr "O usuário utilizado para realizar o ssh na instância, normalmente cloud-user, ec2-user, ubuntu, root etc"
@@ -139,7 +140,7 @@ msgid "Token"
 msgstr "Token"
 
 msgid "Token for KubeVirt only"
-msgstr ""
+msgstr "Token somente para KubeVirt"
 
 msgid "Type"
 msgstr "Tipo"
@@ -151,28 +152,28 @@ msgid "VCPU(s)"
 msgstr "VCPU(s)"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
-msgstr ""
+msgstr "A VM deve ser criada com base na Reivindicação ou Imagem de Volume Persistente"
 
 msgid "VM should be created based on an image"
-msgstr ""
+msgstr "O VM deve ser criado com base em uma imagem"
 
 msgid "X509 Certification Authorities"
 msgstr "Autoridades de Certificação X509"
 
 msgid "cni_provider or network are missing"
-msgstr ""
+msgstr "cni_provider ou rede estão faltando"
 
 msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
-msgstr ""
+msgstr "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 
 msgid "genie"
-msgstr ""
+msgstr "gênio"
 
 msgid "multus"
-msgstr ""
+msgstr "multus"
 
 msgid "no Storage Classes available on provider"
-msgstr ""
+msgstr "não há classes de armazenamento disponíveis no fornecedor"
 
 msgid "pod"
-msgstr ""
+msgstr "cápsula"

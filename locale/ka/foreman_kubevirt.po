@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the foreman_kubevirt package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# Translators:
+# NorwayFun <temuri.doghonadze@gmail.com>, 2022
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>, 2022\n"
+"Language-Team: Georgian (https://www.transifex.com/foreman/teams/114/ka/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ka\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgid "%{cpu_cores} Cores and %{memory} memory"
+msgstr "%{cpu_cores} ბირთვი და %{memory} მეხსიერება"
+
+msgid "API Port"
+msgstr "api_port"
+
+msgid "API port for KubeVirt only"
+msgstr "მხოლოდ KubeVirt-ის API-ის პორტი"
+
+msgid "Actions"
+msgstr "ქმედებები"
+
+msgid "Bootable"
+msgstr "ჩატვირთვადი"
+
+msgid "CA crt for KubeVirt only"
+msgstr "მხოლოდ KubeVirt-ის CA crt"
+
+msgid "CNI Provider"
+msgstr "CNI მომწოდებელი"
+
+msgid "CPUs"
+msgstr "CPU"
+
+msgid "Disk"
+msgstr "დისკი"
+
+msgid "Does this image support user data input (e.g. via cloud-init)?"
+msgstr "აქვს თუ არა ამ ასლს მომხმარებლის მონაცემების ჩაწოდების მხარდაჭერა (მაგ. cloudinit)?"
+
+msgid "Host name for KubeVirt only"
+msgstr "მხოლოდ KubeVirt-ის ჰოსტის სახელი"
+
+msgid "Hostname"
+msgstr "ჰოსტის სახელი"
+
+msgid "Image"
+msgstr "ასლი"
+
+msgid "It is not possible to set a bootable volume and image based provisioning."
+msgstr "შეუძლებელია ერთდროულად ჩატვირთვადი დისკისა და სამუშაოდ ასლით მომზადების ჩართვა."
+
+msgid "Memory"
+msgstr "მეხსიერება"
+
+msgid "NIC"
+msgstr "NIC"
+
+msgid "Name"
+msgstr "სახელი"
+
+msgid "Namespace"
+msgstr "სახელების სივრცე"
+
+msgid "Namespace for KubeVirt only"
+msgstr "მხოლოდ KubeVirt-ის სახელთა სივრცე"
+
+msgid "Network"
+msgstr "ქსელი"
+
+msgid "Only one volume can be bootable"
+msgstr "ჩატვირთვადი მხოლოდ ერთი ტომი შეიძლება იყოს"
+
+msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
+msgstr "ან მიუთითეთ CA ან CA-ების სწორად დალაგებული ჯაჭვი, ან ბილიკი ფაილამდე. თუ ცარიელს დატოვებთ, დაცული არ იქნება."
+
+msgid "Password to authenticate with - used for SSH finish step."
+msgstr "პაროლი - საბოლოო ნაბიჯისთვის."
+
+msgid "Please select an image"
+msgstr "აირჩიეთ ასლი"
+
+msgid "Power"
+msgstr "კვება"
+
+msgid "Power ON this machine"
+msgstr "მანქანის ჩართვა"
+
+msgid "Properties"
+msgstr "პარამეტრები"
+
+msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
+msgstr "KubeVirt-ის ვირტუალური მანქანების Foreman-დან შექმნა და მართვა."
+
+msgid "Running on"
+msgstr "გაშვებულია"
+
+msgid "Size (GB)"
+msgstr "ზომა (გბ)"
+
+msgid "Start"
+msgstr "დაწყება"
+
+msgid "Storage Class"
+msgstr "საცავის კლასი"
+
+msgid "The compute resource could not be authenticated"
+msgstr "გამოთვლითი რესურსის ავთენტიკაცია შეუძლებელია"
+
+msgid "The name of the image in the registry."
+msgstr "რეესტრში არსებული ასლის სახელი."
+
+msgid ""
+"The remote system presented a public key signed by an unidentified certificate authority.\n"
+"           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
+msgstr ""
+"დაშორებულმა სისტემამ წარმოადგინა საჯარო გასაღები ხელმოწერილი დაუდგენელი სერტიფიკატის გამომცემლის მიერ.\n"
+"            თუ დარწმუნებული ხართ, რომ დაშორებული სისტემა ნამდვილია, გადადით გამოთვლითი რესურსის რედაქტირების გვერდზე, დააჭირეთ ღილაკს „კავშირის ტესტი“ და გადაგზავნეთ"
+
+msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
+msgstr "მომხმარებელი, რომელიც გაშვებულ ასლში შესასვლელად გამოიყენება. გამოიყენება cloud-user, ec2-user, ububtu, root, ა.შ"
+
+msgid "Token"
+msgstr "ტოკენი"
+
+msgid "Token for KubeVirt only"
+msgstr "მხოლოდ KubeVirt-ის კოდი"
+
+msgid "Type"
+msgstr "ტიპი"
+
+msgid "UUID"
+msgstr "UUID"
+
+msgid "VCPU(s)"
+msgstr "vCPU-ები"
+
+msgid "VM should be created based on Persistent Volume Claim or Image"
+msgstr "ვმ-ი PVC-ზე ან ასლზე უნდა იყოს დაფუძლებული"
+
+msgid "VM should be created based on an image"
+msgstr "ვმ-ი ასლზე დაფუძნებით უნდა შეიქმნას"
+
+msgid "X509 Certification Authorities"
+msgstr "X509 CA"
+
+msgid "cni_provider or network are missing"
+msgstr "cni_provider-ი ან ქსელი მიუწვდომელია"
+
+msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
+msgstr "მაგ. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
+
+msgid "genie"
+msgstr "genie"
+
+msgid "multus"
+msgstr "multus"
+
+msgid "no Storage Classes available on provider"
+msgstr "მომწოდებელს საცავის კლასები არ გააცნია"
+
+msgid "pod"
+msgstr "პოდი"

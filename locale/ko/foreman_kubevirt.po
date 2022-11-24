@@ -1,21 +1,25 @@
-# Korean translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# 0868a4d1af5275b3f70b0a6dac4c99a4, 2020
+# Bryan Kearney <bryan.kearney@gmail.com>, 2020
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Korean\n"
-"Language: ko\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Bryan Kearney <bryan.kearney@gmail.com>, 2020\n"
+"Language-Team: Korean (https://www.transifex.com/foreman/teams/114/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
@@ -27,10 +31,10 @@ msgid "API port for KubeVirt only"
 msgstr ""
 
 msgid "Actions"
-msgstr ""
+msgstr "동작 "
 
 msgid "Bootable"
-msgstr ""
+msgstr "부팅가능"
 
 msgid "CA crt for KubeVirt only"
 msgstr ""
@@ -39,34 +43,34 @@ msgid "CNI Provider"
 msgstr ""
 
 msgid "CPUs"
-msgstr ""
+msgstr "CPU"
 
 msgid "Disk"
-msgstr ""
+msgstr "디스크"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "이 이미지는 사용자 데이터 입력 (예: cloud-init 통해)을 지원하고 있습니까?"
 
 msgid "Host name for KubeVirt only"
 msgstr ""
 
 msgid "Hostname"
-msgstr ""
+msgstr "호스트 이름"
 
 msgid "Image"
-msgstr ""
+msgstr "이미지 "
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
 msgstr ""
 
 msgid "Memory"
-msgstr ""
+msgstr "메모리"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "이름 "
 
 msgid "Namespace"
 msgstr ""
@@ -75,40 +79,40 @@ msgid "Namespace for KubeVirt only"
 msgstr ""
 
 msgid "Network"
-msgstr ""
+msgstr "네트워크"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "하나의 볼륨만 부팅할 수 있습니다 "
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
 msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "인증에 사용될 암호 - SSH 마지막 단계에서 사용됩니다."
 
 msgid "Please select an image"
-msgstr ""
+msgstr "이미지를 선택하십시오"
 
 msgid "Power"
-msgstr ""
+msgstr "전원"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "컴퓨터의 전원 켜기 "
 
 msgid "Properties"
-msgstr ""
+msgstr "속성 "
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr ""
 
 msgid "Running on"
-msgstr ""
+msgstr "실행 "
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "크기 (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "시작"
 
 msgid "Storage Class"
 msgstr ""
@@ -125,22 +129,22 @@ msgid ""
 msgstr ""
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
-msgstr ""
+msgstr "ssh를 인스턴스에 사용하는 사용자는 일반적으로 cloud-user, ec2-user, ubuntu, root 등 입니다"
 
 msgid "Token"
-msgstr ""
+msgstr "토큰 "
 
 msgid "Token for KubeVirt only"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "유형 "
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "VCPU"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
@@ -149,7 +153,7 @@ msgid "VM should be created based on an image"
 msgstr ""
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "X509 인증 기관 "
 
 msgid "cni_provider or network are missing"
 msgstr ""

@@ -1,21 +1,28 @@
-# Czech translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# Lukáš Zapletal, 2020
+# Pavel Borecki <pavel.borecki@gmail.com>, 2020
+# mhulan <mhulan@redhat.com>, 2020
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Czech\n"
-"Language: cs_CZ\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: mhulan <mhulan@redhat.com>, 2020\n"
+"Language-Team: Czech (Czech Republic) (https://www.transifex.com/foreman/teams"
+"/114/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= "
+"4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
@@ -27,10 +34,10 @@ msgid "API port for KubeVirt only"
 msgstr ""
 
 msgid "Actions"
-msgstr ""
+msgstr "Akce"
 
 msgid "Bootable"
-msgstr ""
+msgstr "Bootovatelné"
 
 msgid "CA crt for KubeVirt only"
 msgstr ""
@@ -39,34 +46,34 @@ msgid "CNI Provider"
 msgstr ""
 
 msgid "CPUs"
-msgstr ""
+msgstr "Procesory"
 
 msgid "Disk"
-msgstr ""
+msgstr "Disk"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "Podporuje tento obraz zadání uživatelských dat (např. prostřednictvím cloud-init)?"
 
 msgid "Host name for KubeVirt only"
 msgstr ""
 
 msgid "Hostname"
-msgstr ""
+msgstr "Název stroje"
 
 msgid "Image"
-msgstr ""
+msgstr "Obraz"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
 msgstr ""
 
 msgid "Memory"
-msgstr ""
+msgstr "Operační paměť"
 
 msgid "NIC"
-msgstr ""
+msgstr "Síťové rozhraní"
 
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 msgid "Namespace"
 msgstr ""
@@ -75,40 +82,40 @@ msgid "Namespace for KubeVirt only"
 msgstr ""
 
 msgid "Network"
-msgstr ""
+msgstr "Síť"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "Zaveditelný může být jen jediný svazek"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
 msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "Heslo které použít pro ověření se – použito pro krok dokončení po SSH."
 
 msgid "Please select an image"
-msgstr ""
+msgstr "Vyberte obraz"
 
 msgid "Power"
-msgstr ""
+msgstr "Napájení"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "Zapnout tento stroj"
 
 msgid "Properties"
-msgstr ""
+msgstr "Vlastnosti"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr ""
 
 msgid "Running on"
-msgstr ""
+msgstr "Spuštěné na"
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "Velikost (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "Spustit"
 
 msgid "Storage Class"
 msgstr ""
@@ -134,13 +141,13 @@ msgid "Token for KubeVirt only"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 msgid "UUID"
 msgstr ""
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "Virt. procesorů"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
@@ -149,7 +156,7 @@ msgid "VM should be created based on an image"
 msgstr ""
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "X509 certifikační autority"
 
 msgid "cni_provider or network are missing"
 msgstr ""

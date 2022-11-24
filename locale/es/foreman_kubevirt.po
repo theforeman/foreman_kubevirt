@@ -1,170 +1,181 @@
-# Spanish translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# Jared Nelson <jared@ajpadilla.com>, 2020
+# fe37ea014ea122db60df81cd86b163af_742ef71 <ba9f59c06b0be83ac3724b1834a4c14b_93939>, 2020
+# Gustavo Varela <gustavo.varela@gmail.com>, 2020
+# Carmela Rubiños <carmela.rubinos@gmail.com>, 2020
+# Bryan Kearney <bryan.kearney@gmail.com>, 2020
+# nefeli <vidakovic@gmail.com>, 2020
+# Sergio Ocón-Cárdenas <sergio.ocon@redhat.com>, 2020
+# Amit Upadhye <aupadhye@redhat.com>, 2022
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Spanish\n"
-"Language: es\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2022\n"
+"Language-Team: Spanish (https://www.transifex.com/foreman/teams/114/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"\n"
+"Language: es\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 :"
+" 2;\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
-msgstr ""
+msgstr "%{cpu_cores} Núcleos y %{memory} memoria"
 
 msgid "API Port"
-msgstr ""
+msgstr "Puerto API"
 
 msgid "API port for KubeVirt only"
-msgstr ""
+msgstr "Puerto API sólo para KubeVirt"
 
 msgid "Actions"
-msgstr ""
+msgstr "Acciones"
 
 msgid "Bootable"
-msgstr ""
+msgstr "De arranque"
 
 msgid "CA crt for KubeVirt only"
-msgstr ""
+msgstr "CA crt sólo para KubeVirt"
 
 msgid "CNI Provider"
-msgstr ""
+msgstr "Proveedor de CNI"
 
 msgid "CPUs"
-msgstr ""
+msgstr "CPU"
 
 msgid "Disk"
-msgstr ""
+msgstr "Disco"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "¿Esta imágen supporta inserción de datos de usuario (p.e. vía could-init)?"
 
 msgid "Host name for KubeVirt only"
-msgstr ""
+msgstr "Nombre de host sólo para KubeVirt"
 
 msgid "Hostname"
-msgstr ""
+msgstr "Nombre de host"
 
 msgid "Image"
-msgstr ""
+msgstr "Imagen"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr ""
+msgstr "No es posible establecer un volumen de arranque y un aprovisionamiento basado en imágenes."
 
 msgid "Memory"
-msgstr ""
+msgstr "Memoria"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 msgid "Namespace"
-msgstr ""
+msgstr "Espacio de nombres"
 
 msgid "Namespace for KubeVirt only"
-msgstr ""
+msgstr "Espacio de nombres sólo para KubeVirt"
 
 msgid "Network"
-msgstr ""
+msgstr "Red"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "Solo un volumen puede ser arrancable"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr ""
+msgstr "Opcionalmente, proporcione una CA, o una cadena de CA correctamente ordenada o una ruta a un archivo. Si se deja en blanco - inseguro."
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "Contraseña de autenticación - usada para el paso final de SSH"
 
 msgid "Please select an image"
-msgstr ""
+msgstr "Seleccione una imagen"
 
 msgid "Power"
-msgstr ""
+msgstr "Energía"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "Encender esta máquina"
 
 msgid "Properties"
-msgstr ""
+msgstr "Propiedades"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
-msgstr ""
+msgstr "Aprovisionar y gestionar máquinas virtuales Kubevirt desde Foreman."
 
 msgid "Running on"
-msgstr ""
+msgstr "Ejecutándose en"
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "Tamaño (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "Iniciar"
 
 msgid "Storage Class"
-msgstr ""
+msgstr "Clase de almacenamiento"
 
 msgid "The compute resource could not be authenticated"
-msgstr ""
+msgstr "El recurso informático no ha podido ser autentificado"
 
 msgid "The name of the image in the registry."
-msgstr ""
+msgstr "El nombre de la imagen en el registro."
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"
 "           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
-msgstr ""
+msgstr "El sistema remoto presentó una llave pública firmada por una autoridad de certificación desconocida. Si está seguro de que el sistema remoto es auténtico, vaya a la página de edición de los recursos de cómputo, presione los botones 'Probar conexión' o 'Cargar centros de datos' y envíelo."
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
-msgstr ""
+msgstr "El usuario utilizado para conectar por ssh en la instancia, por lo general: cloud-user, ec2-user, ubuntu, o root."
 
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 msgid "Token for KubeVirt only"
-msgstr ""
+msgstr "Ficha sólo para KubeVirt"
 
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "CPU(s) virtuales"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
-msgstr ""
+msgstr "La VM debe crearse a partir de una reclamación de volumen persistente o de una imagen"
 
 msgid "VM should be created based on an image"
-msgstr ""
+msgstr "La VM debe crearse a partir de una imagen"
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "Autoridades de certificación X509"
 
 msgid "cni_provider or network are missing"
-msgstr ""
+msgstr "falta cni_provider o red"
 
 msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
-msgstr ""
+msgstr "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 
 msgid "genie"
-msgstr ""
+msgstr "genio"
 
 msgid "multus"
-msgstr ""
+msgstr "multus"
 
 msgid "no Storage Classes available on provider"
-msgstr ""
+msgstr "no hay Clases de Almacenamiento disponibles en el proveedor"
 
 msgid "pod"
-msgstr ""
+msgstr "vaina"

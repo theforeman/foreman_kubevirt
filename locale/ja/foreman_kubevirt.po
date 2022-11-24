@@ -1,170 +1,177 @@
-# Japanese translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# 0868a4d1af5275b3f70b0a6dac4c99a4, 2020
+# Bryan Kearney <bryan.kearney@gmail.com>, 2020
+# 山田 修司 🍣 Shuji Yamada <uzy.exe@gmail.com>, 2020
+# Transifex Bot <>, 2020
+# Amit Upadhye <aupadhye@redhat.com>, 2022
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Japanese\n"
-"Language: ja\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2022\n"
+"Language-Team: Japanese (https://www.transifex.com/foreman/teams/114/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
-msgstr ""
+msgstr "コア %{cpu_cores} 個およびメモリー %{memory}"
 
 msgid "API Port"
-msgstr ""
+msgstr "API ポート"
 
 msgid "API port for KubeVirt only"
-msgstr ""
+msgstr "KubeVirt 専用の API ポート"
 
 msgid "Actions"
-msgstr ""
+msgstr "アクション"
 
 msgid "Bootable"
-msgstr ""
+msgstr "ブート可能"
 
 msgid "CA crt for KubeVirt only"
-msgstr ""
+msgstr "KubeVirt 専用の CA 証明書"
 
 msgid "CNI Provider"
-msgstr ""
+msgstr "CNI プロバイダー"
 
 msgid "CPUs"
-msgstr ""
+msgstr "CPU"
 
 msgid "Disk"
-msgstr ""
+msgstr "ディスク"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
-msgstr ""
+msgstr "このイメージはユーザーのデータ入力に対応しますか (例: cloud-init 経由)?"
 
 msgid "Host name for KubeVirt only"
-msgstr ""
+msgstr "KubeVirt 専用のホスト名"
 
 msgid "Hostname"
-msgstr ""
+msgstr "ホスト名"
 
 msgid "Image"
-msgstr ""
+msgstr "イメージ"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr ""
+msgstr "ブート可能なボリュームとイメージをベースにしたプロビジョニングを設定できません。"
 
 msgid "Memory"
-msgstr ""
+msgstr "メモリー"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 msgid "Namespace"
-msgstr ""
+msgstr "名前空間"
 
 msgid "Namespace for KubeVirt only"
-msgstr ""
+msgstr "KubeVirt 専用の namespace"
 
 msgid "Network"
-msgstr ""
+msgstr "ネットワーク"
 
 msgid "Only one volume can be bootable"
-msgstr ""
+msgstr "1 つのボリュームのみがブート可能です"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr ""
+msgstr "オプションで CA、正しく順序付けされた CA チェーン、またはファイルへのパスを指定してください。空白のままにすると、安全ではありません。"
 
 msgid "Password to authenticate with - used for SSH finish step."
-msgstr ""
+msgstr "認証に使用するパスワード: SSH の最終ステップで使用されます。"
 
 msgid "Please select an image"
-msgstr ""
+msgstr "イメージを選択してください"
 
 msgid "Power"
-msgstr ""
+msgstr "電源"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "このマシンの電源をオンにする"
 
 msgid "Properties"
-msgstr ""
+msgstr "プロパティー"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
-msgstr ""
+msgstr "Foreman から Kubevirt 仮想マシンをプロビジョニングして管理します。"
 
 msgid "Running on"
-msgstr ""
+msgstr "実行中:"
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "サイズ (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "開始"
 
 msgid "Storage Class"
-msgstr ""
+msgstr "ストレージクラス"
 
 msgid "The compute resource could not be authenticated"
-msgstr ""
+msgstr "コンピュートリソースを認証できませんでした"
 
 msgid "The name of the image in the registry."
-msgstr ""
+msgstr "レジストリー内のイメージ名。"
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"
 "           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
-msgstr ""
+msgstr "リモートシステムは、未確認の証明局によって署名された公開鍵を提示しました。リモートシステムが信頼できると確信できる場合には、コンピュートリソースの編集ページに移動し、「接続のテスト」ボタンを押して送信します"
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
-msgstr ""
+msgstr "SSH をインスタンスに実行するために、通常 cloud-user、ec2-user、ubuntu、root などのユーザーを使用します"
 
 msgid "Token"
-msgstr ""
+msgstr "トークン"
 
 msgid "Token for KubeVirt only"
-msgstr ""
+msgstr "KubeVirt 専用トークン"
 
 msgid "Type"
-msgstr ""
+msgstr "タイプ"
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
-msgstr ""
+msgstr "VCPU"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
-msgstr ""
+msgstr "仮想マシンは永続ボリューム要求 (PVC) またはイメージをもとに作成する必要があります"
 
 msgid "VM should be created based on an image"
-msgstr ""
+msgstr "仮想マシンはイメージをもとに作成する必要があります"
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "X509 証明機関"
 
 msgid "cni_provider or network are missing"
-msgstr ""
+msgstr "cni_provider またはネットワークがありません"
 
 msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
-msgstr ""
+msgstr "例: eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 
 msgid "genie"
-msgstr ""
+msgstr "Genie"
 
 msgid "multus"
-msgstr ""
+msgstr "Multus"
 
 msgid "no Storage Classes available on provider"
-msgstr ""
+msgstr "プロバイダーにストレージクラスがありません"
 
 msgid "pod"
-msgstr ""
+msgstr "Pod"

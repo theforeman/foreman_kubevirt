@@ -1,21 +1,24 @@
-# Catalan translations for foreman_kubevirt package.
-# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the foreman_kubevirt package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# Robert Antoni Buj i Gelonch <rbuj@fedoraproject.org>, 2020
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 1.0.0\n"
+"Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2020-05-26 13:16+0530\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Catalan\n"
-"Language: ca\n"
+"PO-Revision-Date: 2020-05-26 07:39+0000\n"
+"Last-Translator: Robert Antoni Buj i Gelonch <rbuj@fedoraproject.org>, 2020\n"
+"Language-Team: Catalan (https://www.transifex.com/foreman/teams/114/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
@@ -27,7 +30,7 @@ msgid "API port for KubeVirt only"
 msgstr ""
 
 msgid "Actions"
-msgstr ""
+msgstr "Accions"
 
 msgid "Bootable"
 msgstr ""
@@ -39,10 +42,10 @@ msgid "CNI Provider"
 msgstr ""
 
 msgid "CPUs"
-msgstr ""
+msgstr "Nombre de CPU"
 
 msgid "Disk"
-msgstr ""
+msgstr "Disc"
 
 msgid "Does this image support user data input (e.g. via cloud-init)?"
 msgstr ""
@@ -51,22 +54,22 @@ msgid "Host name for KubeVirt only"
 msgstr ""
 
 msgid "Hostname"
-msgstr ""
+msgstr "Nom d'amfitrió"
 
 msgid "Image"
-msgstr ""
+msgstr "Imatge"
 
 msgid "It is not possible to set a bootable volume and image based provisioning."
 msgstr ""
 
 msgid "Memory"
-msgstr ""
+msgstr "Memòria"
 
 msgid "NIC"
-msgstr ""
+msgstr "NIC"
 
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 msgid "Namespace"
 msgstr ""
@@ -75,7 +78,7 @@ msgid "Namespace for KubeVirt only"
 msgstr ""
 
 msgid "Network"
-msgstr ""
+msgstr "Xarxa"
 
 msgid "Only one volume can be bootable"
 msgstr ""
@@ -87,16 +90,16 @@ msgid "Password to authenticate with - used for SSH finish step."
 msgstr ""
 
 msgid "Please select an image"
-msgstr ""
+msgstr "Si us plau, seleccioneu una imatge"
 
 msgid "Power"
-msgstr ""
+msgstr "Energia"
 
 msgid "Power ON this machine"
-msgstr ""
+msgstr "Engega aquesta màquina"
 
 msgid "Properties"
-msgstr ""
+msgstr "Propietats"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr ""
@@ -105,10 +108,10 @@ msgid "Running on"
 msgstr ""
 
 msgid "Size (GB)"
-msgstr ""
+msgstr "Mida (GB)"
 
 msgid "Start"
-msgstr ""
+msgstr "Inicia"
 
 msgid "Storage Class"
 msgstr ""
@@ -128,16 +131,16 @@ msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-
 msgstr ""
 
 msgid "Token"
-msgstr ""
+msgstr "Testimoni"
 
 msgid "Token for KubeVirt only"
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Tipus"
 
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 msgid "VCPU(s)"
 msgstr ""
@@ -149,7 +152,7 @@ msgid "VM should be created based on an image"
 msgstr ""
 
 msgid "X509 Certification Authorities"
-msgstr ""
+msgstr "Autoritats de certificació X509"
 
 msgid "cni_provider or network are missing"
 msgstr ""
