@@ -7,7 +7,6 @@ FactoryBot.define do
     root_pass { "$5$pzp5IoYXH9WQT6Ks$fk1OzfJAK1" }
     architecture_id { 1 }
     operatingsystem_id { 3 }
-    environment_id { 3 }
     ptable_id { 91 }
     medium_id { 13 }
     build { true }
