@@ -27,7 +27,7 @@ msgstr ""
 "0 == 0 ? 1 : 2;\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
-msgstr "%{cpu_cores} Núcleos e %{memory} memória"
+msgstr "%{cpu_cores} Cores e %{memory} memória"
 
 msgid "API Port"
 msgstr "Porto API"
@@ -45,7 +45,7 @@ msgid "CA crt for KubeVirt only"
 msgstr "CA crt somente para KubeVirt"
 
 msgid "CNI Provider"
-msgstr "Fornecedor da CNI"
+msgstr "Fornecedor"
 
 msgid "CPUs"
 msgstr "CPUs"
@@ -167,7 +167,7 @@ msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 msgstr "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 
 msgid "genie"
-msgstr "gênio"
+msgstr "genie"
 
 msgid "multus"
 msgstr "multus"

@@ -47,7 +47,7 @@ msgid "CA crt for KubeVirt only"
 msgstr "CA crt sólo para KubeVirt"
 
 msgid "CNI Provider"
-msgstr "Proveedor de CNI"
+msgstr "Proveedor"
 
 msgid "CPUs"
 msgstr "CPU"
@@ -92,7 +92,7 @@ msgid "Only one volume can be bootable"
 msgstr "Solo un volumen puede ser arrancable"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr "Opcionalmente, proporcione una CA, o una cadena de CA correctamente ordenada o una ruta a un archivo. Si se deja en blanco - inseguro."
+msgstr "Opcionalmente proporcione una CA, o una cadena de CA correctamente ordenada o una ruta a un archivo. Si se deja en blanco - inseguro."
 
 msgid "Password to authenticate with - used for SSH finish step."
 msgstr "Contraseña de autenticación - usada para el paso final de SSH"
@@ -110,7 +110,7 @@ msgid "Properties"
 msgstr "Propiedades"
 
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
-msgstr "Aprovisionar y gestionar máquinas virtuales Kubevirt desde Foreman."
+msgstr "Aprovisione y gestione máquinas virtuales Kubevirt desde Foreman."
 
 msgid "Running on"
 msgstr "Ejecutándose en"
@@ -125,7 +125,7 @@ msgid "Storage Class"
 msgstr "Clase de almacenamiento"
 
 msgid "The compute resource could not be authenticated"
-msgstr "El recurso informático no ha podido ser autentificado"
+msgstr "No se ha podido autenticar el recurso informático"
 
 msgid "The name of the image in the registry."
 msgstr "El nombre de la imagen en el registro."
@@ -142,7 +142,7 @@ msgid "Token"
 msgstr "Token"
 
 msgid "Token for KubeVirt only"
-msgstr "Ficha sólo para KubeVirt"
+msgstr "Token sólo para KubeVirt"
 
 msgid "Type"
 msgstr "Tipo"
@@ -154,16 +154,16 @@ msgid "VCPU(s)"
 msgstr "CPU(s) virtuales"
 
 msgid "VM should be created based on Persistent Volume Claim or Image"
-msgstr "La VM debe crearse a partir de una reclamación de volumen persistente o de una imagen"
+msgstr "La máquina virtual debe crearse a partir de una reclamación de volumen persistente o de una imagen."
 
 msgid "VM should be created based on an image"
-msgstr "La VM debe crearse a partir de una imagen"
+msgstr "La máquina virtual debe crearse a partir de una imagen"
 
 msgid "X509 Certification Authorities"
 msgstr "Autoridades de certificación X509"
 
 msgid "cni_provider or network are missing"
-msgstr "falta cni_provider o red"
+msgstr "faltan cni_provider o network"
 
 msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 msgstr "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
@@ -175,7 +175,7 @@ msgid "multus"
 msgstr "multus"
 
 msgid "no Storage Classes available on provider"
-msgstr "no hay Clases de Almacenamiento disponibles en el proveedor"
+msgstr "no hay clases de almacenamiento disponibles en el proveedor"
 
 msgid "pod"
 msgstr "vaina"

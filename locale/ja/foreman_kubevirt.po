@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "%{cpu_cores} Cores and %{memory} memory"
-msgstr "コア %{cpu_cores} 個およびメモリー %{memory}"
+msgstr "コア ％{cpu_cores} 個およびメモリー %{memory}"
 
 msgid "API Port"
 msgstr "API ポート"
@@ -100,7 +100,7 @@ msgid "Power"
 msgstr "電源"
 
 msgid "Power ON this machine"
-msgstr "このマシンの電源をオンにする"
+msgstr "このマシンのパワーをオンにする"
 
 msgid "Properties"
 msgstr "プロパティー"
@@ -129,7 +129,9 @@ msgstr "レジストリー内のイメージ名。"
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"
 "           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
-msgstr "リモートシステムは、未確認の証明局によって署名された公開鍵を提示しました。リモートシステムが信頼できると確信できる場合には、コンピュートリソースの編集ページに移動し、「接続のテスト」ボタンを押して送信します"
+msgstr ""
+"リモートシステムは、未確認の証明局によって署名された公開鍵を提示しました。\n"
+"           リモートシステムが信頼できると確信できる場合には、コンピュートリソースの編集ページに移動し、「接続のテスト」ボタンを押して送信します"
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
 msgstr "SSH をインスタンスに実行するために、通常 cloud-user、ec2-user、ubuntu、root などのユーザーを使用します"

@@ -67,7 +67,7 @@ msgid "It is not possible to set a bootable volume and image based provisioning.
 msgstr "无法基于置备设置引导卷和镜像。"
 
 msgid "Memory"
-msgstr "记忆"
+msgstr "内存"
 
 msgid "NIC"
 msgstr "NIC"
@@ -109,7 +109,7 @@ msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr "通过 Foreman 置备并管理 Kubevirt 虚拟机。"
 
 msgid "Running on"
-msgstr "執行於"
+msgstr "运行于"
 
 msgid "Size (GB)"
 msgstr "大小 (GB)"
@@ -129,7 +129,9 @@ msgstr "registry 中的镜像名称。"
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"
 "           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
-msgstr "显示由无法识别证书授权签名的公钥的远程系统。如果您确定该远程系统可信，请进入计算资源编辑页面，按“测试连接”按纽并提交。"
+msgstr ""
+"显示由无法识别证书授权签名的公钥的远程系统。\n"
+"           如果您确定该远程系统可信，请进入计算资源编辑页面，按“测试连接”按纽并提交。"
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
 msgstr "使用 ssh 进入该实例的用户，通常为 cloud-user, ec2-user, ubuntu, root 等等。"
@@ -141,7 +143,7 @@ msgid "Token for KubeVirt only"
 msgstr "仅限 KubeVirt 的令牌"
 
 msgid "Type"
-msgstr "類型"
+msgstr "类型"
 
 msgid "UUID"
 msgstr "UUID"
