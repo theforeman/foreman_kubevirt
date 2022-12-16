@@ -8,7 +8,7 @@
 # 21966816214bc546c1fc8a185e75ca1c, 2020
 # Claer <transiblu@claer.hammock.fr>, 2020
 # Bryan Kearney <bryan.kearney@gmail.com>, 2020
-# Amit Upadhye <aupadhye@redhat.com>, 2022
+# Amit Upadhye <aupadhye@redhat.com>, 2023
 #
 #, fuzzy
 msgid ""
@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
-"Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2022\n"
+"Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2023\n"
 "Language-Team: French (https://www.transifex.com/foreman/teams/114/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -122,7 +122,7 @@ msgid "Storage Class"
 msgstr "Classe de stockage"
 
 msgid "The compute resource could not be authenticated"
-msgstr "La ressource de calcul n'a pas pu être authentifiée"
+msgstr "La ressource compute n'a pas pu être authentifiée"
 
 msgid "The name of the image in the registry."
 msgstr "Le nom de l'image dans le registre."
@@ -130,7 +130,7 @@ msgstr "Le nom de l'image dans le registre."
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"
 "           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"
-msgstr "Le système distant a présenté une clé publique signée par une autorité de certification inconnue. Si vous êtes sûr de l'authenticité du système distant, rendez-vous sur la page de modification des ressources de calcul, cliquez sur « Tester la connexion » puis validez."
+msgstr "Le système distant a présenté une clé publique signée par une autorité de certification inconnue. Si vous êtes sûr de l'authenticité du système distant, rendez-vous sur la page de modification des ressources de calcul, cliquez sur « Tester la connexion » puis validez"
 
 msgid "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc"
 msgstr "L'utilisateur qui est utilisé pour se connecter en ssh à l'instance. Normalement cloud-user, ec2-user, ubuntu, root, etc"
