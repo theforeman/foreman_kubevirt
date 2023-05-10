@@ -4,7 +4,9 @@ module ForemanKubevirt
     config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
     initializer "foreman_kubevirt.register_plugin", :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_kubevirt do
-        requires_foreman ">= 1.7"
+        requires_foreman '>= 3.7'
+        register_gettext
+
         compute_resource(ForemanKubevirt::Kubevirt)
 
         parameter_filter(ComputeResource, :hostname, :url)
@@ -67,12 +69,6 @@ module ForemanKubevirt
       rescue StandardError => e
         Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
       end
-    end
-
-    initializer "foreman_kubevirt.register_gettext", after: :load_config_initializers do |_app|
-      locale_dir = File.join(File.expand_path("../..", __dir__), "locale")
-      locale_domain = "foreman_kubevirt"
-      Foreman::Gettext::Support.add_text_domain locale_domain, locale_dir
     end
   end
 end

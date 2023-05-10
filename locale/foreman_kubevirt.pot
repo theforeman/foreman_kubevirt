@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreman_kubevirt 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-22 08:28-0400\n"
-"PO-Revision-Date: 2020-04-22 08:28-0400\n"
+"POT-Creation-Date: 2023-06-05 16:13+0200\n"
+"PO-Revision-Date: 2023-06-05 16:13+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -87,12 +87,17 @@ msgstr ""
 msgid "VM should be created based on an image"
 msgstr ""
 
+#: ../app/models/foreman_kubevirt/kubevirt.rb:380
+#: ../app/validators/volume_validator.rb:7
+msgid "Volume size %s is not valid"
+msgstr ""
+
 #: ../app/models/foreman_kubevirt/kubevirt.rb:386
 #: ../app/views/compute_resources_vms/form/kubevirt/_volume.html.erb:22
 msgid "Only one volume can be bootable"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:472
+#: ../app/models/foreman_kubevirt/kubevirt.rb:473
 msgid "cni_provider or network are missing"
 msgstr ""
 
@@ -130,36 +135,36 @@ msgid ""
 "If left blank - insecure."
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:3
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:1
 #: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:3
 #: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:10
 msgid "Name"
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:5
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:3
 #: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:4
 msgid "CPUs"
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:7
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:5
 #: ../app/views/compute_resources_vms/index/_kubevirt.html.erb:5
 #: ../app/views/compute_resources_vms/show/_kubevirt.html.erb:22
 msgid "Memory"
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:10
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:8
 msgid "Power ON this machine"
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:10
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:8
 msgid "Start"
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:21
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:19
 msgid "Please select an image"
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:22
+#: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:20
 #: ../app/views/images/form/_kubevirt.html.erb:4
 msgid "Image"
 msgstr ""
@@ -238,6 +243,6 @@ msgstr ""
 msgid "The name of the image in the registry."
 msgstr ""
 
-#: gemspec.rb:1
+#: gemspec.rb:2
 msgid "Provision and manage Kubevirt Virtual Machines from Foreman."
 msgstr ""
