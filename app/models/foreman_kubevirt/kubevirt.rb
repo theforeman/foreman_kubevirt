@@ -341,7 +341,7 @@ module ForemanKubevirt
 
     def raise_certification_failure_exception
       raise Foreman::FingerprintException.new(
-        N_("The remote system presented a public key signed by an unidentified certificate authority.
+        _("The remote system presented a public key signed by an unidentified certificate authority.
            If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
           ca_cert
       )
@@ -352,18 +352,18 @@ module ForemanKubevirt
     def verify_at_least_one_volume_provided(options)
       image = options[:image_id]
       volumes_attributes = options[:volumes_attributes]
-      raise ::Foreman::Exception.new N_('VM should be created based on Persistent Volume Claim or Image') unless
+      raise ::Foreman::Exception.new _('VM should be created based on Persistent Volume Claim or Image') unless
         (volumes_attributes.present? || image)
     end
 
     def verify_booting_from_image_is_possible(volumes)
-      raise ::Foreman::Exception.new N_('It is not possible to set a bootable volume and image based provisioning.') if
+      raise ::Foreman::Exception.new _('It is not possible to set a bootable volume and image based provisioning.') if
         volumes&.any? { |_, v| v[:bootable] == "true" }
     end
 
     def add_volume_for_image_provision(options)
       image = options[:image_id]
-      raise ::Foreman::Exception.new N_('VM should be created based on an image') unless image
+      raise ::Foreman::Exception.new _('VM should be created based on an image') unless image
 
       verify_booting_from_image_is_possible(options[:volumes_attributes])
 
@@ -377,13 +377,13 @@ module ForemanKubevirt
     def validate_volume_capacity(volumes_attributes)
       volumes_attributes.each do |_, vol|
         if vol[:capacity].to_s.empty? || /\A\d+G?\Z/.match(vol[:capacity].to_s).nil?
-          raise Foreman::Exception.new(N_("Volume size #{vol[:capacity]} is not valid"))
+          raise Foreman::Exception.new(_("Volume size %s is not valid") % vol[:capacity])
         end
       end
     end
 
     def validate_only_single_bootable_volume(volumes_attributes)
-      raise ::Foreman::Exception.new N_('Only one volume can be bootable') if volumes_attributes.count { |_, v| v[:bootable] == "true" } > 1
+      raise ::Foreman::Exception.new _('Only one volume can be bootable') if volumes_attributes.count { |_, v| v[:bootable] == "true" } > 1
     end
 
     def create_new_pvc(pvc_name, capacity, storage_class)
@@ -470,7 +470,7 @@ module ForemanKubevirt
       interfaces = []
       networks = []
       options[:interfaces_attributes].values.each do |iface|
-        raise ::Foreman::Exception.new N_('cni_provider or network are missing') unless (iface.key?(:cni_provider) && iface.key?(:network))
+        raise ::Foreman::Exception.new _('cni_provider or network are missing') unless (iface.key?(:cni_provider) && iface.key?(:network))
         if iface[:cni_provider] == 'pod'
           nic, net = create_pod_network_element
         else

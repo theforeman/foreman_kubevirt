@@ -6,14 +6,13 @@
 # Translators:
 # Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022\n"
-"Language-Team: Georgian (https://www.transifex.com/foreman/teams/114/ka/)\n"
+"Language-Team: Georgian (https://app.transifex.com/foreman/teams/114/ka/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -152,6 +151,9 @@ msgstr "ვმ-ი PVC-ზე ან ასლზე უნდა იყოს �
 
 msgid "VM should be created based on an image"
 msgstr "ვმ-ი ასლზე დაფუძნებით უნდა შეიქმნას"
+
+msgid "Volume size %s is not valid"
+msgstr ""
 
 msgid "X509 Certification Authorities"
 msgstr "X509 CA"

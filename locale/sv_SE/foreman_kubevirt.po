@@ -8,14 +8,13 @@
 # Mikael Fridh <frimik@gmail.com>, 2020
 # johnny.westerlund <johnny.westerlund@gmail.com>, 2020
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: foreman_kubevirt 0.1.9\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: johnny.westerlund <johnny.westerlund@gmail.com>, 2020\n"
-"Language-Team: Swedish (Sweden) (https://www.transifex.com/foreman/teams/114/s"
+"Language-Team: Swedish (Sweden) (https://app.transifex.com/foreman/teams/114/s"
 "v_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -152,6 +151,9 @@ msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
 
 msgid "VM should be created based on an image"
+msgstr ""
+
+msgid "Volume size %s is not valid"
 msgstr ""
 
 msgid "X509 Certification Authorities"

@@ -148,6 +148,9 @@ msgstr ""
 msgid "VM should be created based on an image"
 msgstr ""
 
+msgid "Volume size %s is not valid"
+msgstr ""
+
 msgid "X509 Certification Authorities"
 msgstr ""
 
