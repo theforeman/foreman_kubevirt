@@ -5,7 +5,7 @@
       "": {
         "Project-Id-Version": "foreman_kubevirt 0.1.9",
         "Report-Msgid-Bugs-To": "",
-        "POT-Creation-Date": "2023-06-05 16:13+0200",
+        "POT-Creation-Date": "2023-06-06 13:39+0200",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "mhulan <mhulan@redhat.com>, 2020",
         "Language-Team": "Czech (Czech Republic) (https://app.transifex.com/foreman/teams/114/cs_CZ/)",
