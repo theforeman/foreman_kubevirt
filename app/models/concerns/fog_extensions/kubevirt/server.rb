@@ -48,7 +48,7 @@ module FogExtensions
       end
 
       def select_nic(fog_nics, _nic)
-        fog_nics.select { |iface| !iface.mac.nil? }[0]
+        fog_nics.find { |iface| !iface.mac.nil? }
       end
     end
   end
