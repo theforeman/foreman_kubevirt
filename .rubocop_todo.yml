@@ -36,3 +36,7 @@ Style/HashTransformValues:
 
 Style/Next:
   Enabled: false
+
+Rails/RakeEnvironment:
+  Exclude:
+    - 'lib/tasks/foreman_kubevirt_tasks.rake'
