@@ -44,31 +44,29 @@ module ForemanKubevirt
 
     # Include concerns in this config.to_prepare block
     config.to_prepare do
-      begin
-        require "fog/kubevirt"
-        require "fog/kubevirt/compute/utils/unit_converter"
-        require "fog/kubevirt/compute/models/server"
-        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/server", __dir__)
+      require "fog/kubevirt"
+      require "fog/kubevirt/compute/utils/unit_converter"
+      require "fog/kubevirt/compute/models/server"
+      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/server", __dir__)
 
-        ::Api::V2::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
-        Fog::Kubevirt::Compute::Server.send(:include, ::FogExtensions::Kubevirt::Server)
+      ::Api::V2::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
+      Fog::Kubevirt::Compute::Server.send(:include, ::FogExtensions::Kubevirt::Server)
 
-        require "fog/kubevirt/compute/models/volume"
-        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/volume", __dir__)
-        Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
+      require "fog/kubevirt/compute/models/volume"
+      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/volume", __dir__)
+      Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
 
-        require "fog/kubevirt/compute/models/vmnic"
-        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/vmnic", __dir__)
-        Fog::Kubevirt::Compute::VmNic.send(:include, ::FogExtensions::Kubevirt::VmNic)
+      require "fog/kubevirt/compute/models/vmnic"
+      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/vmnic", __dir__)
+      Fog::Kubevirt::Compute::VmNic.send(:include, ::FogExtensions::Kubevirt::VmNic)
 
-        require "fog/kubevirt/compute/models/networkattachmentdef"
-        require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/network", __dir__)
-        Fog::Kubevirt::Compute::Networkattachmentdef.send(:include, ::FogExtensions::Kubevirt::Network)
-        ComputeAttribute.send :include, ForemanKubevirt::ComputeAttributeExtensions
+      require "fog/kubevirt/compute/models/networkattachmentdef"
+      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/network", __dir__)
+      Fog::Kubevirt::Compute::Networkattachmentdef.send(:include, ::FogExtensions::Kubevirt::Network)
+      ComputeAttribute.send :include, ForemanKubevirt::ComputeAttributeExtensions
 
-      rescue StandardError => e
-        Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
-      end
+    rescue StandardError => e
+      Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
     end
   end
 end

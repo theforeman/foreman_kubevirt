@@ -66,7 +66,7 @@ module ForemanKubevirt
       return false if errors.any?
       client&.valid? && client&.virt_supported?
     rescue StandardError => e
-      if e.message =~ /401/
+      if /401/.match?(e.message)
         errors[:base] << _('The compute resource could not be authenticated')
       else
         errors[:base] << e.message
@@ -387,7 +387,7 @@ module ForemanKubevirt
     end
 
     def create_new_pvc(pvc_name, capacity, storage_class)
-      capacity = capacity + "G" unless capacity.end_with? "G"
+      capacity += "G" unless capacity.end_with? "G"
       client.pvcs.create(:name          => pvc_name,
                          :namespace     => namespace,
                          :storage_class => storage_class,
@@ -397,11 +397,9 @@ module ForemanKubevirt
 
     def delete_pvcs(volumes)
       volumes.each do |volume|
-        begin
-          client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
-        rescue StandardError => e
-          logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
-        end
+        client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
+      rescue StandardError => e
+        logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
       end
     end
 
