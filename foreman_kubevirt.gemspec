@@ -13,6 +13,8 @@ Gem::Specification.new do |s|
   s.files       = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
   s.test_files  = Dir['test/**/*']
 
+  s.required_ruby_version = '>= 2.5', '< 4.0'
+
   s.add_development_dependency('rake', '~> 12.3')
   s.add_development_dependency('theforeman-rubocop', '~> 0.0.6')
 
