@@ -1,41 +1,12 @@
-require:
-  - rubocop-performance
-  - rubocop-rails
-  - rubocop-minitest
-
-# TODO: remove this file by either moving cops here or fixing code
 inherit_from:
   - .rubocop_todo.yml
 
-AllCops:
-  TargetRubyVersion: 2.5
-  TargetRailsVersion: 5.2
-  Exclude:
-    - 'db/schema.rb'
-    - 'node_modules/**/*'
-    - 'vendor/**/*'
-
-Rails:
-  Enabled: true
-
-# Don't prefer is_a? over kind_of?
-Style/ClassCheck:
-  Enabled: false
+inherit_gem:
+  theforeman-rubocop:
+    - lenient.yml
 
 # Don't enforce certain methods, e.g. detect over find
 Style/CollectionMethods:
-  Enabled: false
-
-# Don't enforce documentation
-Style/Documentation:
-  Enabled: false
-
-# Support both ruby19 and hash_rockets
-Style/HashSyntax:
-  Enabled: false
-
-# Both double and single quotes are OK
-Style/StringLiterals:
   Enabled: false
 
 # Don't enforce frozen string literals
@@ -63,36 +34,11 @@ Layout/LineLength:
 Performance/Casecmp:
   Enabled: false
 
-Performance/RedundantMatch:
-  Enabled: true
-
-Performance/RedundantMerge:
-  Enabled: true
-
-Rails/Blank:
-  UnlessPresent: false
-
-#Allow both ['a', 'b'], %w[a b] and %w(a b) style arrays
-Style/WordArray:
-  Enabled: false
-
-Style/AndOr:
-  EnforcedStyle: conditionals
-
-Style/TernaryParentheses:
-  EnforcedStyle: require_parentheses_when_complex
-
 Style/InverseMethods:
   Enabled: false
 
-Layout/FirstArgumentIndentation:
-  EnforcedStyle: consistent
-
 Bundler/OrderedGems:
   Enabled: false
-
-Style/Alias:
-  EnforcedStyle: prefer_alias_method
 
 Layout/DotPosition:
   Enabled: false
@@ -103,9 +49,6 @@ Style/IfUnlessModifier:
 Style/ConditionalAssignment:
   Enabled: false
 
-Style/EmptyMethod:
-  EnforcedStyle: expanded
-
 Style/ParenthesesAroundCondition:
   Enabled: false
 
@@ -113,10 +56,6 @@ Layout/HashAlignment:
   Enabled: false
 
 Layout/ParameterAlignment:
-  Enabled: false
-
-# disabled until we can configure "+" as concat sign
-Style/LineEndConcatenation:
   Enabled: false
 
 Style/ParallelAssignment:
