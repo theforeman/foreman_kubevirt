@@ -3,60 +3,144 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.1.9",
+        "Project-Id-Version": "foreman_kubevirt 1.0.0",
         "Report-Msgid-Bugs-To": "",
-        "PO-Revision-Date": "2020-04-22 08:24-0400",
+        "PO-Revision-Date": "2024-09-19 13:06+0200",
         "Last-Translator": "FULL NAME <EMAIL@ADDRESS>",
-        "Language-Team": "English",
-        "Language": "en",
+        "Language-Team": "LANGUAGE <LL@li.org>",
+        "Language": "",
         "MIME-Version": "1.0",
         "Content-Type": "text/plain; charset=UTF-8",
         "Content-Transfer-Encoding": "8bit",
-        "Plural-Forms": "nplurals=2; plural=n != 1;",
+        "Plural-Forms": "nplurals=INTEGER; plural=EXPRESSION;",
         "lang": "en",
         "domain": "foreman_kubevirt",
-        "plural_forms": "nplurals=2; plural=n != 1;"
+        "plural_forms": "nplurals=INTEGER; plural=EXPRESSION;"
       },
-      "Token for KubeVirt only": [
+      "%{cpu_cores} Cores and %{memory} memory": [
         ""
       ],
-      "Host name for KubeVirt only": [
-        ""
-      ],
-      "Namespace for KubeVirt only": [
-        ""
-      ],
-      "CA crt for KubeVirt only": [
+      "API Port": [
         ""
       ],
       "API port for KubeVirt only": [
         ""
       ],
-      "%{cpu_cores} Cores and %{memory} memory": [
+      "Actions": [
+        ""
+      ],
+      "Bootable": [
+        ""
+      ],
+      "CA crt for KubeVirt only": [
+        ""
+      ],
+      "CNI Provider": [
+        ""
+      ],
+      "CPUs": [
+        ""
+      ],
+      "Disk": [
+        ""
+      ],
+      "Does this image support user data input (e.g. via cloud-init)?": [
+        ""
+      ],
+      "Host name for KubeVirt only": [
+        ""
+      ],
+      "Hostname": [
+        ""
+      ],
+      "Image": [
+        ""
+      ],
+      "It is not possible to set a bootable volume and image based provisioning.": [
+        ""
+      ],
+      "Memory": [
+        ""
+      ],
+      "NIC": [
+        ""
+      ],
+      "Name": [
+        ""
+      ],
+      "Namespace": [
+        ""
+      ],
+      "Namespace for KubeVirt only": [
+        ""
+      ],
+      "Network": [
+        ""
+      ],
+      "Only one volume can be bootable": [
+        ""
+      ],
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
+        ""
+      ],
+      "Password to authenticate with - used for SSH finish step.": [
+        ""
+      ],
+      "Please select an image": [
+        ""
+      ],
+      "Power": [
+        ""
+      ],
+      "Power ON this machine": [
+        ""
+      ],
+      "Properties": [
+        ""
+      ],
+      "Provision and manage Kubevirt Virtual Machines from Foreman.": [
+        ""
+      ],
+      "Running on": [
+        ""
+      ],
+      "Size (GB)": [
+        ""
+      ],
+      "Start": [
+        ""
+      ],
+      "Storage Class": [
         ""
       ],
       "The compute resource could not be authenticated": [
         ""
       ],
-      "no Storage Classes available on provider": [
-        ""
-      ],
-      "multus": [
-        ""
-      ],
-      "genie": [
-        ""
-      ],
-      "pod": [
+      "The name of the image in the registry.": [
         ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         ""
       ],
-      "VM should be created based on Persistent Volume Claim or Image": [
+      "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc": [
         ""
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
+      "Token": [
+        ""
+      ],
+      "Token for KubeVirt only": [
+        ""
+      ],
+      "Type": [
+        ""
+      ],
+      "UUID": [
+        ""
+      ],
+      "VCPU(s)": [
+        ""
+      ],
+      "VM should be created based on Persistent Volume Claim or Image": [
         ""
       ],
       "VM should be created based on an image": [
@@ -65,109 +149,25 @@
       "Volume size %s is not valid": [
         ""
       ],
-      "Only one volume can be bootable": [
+      "X509 Certification Authorities": [
         ""
       ],
       "cni_provider or network are missing": [
         ""
       ],
-      "Hostname": [
-        ""
-      ],
-      "API Port": [
-        ""
-      ],
-      "Namespace": [
-        ""
-      ],
-      "Token": [
-        ""
-      ],
       "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9...": [
         ""
       ],
-      "X509 Certification Authorities": [
+      "genie": [
         ""
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
+      "multus": [
         ""
       ],
-      "Name": [
+      "no Storage Classes available on provider": [
         ""
       ],
-      "CPUs": [
-        ""
-      ],
-      "Memory": [
-        ""
-      ],
-      "Power ON this machine": [
-        ""
-      ],
-      "Start": [
-        ""
-      ],
-      "Please select an image": [
-        ""
-      ],
-      "Image": [
-        ""
-      ],
-      "CNI Provider": [
-        ""
-      ],
-      "Network": [
-        ""
-      ],
-      "Storage Class": [
-        ""
-      ],
-      "Size (GB)": [
-        ""
-      ],
-      "Bootable": [
-        ""
-      ],
-      "Power": [
-        ""
-      ],
-      "Actions": [
-        ""
-      ],
-      "Properties": [
-        ""
-      ],
-      "VCPU(s)": [
-        ""
-      ],
-      "UUID": [
-        ""
-      ],
-      "Type": [
-        ""
-      ],
-      "NIC": [
-        ""
-      ],
-      "Disk": [
-        ""
-      ],
-      "Running on": [
-        ""
-      ],
-      "The user that is used to ssh into the instance, normally cloud-user, ec2-user, ubuntu, root etc": [
-        ""
-      ],
-      "Password to authenticate with - used for SSH finish step.": [
-        ""
-      ],
-      "Does this image support user data input (e.g. via cloud-init)?": [
-        ""
-      ],
-      "The name of the image in the registry.": [
-        ""
-      ],
-      "Provision and manage Kubevirt Virtual Machines from Foreman.": [
+      "pod": [
         ""
       ]
     }
