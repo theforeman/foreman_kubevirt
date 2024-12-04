@@ -1,19 +1,21 @@
 module ForemanKubevirt
   class Engine < ::Rails::Engine
     engine_name "foreman_kubevirt"
-    config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
-    initializer "foreman_kubevirt.register_plugin", :before => :finisher_hook do |_app|
-      Foreman::Plugin.register :foreman_kubevirt do
-        requires_foreman '>= 3.7'
-        register_gettext
 
-        compute_resource(ForemanKubevirt::Kubevirt)
+    initializer "foreman_kubevirt.register_plugin", :before => :finisher_hook do |app|
+      app.reloader.to_prepare do
+        Foreman::Plugin.register :foreman_kubevirt do
+          requires_foreman '>= 3.13'
+          register_gettext
 
-        parameter_filter(ComputeResource, :hostname, :url)
-        parameter_filter(ComputeResource, :namespace, :user)
-        parameter_filter(ComputeResource, :token, :password)
-        parameter_filter(ComputeResource, :ca_cert)
-        parameter_filter(ComputeResource, :api_port)
+          compute_resource(ForemanKubevirt::Kubevirt)
+
+          parameter_filter(ComputeResource, :hostname, :url)
+          parameter_filter(ComputeResource, :namespace, :user)
+          parameter_filter(ComputeResource, :token, :password)
+          parameter_filter(ComputeResource, :ca_cert)
+          parameter_filter(ComputeResource, :api_port)
+        end
       end
     end
 
@@ -47,21 +49,17 @@ module ForemanKubevirt
       require "fog/kubevirt"
       require "fog/kubevirt/compute/utils/unit_converter"
       require "fog/kubevirt/compute/models/server"
-      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/server", __dir__)
 
       ::Api::V2::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
       Fog::Kubevirt::Compute::Server.send(:include, ::FogExtensions::Kubevirt::Server)
 
       require "fog/kubevirt/compute/models/volume"
-      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/volume", __dir__)
       Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
 
       require "fog/kubevirt/compute/models/vmnic"
-      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/vmnic", __dir__)
-      Fog::Kubevirt::Compute::VmNic.send(:include, ::FogExtensions::Kubevirt::VmNic)
+      Fog::Kubevirt::Compute::VmNic.send(:include, ::FogExtensions::Kubevirt::VMNic)
 
       require "fog/kubevirt/compute/models/networkattachmentdef"
-      require File.expand_path("../../app/models/concerns/fog_extensions/kubevirt/network", __dir__)
       Fog::Kubevirt::Compute::Networkattachmentdef.send(:include, ::FogExtensions::Kubevirt::Network)
       ComputeAttribute.send :include, ForemanKubevirt::ComputeAttributeExtensions
 
