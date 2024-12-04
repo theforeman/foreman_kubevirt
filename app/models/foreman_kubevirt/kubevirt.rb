@@ -67,9 +67,9 @@ module ForemanKubevirt
       client&.valid? && client&.virt_supported?
     rescue StandardError => e
       if /401/.match?(e.message)
-        errors[:base] << _('The compute resource could not be authenticated')
+        errors.add(:base, _('The compute resource could not be authenticated'))
       else
-        errors[:base] << e.message
+        errors.add(:base, e.message)
       end
     end
 
