@@ -1,3 +1,13 @@
+### 0.2.0 / 2024-12-05
+
+* Update docs (#138, #139, #142)
+* Drop the use of jquery-ui-spinner (#143)
+* Translation updates (#144, #146, #147, #151, #152, #159)
+* Remove environment from the host factory (#145)
+* CI fixes (#153, #156, #162, #163)
+* Use theforeman-rubocop gem (#157)
+* Update fog-kubevirt dependency for Ruby 3 support (#161)
+
 ### 0.1.9 / 2021-21-20
 
 * Fixes #29985 - Fix volume creation with G unit (#136)
