@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.5', '< 4.0'
 
-  s.add_dependency('fog-kubevirt', '~>1.3.3')
+  s.add_dependency('fog-kubevirt', '>= 1.3.3', '< 2')
 end
