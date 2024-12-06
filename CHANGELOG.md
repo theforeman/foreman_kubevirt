@@ -1,12 +1,19 @@
-### 0.2.0 / 2024-12-05
+### 0.3.0 / 2024-12-06
+
+Due to a mixup there was a 0.2.1 release that was yanked. It's rereleased as 0.3.0.
+
+* Use theforeman-rubocop gem (#157)
+* CI fixes (#162, #163)
+* Update fog-kubevirt dependency for Ruby 3 support (#161)
+* Translation updates (#159)
+
+### 0.2.0 / 2024-03-25
 
 * Update docs (#138, #139, #142)
 * Drop the use of jquery-ui-spinner (#143)
-* Translation updates (#144, #146, #147, #151, #152, #159)
+* Translation updates (#144, #146, #147, #151, #152)
 * Remove environment from the host factory (#145)
-* CI fixes (#153, #156, #162, #163)
-* Use theforeman-rubocop gem (#157)
-* Update fog-kubevirt dependency for Ruby 3 support (#161)
+* CI fixes (#153, #156)
 
 ### 0.1.9 / 2021-21-20
 
