@@ -1,6 +1,6 @@
 module FogExtensions
   module Kubevirt
-    module VmNic
+    module VMNic
       extend ActiveSupport::Concern
       attr_writer :id
 
