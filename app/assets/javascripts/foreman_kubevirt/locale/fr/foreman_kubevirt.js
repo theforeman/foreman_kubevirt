@@ -3,10 +3,10 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.1.9",
+        "Project-Id-Version": "foreman_kubevirt 0.3.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
-        "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2023",
+        "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2024",
         "Language-Team": "French (https://app.transifex.com/foreman/teams/114/fr/)",
         "MIME-Version": "1.0",
         "Content-Type": "text/plain; charset=UTF-8",
@@ -18,7 +18,7 @@
         "plural_forms": "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
       },
       "%{cpu_cores} Cores and %{memory} memory": [
-        "%%{cpu_cores} Cores et %{memory} mémoire"
+        "%{cpu_cores} Cores et %{memory} mémoire"
       ],
       "API Port": [
         "Port API"

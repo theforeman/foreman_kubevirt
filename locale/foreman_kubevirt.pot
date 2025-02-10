@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreman_kubevirt 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 13:39+0200\n"
-"PO-Revision-Date: 2023-06-06 13:39+0200\n"
+"POT-Creation-Date: 2025-02-10 20:07+0100\n"
+"PO-Revision-Date: 2025-02-10 20:07+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Only one volume can be bootable"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:473
+#: ../app/models/foreman_kubevirt/kubevirt.rb:471
 msgid "cni_provider or network are missing"
 msgstr ""
 

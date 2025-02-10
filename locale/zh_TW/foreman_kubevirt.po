@@ -9,7 +9,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.1.9\n"
+"Project-Id-Version: foreman_kubevirt 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Bryan Kearney <bryan.kearney@gmail.com>, 2020\n"
