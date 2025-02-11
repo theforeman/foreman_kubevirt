@@ -1,3 +1,9 @@
+### 0.4.0 / 2025-02-11
+
+* Compatibility with Zeitwerk and Rails 7 (#160)
+* Pull in Korean translations (#166)
+* Use trusted publishers to release the gem (#167)
+
 ### 0.3.0 / 2024-12-06
 
 Due to a mixup there was a 0.2.1 release that was yanked. It's rereleased as 0.3.0.
