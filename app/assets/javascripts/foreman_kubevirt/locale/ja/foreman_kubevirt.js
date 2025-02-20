@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.3.0",
+        "Project-Id-Version": "foreman_kubevirt 0.4.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2023",

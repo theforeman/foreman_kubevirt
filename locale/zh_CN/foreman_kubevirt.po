@@ -8,15 +8,16 @@
 # Bryan Kearney <bryan.kearney@gmail.com>, 2020
 # tim123, 2020
 # Amit Upadhye <aupadhye@redhat.com>, 2022
-# Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2023
+# Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2025
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.3.0\n"
+"Project-Id-Version: foreman_kubevirt 0.4.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarde"
-"n.nl>, 2023\n"
+"n.nl>, 2025\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/foreman/teams/114/zh"
 "_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -162,7 +163,7 @@ msgid "Volume size %s is not valid"
 msgstr "卷大小 %s 无效"
 
 msgid "X509 Certification Authorities"
-msgstr "X509 证书授权"
+msgstr "X509 认证颁发机构"
 
 msgid "cni_provider or network are missing"
 msgstr "cni_provider 或网络丢失"
