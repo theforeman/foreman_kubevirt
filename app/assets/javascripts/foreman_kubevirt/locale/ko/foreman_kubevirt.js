@@ -3,10 +3,10 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.3.0",
+        "Project-Id-Version": "foreman_kubevirt 0.4.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
-        "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2024",
+        "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2025",
         "Language-Team": "Korean (https://app.transifex.com/foreman/teams/114/ko/)",
         "MIME-Version": "1.0",
         "Content-Type": "text/plain; charset=UTF-8",
@@ -150,7 +150,7 @@
         "볼륨 크기%s이/가 잘못되었습니다"
       ],
       "X509 Certification Authorities": [
-        "X509 인증 기관 "
+        "X509 인증 기관"
       ],
       "cni_provider or network are missing": [
         "cni_provider 또는 네트워크가 없습니다"
