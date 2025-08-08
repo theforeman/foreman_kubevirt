@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'foreman/exception'
 
 module ForemanKubevirt
@@ -5,7 +7,7 @@ module ForemanKubevirt
     alias_attribute :hostname, :url
     alias_attribute :token, :password
     alias_attribute :namespace, :user
-    validates :hostname, :api_port, :namespace, :token, :presence => true
+    validates :hostname, :api_port, :namespace, :token, presence: true
     after_validation :validate_connectivity unless Rails.env.test?
 
     def ca_cert
@@ -33,7 +35,7 @@ module ForemanKubevirt
     end
 
     def provided_attributes
-      { :uuid => :name, :mac => :mac }
+      { uuid: :name, mac: :mac }
     end
 
     def available_images
@@ -61,7 +63,7 @@ module ForemanKubevirt
       false
     end
 
-    def validate_connectivity(options = {})
+    def validate_connectivity(_options = {})
       return unless connection_properties_valid?
       return false if errors.any?
       client&.valid? && client&.virt_supported?
@@ -107,9 +109,9 @@ module ForemanKubevirt
     def new_volume(attrs = {})
       return unless new_volume_errors.empty?
       capacity = attrs.delete(:capacity)
-      args = {capacity: capacity}.merge(attrs)
+      args = { capacity: capacity }.merge(attrs)
       vol = Fog::Kubevirt::Compute::Volume.new(args)
-      vol.boot_order = 1 if args[:bootable] == "on" || args[:bootable] == "true"
+      vol.boot_order = 1 if args[:bootable] == 'on' || args[:bootable] == 'true'
       vol
     end
 
@@ -120,7 +122,7 @@ module ForemanKubevirt
     end
 
     def cni_providers
-      [[_("multus"), :multus], [_("genie"), :genie], [_("pod"), :pod]]
+      [[_('multus'), :multus], [_('genie'), :genie], [_('pod'), :pod]]
     end
 
     # @param args[Hash] contains VM creation parameters
@@ -160,19 +162,19 @@ module ForemanKubevirt
       logger.debug("creating VM with the following options: #{options.inspect}")
 
       # Add clound init user data
-      user_data = { "userData" => options[:user_data] } if options[:user_data].present?
+      user_data = { 'userData' => options[:user_data] } if options[:user_data].present?
 
       begin
         volumes = create_volumes_for_vm(options)
         interfaces, networks = create_network_devices_for_vm(options, volumes)
-        client.vms.create(:vm_name     => options[:name],
-                          :cpus        => options[:cpu_cores].to_i,
-                          :memory_size => convert_memory(options[:memory] + "b", :mi).to_s,
-                          :memory_unit => "Mi",
-                          :volumes     => volumes,
-                          :cloudinit   => user_data,
-                          :networks    => networks,
-                          :interfaces  => interfaces)
+        client.vms.create(vm_name: options[:name],
+          cpus: options[:cpu_cores].to_i,
+          memory_size: convert_memory("#{options[:memory]}b", :mi).to_s,
+          memory_unit: 'Mi',
+          volumes: volumes,
+          cloudinit: user_data,
+          networks: networks,
+          interfaces: interfaces)
         client.servers.get(options[:name])
       rescue Exception => e
         delete_pvcs(volumes) if volumes
@@ -190,7 +192,7 @@ module ForemanKubevirt
 
     def host_compute_attrs(host)
       attrs = super
-      attrs[:interfaces_attributes].each_value { |nic| nic["network"] = nil if nic["cni_provider"] == "pod" }
+      attrs[:interfaces_attributes].each_value { |nic| nic['network'] = nil if nic['cni_provider'] == 'pod' }
       attrs
     end
 
@@ -200,8 +202,8 @@ module ForemanKubevirt
     # return 'false'
     def vm_instance_defaults
       {
-        :memory    => 1024.megabytes.to_s,
-        :cpu_cores => '1'
+        memory: 1024.megabytes.to_s,
+        cpu_cores: '1',
       }
     end
 
@@ -247,8 +249,8 @@ module ForemanKubevirt
           mac: interface.mac,
           compute_attributes: {
             network: interface.network,
-            cni_provider: interface.cni_provider
-          }
+            cni_provider: interface.cni_provider,
+          },
         }
         hsh[index.to_s] = interface_attrs
       end
@@ -266,7 +268,7 @@ module ForemanKubevirt
     end
 
     def associated_host(vm)
-      associate_by("mac", vm.mac)
+      associate_by('mac', vm.mac)
     end
 
     # TODO: max supported values should be fetched according to namespace
@@ -292,7 +294,7 @@ module ForemanKubevirt
     end
 
     def plain_kubevirt_protocol
-      "plain.kubevirt.io".freeze
+      'plain.kubevirt.io'
     end
 
     def token_protocol(token)
@@ -302,15 +304,15 @@ module ForemanKubevirt
     def console(uuid)
       vm = find_vm_by_uuid(uuid)
       vnc_details = client.vminstances.get_vnc_console_details(vm.name, namespace)
-      token = Base64.encode64(vnc_details[:token]).delete!("\n").delete("==")
+      token = Base64.encode64(vnc_details[:token]).delete!("\n").delete('==')
       {
-        :host => vnc_details[:host],
-        :port => vnc_details[:port],
-        :path => vnc_details[:path],
-        :token_protocol => token_protocol(token),
-        :plain_protocol => plain_kubevirt_protocol,
-        :type => 'vnc',
-        :encrypt => true
+        host: vnc_details[:host],
+        port: vnc_details[:port],
+        path: vnc_details[:path],
+        token_protocol: token_protocol(token),
+        plain_protocol: plain_kubevirt_protocol,
+        type: 'vnc',
+        encrypt: true,
       }
     end
 
@@ -319,14 +321,14 @@ module ForemanKubevirt
     def client
       return @client if @client
       @client ||= Fog::Kubevirt::Compute.new(
-        :kubevirt_hostname   => hostname,
-        :kubevirt_port       => api_port,
-        :kubevirt_namespace  => namespace,
-        :kubevirt_token      => token,
-        :kubevirt_log        => logger,
-        :kubevirt_verify_ssl => ca_cert.present?,
-        :kubevirt_ca_cert    => ca_cert,
-        :kubevirt_version    => "v1alpha3"
+        kubevirt_hostname: hostname,
+        kubevirt_port: api_port,
+        kubevirt_namespace: namespace,
+        kubevirt_token: token,
+        kubevirt_log: logger,
+        kubevirt_verify_ssl: ca_cert.present?,
+        kubevirt_ca_cert: ca_cert,
+        kubevirt_version: 'v1alpha3'
       )
     rescue OpenSSL::X509::CertificateError
       raise_certification_failure_exception
@@ -343,7 +345,7 @@ module ForemanKubevirt
       raise Foreman::FingerprintException.new(
         _("The remote system presented a public key signed by an unidentified certificate authority.
            If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit"),
-          ca_cert
+        ca_cert
       )
     end
 
@@ -352,18 +354,18 @@ module ForemanKubevirt
     def verify_at_least_one_volume_provided(options)
       image = options[:image_id]
       volumes_attributes = options[:volumes_attributes]
-      raise ::Foreman::Exception.new _('VM should be created based on Persistent Volume Claim or Image') unless
-        (volumes_attributes.present? || image)
+      raise ::Foreman::Exception, _('VM should be created based on Persistent Volume Claim or Image') unless
+        volumes_attributes.present? || image
     end
 
     def verify_booting_from_image_is_possible(volumes)
-      raise ::Foreman::Exception.new _('It is not possible to set a bootable volume and image based provisioning.') if
-        volumes&.any? { |_, v| v[:bootable] == "true" }
+      raise ::Foreman::Exception, _('It is not possible to set a bootable volume and image based provisioning.') if
+        volumes&.any? { |_, v| v[:bootable] == 'true' }
     end
 
     def add_volume_for_image_provision(options)
       image = options[:image_id]
-      raise ::Foreman::Exception.new _('VM should be created based on an image') unless image
+      raise ::Foreman::Exception, _('VM should be created based on an image') unless image
 
       verify_booting_from_image_is_possible(options[:volumes_attributes])
 
@@ -377,27 +379,29 @@ module ForemanKubevirt
     def validate_volume_capacity(volumes_attributes)
       volumes_attributes.each do |_, vol|
         if vol[:capacity].to_s.empty? || /\A\d+G?\Z/.match(vol[:capacity].to_s).nil?
-          raise Foreman::Exception.new(_("Volume size %s is not valid") % vol[:capacity])
+          raise Foreman::Exception, _('Volume size %s is not valid') % vol[:capacity]
         end
       end
     end
 
     def validate_only_single_bootable_volume(volumes_attributes)
-      raise ::Foreman::Exception.new _('Only one volume can be bootable') if volumes_attributes.count { |_, v| v[:bootable] == "true" } > 1
+      raise ::Foreman::Exception, _('Only one volume can be bootable') if volumes_attributes.count do |_, v|
+                                                                            v[:bootable] == 'true'
+                                                                          end > 1
     end
 
     def create_new_pvc(pvc_name, capacity, storage_class)
-      capacity += "G" unless capacity.end_with? "G"
-      client.pvcs.create(:name          => pvc_name,
-                         :namespace     => namespace,
-                         :storage_class => storage_class,
-                         :access_modes  => ['ReadWriteOnce'],
-                         :requests      => { :storage => capacity })
+      capacity += 'G' unless capacity.end_with? 'G'
+      client.pvcs.create(name: pvc_name,
+        namespace: namespace,
+        storage_class: storage_class,
+        access_modes: ['ReadWriteOnce'],
+        requests: { storage: capacity })
     end
 
     def delete_pvcs(volumes)
       volumes.each do |volume|
-        client.pvcs.delete(volume.info) if volume.type == "persistentVolumeClaim"
+        client.pvcs.delete(volume.info) if volume.type == 'persistentVolumeClaim'
       rescue StandardError => e
         logger.error("The PVC #{volume.info} couldn't be delete due to #{e.message}")
       end
@@ -409,7 +413,7 @@ module ForemanKubevirt
       volume = Fog::Kubevirt::Compute::Volume.new
       volume.type = 'persistentVolumeClaim'
       volume.info = pvc_name
-      volume.boot_order = 1 if bootable == "true"
+      volume.boot_order = 1 if bootable == 'true'
       volume
     end
 
@@ -424,7 +428,7 @@ module ForemanKubevirt
       vm_name = options[:name].gsub(/[._]+/, '-')
       volumes_attributes.each_with_index do |(_, v), index|
         # Add PVC as volumes to the virtual machine
-        pvc_name = vm_name + "-claim-" + (index + 1).to_s
+        pvc_name = "#{vm_name}-claim-#{index + 1}"
         capacity = v[:capacity]
         storage_class = v[:storage_class]
         bootable = v[:bootable] && !image_provision
@@ -445,7 +449,7 @@ module ForemanKubevirt
 
       # Add image as volume to the virtual machine
       volumes = []
-      image_provision = options[:provision_method] == "image"
+      image_provision = options[:provision_method] == 'image'
 
       volumes << add_volume_for_image_provision(options) if image_provision
       volumes.concat(add_volumes_based_on_pvcs(options, image_provision))
@@ -460,24 +464,25 @@ module ForemanKubevirt
     def create_network_element(iface)
       nic = { bridge: {}, name: iface[:network] }
       cni = iface[:cni_provider].to_sym
-      net = { :name => iface[:network], cni => { :networkName => iface[:network] } }
+      net = { :name => iface[:network], cni => { networkName: iface[:network] } }
       [nic, net]
     end
 
     def create_network_devices_for_vm(options, volumes)
       interfaces = []
       networks = []
-      options[:interfaces_attributes].values.each do |iface|
-        raise ::Foreman::Exception.new _('cni_provider or network are missing') unless (iface.key?(:cni_provider) && iface.key?(:network))
+      options[:interfaces_attributes].each_value do |iface|
+        unless iface.key?(:cni_provider) && iface.key?(:network)
+          raise ::Foreman::Exception,
+            _('cni_provider or network are missing')
+        end
         if iface[:cni_provider] == 'pod'
           nic, net = create_pod_network_element
         else
           nic, net = create_network_element(iface)
         end
 
-        if iface[:provision] == true && volumes.select { |v| v.boot_order == 1 }.empty?
-          nic[:bootOrder] = 1
-        end
+        nic[:bootOrder] = 1 if iface[:provision] == true && volumes.select { |v| v.boot_order == 1 }.empty?
         nic[:macAddress] = iface[:mac] if iface[:mac]
         interfaces << nic
         networks << net

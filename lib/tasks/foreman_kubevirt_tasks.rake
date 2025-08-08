@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake/testtask'
 
 # Tasks
@@ -23,7 +25,7 @@ namespace :test do
 end
 
 namespace :foreman_kubevirt do
-  task :rubocop do
+  task rubocop: :environment do
     begin
       require 'rubocop/rake_task'
       RuboCop::RakeTask.new(:rubocop_foreman_kubevirt) do |task|
@@ -43,5 +45,6 @@ Rake::Task[:test].enhance ['test:foreman_kubevirt']
 
 load 'tasks/jenkins.rake'
 if Rake::Task.task_defined?(:'jenkins:unit')
-  Rake::Task['jenkins:unit'].enhance ['test:foreman_kubevirt', 'foreman_kubevirt:rubocop']
+  Rake::Task['jenkins:unit'].enhance ['test:foreman_kubevirt',
+                                      'foreman_kubevirt:rubocop']
 end

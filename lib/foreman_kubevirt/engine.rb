@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module ForemanKubevirt
   class Engine < ::Rails::Engine
-    engine_name "foreman_kubevirt"
+    engine_name 'foreman_kubevirt'
 
-    initializer "foreman_kubevirt.register_plugin", :before => :finisher_hook do |app|
+    initializer 'foreman_kubevirt.register_plugin', before: :finisher_hook do |app|
       app.reloader.to_prepare do
         Foreman::Plugin.register :foreman_kubevirt do
           requires_foreman '>= 3.13'
@@ -38,7 +40,7 @@ module ForemanKubevirt
       SETTINGS[:foreman_kubevirt] = { assets: { precompile: assets_to_precompile } }
     end
 
-    initializer "foreman_kubevirt.add_rabl_view_path" do
+    initializer 'foreman_kubevirt.add_rabl_view_path' do
       Rabl.configure do |config|
         config.view_paths << ForemanKubevirt::Engine.root.join('app', 'views')
       end
@@ -46,22 +48,22 @@ module ForemanKubevirt
 
     # Include concerns in this config.to_prepare block
     config.to_prepare do
-      require "fog/kubevirt"
-      require "fog/kubevirt/compute/utils/unit_converter"
-      require "fog/kubevirt/compute/models/server"
+      require 'fog/kubevirt'
+      require 'fog/kubevirt/compute/utils/unit_converter'
+      require 'fog/kubevirt/compute/models/server'
 
-      ::Api::V2::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
-      Fog::Kubevirt::Compute::Server.send(:include, ::FogExtensions::Kubevirt::Server)
+      ::Api::V2::ComputeResourcesController.include ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
+      Fog::Kubevirt::Compute::Server.include ::FogExtensions::Kubevirt::Server
 
-      require "fog/kubevirt/compute/models/volume"
-      Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
+      require 'fog/kubevirt/compute/models/volume'
+      Fog::Kubevirt::Compute::Volume.include ::FogExtensions::Kubevirt::Volume
 
-      require "fog/kubevirt/compute/models/vmnic"
-      Fog::Kubevirt::Compute::VmNic.send(:include, ::FogExtensions::Kubevirt::VMNic)
+      require 'fog/kubevirt/compute/models/vmnic'
+      Fog::Kubevirt::Compute::VmNic.include ::FogExtensions::Kubevirt::VMNic
 
-      require "fog/kubevirt/compute/models/networkattachmentdef"
-      Fog::Kubevirt::Compute::Networkattachmentdef.send(:include, ::FogExtensions::Kubevirt::Network)
-      ComputeAttribute.send :include, ForemanKubevirt::ComputeAttributeExtensions
+      require 'fog/kubevirt/compute/models/networkattachmentdef'
+      Fog::Kubevirt::Compute::Networkattachmentdef.include ::FogExtensions::Kubevirt::Network
+      ComputeAttribute.include ForemanKubevirt::ComputeAttributeExtensions
 
     rescue StandardError => e
       Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
