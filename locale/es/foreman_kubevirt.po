@@ -13,10 +13,9 @@
 # Sergio Ocón-Cárdenas, 2020
 # Amit Upadhye <aupadhye@redhat.com>, 2022
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.4.0\n"
+"Project-Id-Version: foreman_kubevirt 0.4.1\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2022\n"
