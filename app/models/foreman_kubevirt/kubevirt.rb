@@ -458,9 +458,12 @@ module ForemanKubevirt
     end
 
     def create_network_element(iface)
-      nic = { bridge: {}, name: iface[:network] }
+      # K8s objects have string naming.
+      # Use ActiveSupport::Inflector#parameterize to create a sanitized NIC name
+      nic_name = iface[:network].parameterize
+      nic = { bridge: {}, name: nic_name }
       cni = iface[:cni_provider].to_sym
-      net = { :name => iface[:network], cni => { :networkName => iface[:network] } }
+      net = { :name => nic_name, cni => { :networkName => iface[:network] } }
       [nic, net]
     end
 
