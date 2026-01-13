@@ -4,8 +4,7 @@
 <%= password_f f, :token, :label => _("Token"), :required => true,
               :keep_value => true, :unset => unset_password?,
               :help_block => _("e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."),
-              :help_inline => documentation_button('/foreman_kubevirt/0.x/index.html#4.1SettingComputeResourceTokenandX509CAvalues',
-              :root_url => 'https://theforeman.org/plugins'),
+              :help_inline => documentation_button('#4.1SettingComputeResourceTokenandX509CAvalues', type: 'plugin_manual', name: 'foreman_kubevirt', version: '0.x'),
               :id => "compute_resource_password"
 %>
 
