@@ -21,6 +21,30 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     assert_equal expected_res, result
   end
 
+  describe "create_vm" do
+    test "uses sanitized NIC names" do
+      vms = stub
+      pvcs = stub
+      pvcs.stubs(:create)
+      pvcs.stubs(:delete)
+      servers = stub
+      servers.stubs(:get)
+      client = stub
+      client.stubs(:vms).returns(vms)
+      client.stubs(:pvcs).returns(pvcs)
+      client.stubs(:servers).returns(servers)
+      record = new_kubevirt_vcr
+      record.stubs(:client).returns(client)
+
+      expected_networks = [{ :name => "default-network", :multus => { :networkName => "default/network" } }]
+      expected_interfaces = [{ :bridge => {}, :name => "default-network" }]
+
+      vms.expects(:create).with(vm_name: anything, cpus: anything, memory_size: anything, memory_unit: anything, volumes: anything, cloudinit: anything, networks: expected_networks, interfaces: expected_interfaces)
+
+      record.create_vm({ :name => "test", :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+    end
+  end
+
   describe "networks" do
     test "returns list of networksattachmentdefs" do
       Fog.mock!
