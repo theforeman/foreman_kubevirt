@@ -45,6 +45,16 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     end
   end
 
+  describe "create_network_element" do
+    test "sanitizes NIC names" do
+      record = new_kubevirt_vcr
+      iface = { network: "default/network", cni_provider: "multus" }
+      nic, net = record.send(:create_network_element, iface)
+      assert_equal "default-network", nic[:name]
+      assert_equal "default-network", net[:name]
+    end
+  end
+
   describe "networks" do
     test "returns list of networksattachmentdefs" do
       Fog.mock!
