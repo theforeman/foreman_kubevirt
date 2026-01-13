@@ -29,9 +29,15 @@ module FogExtensions
         interfaces.map(&:mac_address).compact.min
       end
 
-      # TODO: Update once new API for reporting IP_ADRESSSES is set
-      def ip_addresses
-        [interfaces&.first&.ip_address]
+      # Returns IP addresses from the VM
+      # The ip_address attribute is populated from the VMI (VirtualMachineInstance) status
+      # by fog-kubevirt when fetching the server
+      def ip
+        Net::Validations.validate_ip(ip_address) ? ip_address : nil
+      end
+
+      def ip6
+        Net::Validations.validate_ip6(ip_address) ? ip_address : nil
       end
 
       def poweroff
