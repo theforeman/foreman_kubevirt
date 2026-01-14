@@ -9,7 +9,7 @@
 
 <div id='networks' class='<%= 'hide' if pod %>'>
 <%= select_f f, :network,
-                compute_resource.networks,
+                (compute_resource.networks + [OpenStruct.new(name: f.object.network, id: f.object.network)]).compact.uniq,
                 :id,
                 :name,
                 {},
