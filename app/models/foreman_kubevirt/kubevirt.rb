@@ -92,6 +92,10 @@ module ForemanKubevirt
       []
     end
 
+    def editable_network_interfaces?
+      true
+    end
+
     def find_vm_by_uuid(uuid)
       super
     rescue Fog::Kubevirt::Errors::ClientError => e
