@@ -11,6 +11,6 @@
 <%= textarea_f f, :ca_cert, :label => _("X509 Certification Authorities"),
   :placeholder => _("Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.") %>
 
- <div class="col-md-offset-2">
-   <%= test_connection_button_f(f, true) %>
- </div>
+<div class="col-md-offset-2">
+  <%= test_connection_button_f(f, f.object.connection_valid?) %>
+</div>
