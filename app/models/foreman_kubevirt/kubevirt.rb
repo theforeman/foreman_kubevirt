@@ -73,6 +73,13 @@ module ForemanKubevirt
       end
     end
 
+    def connection_valid?
+      return false if hostname.blank? || token.blank? || namespace.blank? || api_port.blank?
+      client&.valid? && client&.virt_supported?
+    rescue StandardError
+      false
+    end
+
     def connection_properties_valid?
       errors[:hostname].empty? && errors[:token].empty? && errors[:namespace].empty? && errors[:api_port].empty?
     end
