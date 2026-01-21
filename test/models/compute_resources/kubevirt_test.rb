@@ -68,9 +68,31 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       compute_resource = FactoryBot.build(:compute_resource_kubevirt)
       client = stub
       compute_resource.stubs(:client).returns(client)
-      client.stubs(:networkattachmentdefs).raises("exception")
+      client.stubs(:networkattachmentdefs).raises(Fog::Kubevirt::Errors::ClientError.new)
       res = compute_resource.networks
       assert_equal 0, res.count
+    end
+  end
+
+  describe "volumes" do
+    test "returns empty array when error is raised" do
+      Fog.mock!
+      compute_resource = new_kubevirt_vcr
+      client = stub
+      compute_resource.stubs(:client).returns(client)
+      client.stubs(:volumes).raises(Fog::Kubevirt::Errors::ClientError.new)
+      assert_empty compute_resource.volumes
+    end
+  end
+
+  describe "storage_classes" do
+    test "returns empty array when error is raised" do
+      Fog.mock!
+      compute_resource = new_kubevirt_vcr
+      client = stub
+      compute_resource.stubs(:client).returns(client)
+      client.stubs(:storageclasses).raises(Fog::Kubevirt::Errors::ClientError.new)
+      assert_empty compute_resource.storage_classes
     end
   end
 

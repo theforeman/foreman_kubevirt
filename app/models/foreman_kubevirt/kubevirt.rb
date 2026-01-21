@@ -86,9 +86,9 @@ module ForemanKubevirt
 
     def networks
       client.networkattachmentdefs.all
-    rescue StandardError => e
-      logger.warn("Failed to retrieve network attachments definition from KubeVirt,
-        make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed: #{e.message}")
+    rescue Fog::Kubevirt::Errors::ClientError => e
+      Foreman::Logging.exception("Failed to retrieve network attachments definition from KubeVirt,
+        make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed", e)
       []
     end
 
@@ -101,10 +101,16 @@ module ForemanKubevirt
 
     def volumes
       client.volumes.all
+    rescue Fog::Kubevirt::Errors::ClientError => e
+      Foreman::Logging.exception("Failed retrieving KubeVirt volumes", e)
+      []
     end
 
     def storage_classes
       client.storageclasses.all
+    rescue Fog::Kubevirt::Errors::ClientError => e
+      Foreman::Logging.exception("Failed retrieving KubeVirt storage classes", e)
+      []
     end
 
     def storage_classes_for_select
