@@ -9,6 +9,20 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     ::FactoryBot.build(:compute_resource_kubevirt)
   end
 
+  def mocked_client
+    vms = stub
+    pvcs = stub
+    pvcs.stubs(:create)
+    pvcs.stubs(:delete)
+    servers = stub
+    servers.stubs(:get)
+    client = stub
+    client.stubs(:vms).returns(vms)
+    client.stubs(:pvcs).returns(pvcs)
+    client.stubs(:servers).returns(servers)
+    client
+  end
+
   test "host_interfaces_attrs" do
     record = new_kubevirt_vcr
     host = ::FactoryBot.build(:host_kubevirt, :with_interfaces)
@@ -23,23 +37,17 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
   describe "create_vm" do
     test "uses sanitized NIC names" do
-      vms = stub
-      pvcs = stub
-      pvcs.stubs(:create)
-      pvcs.stubs(:delete)
-      servers = stub
-      servers.stubs(:get)
-      client = stub
-      client.stubs(:vms).returns(vms)
-      client.stubs(:pvcs).returns(pvcs)
-      client.stubs(:servers).returns(servers)
       record = new_kubevirt_vcr
+      client = mocked_client
       record.stubs(:client).returns(client)
 
       expected_networks = [{ :name => "default-network", :multus => { :networkName => "default/network" } }]
       expected_interfaces = [{ :bridge => {}, :name => "default-network" }]
 
-      vms.expects(:create).with(vm_name: anything, cpus: anything, memory_size: anything, memory_unit: anything, volumes: anything, cloudinit: anything, networks: expected_networks, interfaces: expected_interfaces)
+      client.vms.expects(:create).with do |args|
+        assert_equal expected_networks, args[:networks]
+        assert_equal expected_interfaces, args[:interfaces]
+      end
 
       record.create_vm({ :name => "test", :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
