@@ -51,6 +51,32 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
       record.create_vm({ :name => "test", :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
+
+    test "uses dataVolume for image based provisioning" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        assert_equal 1, args[:volumes].length
+        assert_equal 1, args[:volume_templates].length
+
+        volume = args[:volumes].first
+        assert_equal 'dataVolume', volume.type
+        assert_equal 'test-root', volume.config[:name]
+        assert_equal 'rootdisk', volume.name
+        assert_equal 1, volume.boot_order
+
+        volume_template = args[:volume_templates].first
+        assert_equal 'DataVolume', volume_template[:kind]
+        assert_equal 'test-root', volume_template[:metadata][:name]
+        assert_equal 'DataSource', volume_template[:spec][:sourceRef][:kind]
+        assert_equal 'default', volume_template[:spec][:sourceRef][:namespace]
+        assert_equal 'template', volume_template[:spec][:sourceRef][:name]
+      end
+
+      record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => {}, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+    end
   end
 
   describe "create_network_element" do
