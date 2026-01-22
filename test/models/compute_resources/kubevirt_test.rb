@@ -61,7 +61,8 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       compute_resource = FactoryBot.build(:compute_resource_kubevirt)
       res = compute_resource.networks
       assert_equal 1, res.count
-      assert_equal '0e35b868-2464-11e9-93b4-525400c5a686', res.first.uid
+      assert_equal 'default/ovs-foreman', res.first.id
+      assert_equal 'default/ovs-foreman', res.first.name
     end
 
     test "in case of exception, returns an empty array" do

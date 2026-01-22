@@ -85,11 +85,18 @@ module ForemanKubevirt
     end
 
     def networks
-      client.networkattachmentdefs.all
+      client.networkattachmentdefs.all.map do |network|
+        namespaced_name = "#{network.namespace}/#{network.name}"
+        OpenStruct.new(id: namespaced_name, name: namespaced_name)
+      end
     rescue Fog::Kubevirt::Errors::ClientError => e
       Foreman::Logging.exception("Failed to retrieve network attachments definition from KubeVirt,
         make sure KubeVirt has CNI provider and NetworkAttachmentDefinition CRD deployed", e)
       []
+    end
+
+    def editable_network_interfaces?
+      true
     end
 
     def find_vm_by_uuid(uuid)
