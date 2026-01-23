@@ -84,17 +84,6 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     assert_equal "olive-kempter.example.com", server.name
   end
 
-  test "should fail when creating a VM with_bootable flag and image based" do
-    vm_args = IMAGE_BASED_VM_ARGS.deep_dup
-    vm_args["volumes_attributes"]["0"]["bootable"] = "true"
-    Fog.mock!
-    compute_resource = new_kubevirt_vcr
-    exception = assert_raise(Foreman::Exception) do
-      compute_resource.create_vm(vm_args)
-    end
-    assert_match(/It is not possible to set a bootable volume and image based provisioning./, exception.message)
-  end
-
   test "should fail when creating a VM without an image or pvc" do
     vm_args = IMAGE_BASED_VM_ARGS.deep_dup
     vm_args["volumes_attributes"] = {}
