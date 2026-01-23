@@ -377,17 +377,7 @@ module ForemanKubevirt
         (volumes_attributes.present? || image)
     end
 
-    def verify_booting_from_image_is_possible(volumes)
-      raise ::Foreman::Exception.new _('It is not possible to set a bootable volume and image based provisioning.') if
-        volumes&.any? { |_, v| v[:bootable] == "true" }
-    end
-
     def add_volume_for_image_provision(options)
-      image = options[:image_id]
-      raise ::Foreman::Exception.new _('VM should be created based on an image') unless image
-
-      verify_booting_from_image_is_possible(options[:volumes_attributes])
-
       volume = Fog::Kubevirt::Compute::Volume.new
       volume.config = { name: rootdisk_name(options) }
       volume.boot_order = 1
@@ -406,8 +396,20 @@ module ForemanKubevirt
         namespace = nil
       end
 
-      source_ref = { kind: 'DataSource', name: name, namespace: namespace }.compact
       storage = { resources: { requests: { storage: nil } } }
+      volumes_attributes = options[:volumes_attributes]
+      if volumes_attributes.present?
+        _, boot_volume = volumes_attributes.find { |_, vol| vol[:bootable] == 'true' }
+        if boot_volume
+          capacity = boot_volume[:capacity]
+          capacity += "G" unless capacity.end_with? "G"
+          storage_class = boot_volume[:storage_class]
+          storage[:resources][:requests][:storage] = capacity
+          storage[:storageClassName] = storage_class if storage_class.present?
+        end
+      end
+
+      source_ref = { kind: 'DataSource', name: name, namespace: namespace }.compact
       metadata = { name: rootdisk_name(options) }
       { kind: 'DataVolume', metadata: metadata, spec: { sourceRef: source_ref, storage: storage } }
     end
@@ -466,6 +468,8 @@ module ForemanKubevirt
       volumes = []
       vm_name = options[:name].gsub(/[._]+/, '-')
       volumes_attributes.each_with_index do |(_, v), index|
+        # skip if this is a boot volume for image provisioning
+        next if image_provision && v[:bootable]
         # Add PVC as volumes to the virtual machine
         pvc_name = vm_name + "-claim-" + (index + 1).to_s
         capacity = v[:capacity]
