@@ -344,7 +344,7 @@ module ForemanKubevirt
         :kubevirt_namespace  => namespace,
         :kubevirt_token      => token,
         :kubevirt_log        => logger,
-        :kubevirt_verify_ssl => ca_cert.present?,
+        :kubevirt_verify_ssl => true,
         :kubevirt_ca_cert    => ca_cert,
         :kubevirt_version    => "v1alpha3"
       )
