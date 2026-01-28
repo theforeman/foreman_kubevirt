@@ -33,7 +33,7 @@ module ForemanKubevirt
     end
 
     def provided_attributes
-      { :uuid => :name, :mac => :mac }
+      super.merge({ :uuid => :name, :mac => :mac, :ip => :ip, :ip6 => :ip6 })
     end
 
     def available_images
