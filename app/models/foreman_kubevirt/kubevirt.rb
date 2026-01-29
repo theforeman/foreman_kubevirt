@@ -396,18 +396,14 @@ module ForemanKubevirt
         namespace = nil
       end
 
-      storage = { resources: { requests: { storage: nil } } }
-      volumes_attributes = options[:volumes_attributes]
-      if volumes_attributes.present?
-        _, boot_volume = volumes_attributes.find { |_, vol| vol[:bootable] == 'true' }
-        if boot_volume
-          capacity = boot_volume[:capacity]
-          capacity += "G" unless capacity.end_with? "G"
-          storage_class = boot_volume[:storage_class]
-          storage[:resources][:requests][:storage] = capacity
-          storage[:storageClassName] = storage_class if storage_class.present?
-        end
-      end
+      volumes_attributes = options.fetch(:volumes_attributes, {})
+      _, boot_volume = volumes_attributes.find { |_, vol| vol[:bootable] == 'true' }
+      raise ::Foreman::Exception.new _('A bootable volume is required as a target for the image') unless boot_volume
+      capacity = boot_volume[:capacity]
+      capacity += "G" unless capacity.end_with? "G"
+      storage_class = boot_volume[:storage_class]
+      storage = { resources: { requests: { storage: capacity } } }
+      storage[:storageClassName] = storage_class if storage_class.present?
 
       source_ref = { kind: 'DataSource', name: name, namespace: namespace }.compact
       metadata = { name: rootdisk_name(options) }

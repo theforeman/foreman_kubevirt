@@ -52,31 +52,13 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       record.create_vm({ :name => "test", :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
 
-    test "uses dataVolume for image based provisioning without an explicit boot volume" do
+    test "raises an error for image based provisioning without an explicit boot volume" do
       record = new_kubevirt_vcr
-      client = mocked_client
-      record.stubs(:client).returns(client)
 
-      client.vms.expects(:create).with do |args|
-        assert_equal 1, args[:volumes].length
-        assert_equal 1, args[:volume_templates].length
-
-        volume = args[:volumes].first
-        assert_equal 'dataVolume', volume.type
-        assert_equal 'test-root', volume.config[:name]
-        assert_equal 'rootdisk', volume.name
-        assert_equal 1, volume.boot_order
-
-        volume_template = args[:volume_templates].first
-        assert_equal 'DataVolume', volume_template[:kind]
-        assert_equal 'test-root', volume_template[:metadata][:name]
-        assert_equal 'DataSource', volume_template[:spec][:sourceRef][:kind]
-        assert_equal 'default', volume_template[:spec][:sourceRef][:namespace]
-        assert_equal 'template', volume_template[:spec][:sourceRef][:name]
-        assert_nil volume_template[:spec][:storage][:resources][:requests][:storage]
+      error = assert_raises(Foreman::Exception) do
+        record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => {}, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
       end
-
-      record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => {}, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+      assert_match(/A bootable volume is required as a target for the image/, error.message)
     end
 
     test "uses dataVolume for image based provisioning with an explicit boot volume" do
@@ -106,36 +88,13 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10", :bootable => "true" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
 
-    test "uses dataVolume for image based provisioning with an extra data volume" do
+    test "raises an error for image based provisioning with only an extra data volume" do
       record = new_kubevirt_vcr
-      client = mocked_client
-      record.stubs(:client).returns(client)
 
-      client.vms.expects(:create).with do |args|
-        assert_equal 2, args[:volumes].length
-        assert_equal 1, args[:volume_templates].length
-
-        boot_volume = args[:volumes].first
-        assert_equal 'dataVolume', boot_volume.type
-        assert_equal 'test-root', boot_volume.config[:name]
-        assert_equal 'rootdisk', boot_volume.name
-        assert_equal 1, boot_volume.boot_order
-
-        data_volume = args[:volumes].last
-        assert_equal 'persistentVolumeClaim', data_volume.type
-        assert_equal 'test-claim-1', data_volume.info
-        assert_nil data_volume.boot_order
-
-        volume_template = args[:volume_templates].first
-        assert_equal 'DataVolume', volume_template[:kind]
-        assert_equal 'test-root', volume_template[:metadata][:name]
-        assert_equal 'DataSource', volume_template[:spec][:sourceRef][:kind]
-        assert_equal 'default', volume_template[:spec][:sourceRef][:namespace]
-        assert_equal 'template', volume_template[:spec][:sourceRef][:name]
-        assert_nil volume_template[:spec][:storage][:resources][:requests][:storage]
+      error = assert_raises(Foreman::Exception) do
+        record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
       end
-
-      record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+      assert_match(/A bootable volume is required as a target for the image/, error.message)
     end
   end
 
