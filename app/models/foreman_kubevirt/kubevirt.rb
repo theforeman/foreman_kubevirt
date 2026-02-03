@@ -222,7 +222,8 @@ module ForemanKubevirt
     def vm_instance_defaults
       {
         :memory    => 1024.megabytes.to_s,
-        :cpu_cores => '1'
+        :cpu_cores => '1',
+        :volumes   => [new_volume].compact,
       }
     end
 
