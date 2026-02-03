@@ -16,10 +16,13 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     pvcs.stubs(:delete)
     servers = stub
     servers.stubs(:get)
+    storageclasses = stub
+    storageclasses.stubs(:all).returns([{ 'name': 'local' }])
     client = stub
     client.stubs(:vms).returns(vms)
     client.stubs(:pvcs).returns(pvcs)
     client.stubs(:servers).returns(servers)
+    client.stubs(:storageclasses).returns(storageclasses)
     client
   end
 
