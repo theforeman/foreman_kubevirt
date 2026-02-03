@@ -183,13 +183,14 @@ module ForemanKubevirt
       user_data = { "userData" => options[:user_data] } if options[:user_data].present?
 
       begin
-        volumes = create_volumes_for_vm(options)
+        volumes, volume_templates = create_volumes_for_vm(options)
         interfaces, networks = create_network_devices_for_vm(options, volumes)
         client.vms.create(:vm_name     => options[:name],
                           :cpus        => options[:cpu_cores].to_i,
                           :memory_size => convert_memory(options[:memory] + "b", :mi).to_s,
                           :memory_unit => "Mi",
                           :volumes     => volumes,
+                          :volume_templates => volume_templates,
                           :cloudinit   => user_data,
                           :networks    => networks,
                           :interfaces  => interfaces)
@@ -221,7 +222,8 @@ module ForemanKubevirt
     def vm_instance_defaults
       {
         :memory    => 1024.megabytes.to_s,
-        :cpu_cores => '1'
+        :cpu_cores => '1',
+        :volumes   => [new_volume].compact,
       }
     end
 
@@ -376,22 +378,42 @@ module ForemanKubevirt
         (volumes_attributes.present? || image)
     end
 
-    def verify_booting_from_image_is_possible(volumes)
-      raise ::Foreman::Exception.new _('It is not possible to set a bootable volume and image based provisioning.') if
-        volumes&.any? { |_, v| v[:bootable] == "true" }
+    def add_volume_for_image_provision(options)
+      volume = Fog::Kubevirt::Compute::Volume.new
+      volume.config = { name: rootdisk_name(options) }
+      volume.boot_order = 1
+      volume.name = 'rootdisk'
+      volume.type = 'dataVolume'
+      volume
     end
 
-    def add_volume_for_image_provision(options)
+    def add_volume_template_for_image_provision(options)
       image = options[:image_id]
       raise ::Foreman::Exception.new _('VM should be created based on an image') unless image
 
-      verify_booting_from_image_is_possible(options[:volumes_attributes])
+      namespace, name = image.split('/', 2)
+      if name.nil?
+        name = namespace
+        namespace = nil
+      end
 
-      volume = Fog::Kubevirt::Compute::Volume.new
-      volume.info = image
-      volume.boot_order = 1
-      volume.type = 'containerDisk'
-      volume
+      volumes_attributes = options.fetch(:volumes_attributes, {})
+      _, boot_volume = volumes_attributes.find { |_, vol| vol[:bootable] == 'true' }
+      raise ::Foreman::Exception.new _('A bootable volume is required as a target for the image') unless boot_volume
+      capacity = boot_volume[:capacity]
+      capacity += "G" unless capacity.end_with? "G"
+      storage_class = boot_volume[:storage_class]
+      storage = { resources: { requests: { storage: capacity } } }
+      storage[:storageClassName] = storage_class if storage_class.present?
+
+      source_ref = { kind: 'DataSource', name: name, namespace: namespace }.compact
+      metadata = { name: rootdisk_name(options) }
+      { kind: 'DataVolume', metadata: metadata, spec: { sourceRef: source_ref, storage: storage } }
+    end
+
+    def rootdisk_name(options)
+      vm_name = options[:name].parameterize
+      "#{vm_name}-root"
     end
 
     def validate_volume_capacity(volumes_attributes)
@@ -443,6 +465,8 @@ module ForemanKubevirt
       volumes = []
       vm_name = options[:name].gsub(/[._]+/, '-')
       volumes_attributes.each_with_index do |(_, v), index|
+        # skip if this is a boot volume for image provisioning
+        next if image_provision && v[:bootable]
         # Add PVC as volumes to the virtual machine
         pvc_name = vm_name + "-claim-" + (index + 1).to_s
         capacity = v[:capacity]
@@ -465,10 +489,15 @@ module ForemanKubevirt
 
       # Add image as volume to the virtual machine
       volumes = []
+      volume_templates = []
       image_provision = options[:provision_method] == "image"
 
       volumes << add_volume_for_image_provision(options) if image_provision
       volumes.concat(add_volumes_based_on_pvcs(options, image_provision))
+
+      volume_templates << add_volume_template_for_image_provision(options) if image_provision
+
+      [volumes, volume_templates]
     end
 
     def create_pod_network_element
