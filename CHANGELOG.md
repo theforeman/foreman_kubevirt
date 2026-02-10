@@ -1,3 +1,23 @@
+### 0.5.0 / 2026-02-10
+
+* use dataVolumeTemplates to perform image-based provisioning (#178)
+
+### 0.4.3 / 2026-01-30
+
+* CVE-2026-1531 - default to verify SSL when talking to KubeVirt (#180)
+
+### 0.4.2 / 2026-01-28
+
+* allow to enter arbitrary data for the network (#175)
+* rescue from Fog::Kubevirt::Errors::ClientError (#177)
+* Update button color as per test connection (#176)
+* Sanitize NIC names to satisfy K8s naming conventions (#172)
+* fix help link in create form (#173)
+
+### 0.4.1 / 2025-02-20
+
+* Translation updates (#168)
+
 ### 0.4.0 / 2025-02-11
 
 * Compatibility with Zeitwerk and Rails 7 (#160)
