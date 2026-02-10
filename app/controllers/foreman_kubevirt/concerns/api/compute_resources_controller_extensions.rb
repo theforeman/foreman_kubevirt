@@ -8,7 +8,7 @@ module ForemanKubevirt
             param :token, String, :desc => N_("Token for KubeVirt only")
             param :hostname, String, :desc => N_("Host name for KubeVirt only")
             param :namespace, String, :desc => N_("Namespace for KubeVirt only")
-            param :ca_crt, String, :desc => N_("CA crt for KubeVirt only")
+            param :ca_cert, String, :desc => N_("CA cert for KubeVirt only")
             param :api_port, String, :desc => N_("API port for KubeVirt only")
           end
         end
