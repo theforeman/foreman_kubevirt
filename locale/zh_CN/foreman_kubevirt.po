@@ -12,7 +12,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.4.1\n"
+"Project-Id-Version: foreman_kubevirt 0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarde"
@@ -28,6 +28,9 @@ msgstr ""
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr "%{cpu_cores} 内核和%{memory} 内存"
 
+msgid "A bootable volume is required as a target for the image"
+msgstr ""
+
 msgid "API Port"
 msgstr "API 端口"
 
@@ -40,8 +43,8 @@ msgstr "操作"
 msgid "Bootable"
 msgstr "可引导的"
 
-msgid "CA crt for KubeVirt only"
-msgstr "仅限 KubeVirt 的 CA crt"
+msgid "CA cert for KubeVirt only"
+msgstr ""
 
 msgid "CNI Provider"
 msgstr "CNI 供应商"
@@ -64,9 +67,6 @@ msgstr "主机名"
 msgid "Image"
 msgstr "镜像"
 
-msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr "无法基于置备设置引导卷和镜像。"
-
 msgid "Memory"
 msgstr "内存"
 
@@ -88,8 +88,8 @@ msgstr "网络"
 msgid "Only one volume can be bootable"
 msgstr "只能引导一个卷"
 
-msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr "（可选）提供一个 CA，或正确排序的 CA 链，或文件的路径。如果留为空白-不安全。"
+msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file."
+msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
 msgstr "进行验证的密码 - 用于 SSH 完成步骤。"
@@ -124,8 +124,8 @@ msgstr "储存类"
 msgid "The compute resource could not be authenticated"
 msgstr "无法验证计算资源"
 
-msgid "The name of the image in the registry."
-msgstr "registry 中的镜像名称。"
+msgid "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace."
+msgstr ""
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"

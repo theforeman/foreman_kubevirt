@@ -12,7 +12,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.4.1\n"
+"Project-Id-Version: foreman_kubevirt 0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Amit Upadhye <aupadhye@redhat.com>, 2022\n"
@@ -28,6 +28,9 @@ msgstr ""
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr "%{cpu_cores} Cores e %{memory} memória"
 
+msgid "A bootable volume is required as a target for the image"
+msgstr ""
+
 msgid "API Port"
 msgstr "Porto API"
 
@@ -40,8 +43,8 @@ msgstr "Ações"
 msgid "Bootable"
 msgstr "Inicializavel"
 
-msgid "CA crt for KubeVirt only"
-msgstr "CA crt somente para KubeVirt"
+msgid "CA cert for KubeVirt only"
+msgstr ""
 
 msgid "CNI Provider"
 msgstr "Fornecedor da CNI"
@@ -64,9 +67,6 @@ msgstr "Nome da máquina"
 msgid "Image"
 msgstr "Imagem"
 
-msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr "Não é possível definir um volume de inicialização e um provisionamento baseado em imagem."
-
 msgid "Memory"
 msgstr "Memória"
 
@@ -88,8 +88,8 @@ msgstr "Rede"
 msgid "Only one volume can be bootable"
 msgstr "Somente um volume pode ser inicializável"
 
-msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr "Opcionalmente, fornecer uma CA, ou uma corrente CA corretamente ordenada ou um caminho para um arquivo. Se deixado em branco - inseguro."
+msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file."
+msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
 msgstr "Senha para autenticar-se - usada para o passo final do SSH"
@@ -124,8 +124,8 @@ msgstr "Classe de armazenagem"
 msgid "The compute resource could not be authenticated"
 msgstr "O recurso de computação não pôde ser autenticado"
 
-msgid "The name of the image in the registry."
-msgstr "O nome da imagem no registro."
+msgid "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace."
+msgstr ""
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"

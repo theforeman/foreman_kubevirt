@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.4.1",
+        "Project-Id-Version": "foreman_kubevirt 0.5.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "Amit Upadhye <aupadhye@redhat.com>, 2022",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         "%{cpu_cores} Cores e %{memory} memória"
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         "Porto API"
       ],
@@ -32,8 +35,8 @@
       "Bootable": [
         "Inicializavel"
       ],
-      "CA crt for KubeVirt only": [
-        "CA crt somente para KubeVirt"
+      "CA cert for KubeVirt only": [
+        ""
       ],
       "CNI Provider": [
         "Fornecedor da CNI"
@@ -56,9 +59,6 @@
       "Image": [
         "Imagem"
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        "Não é possível definir um volume de inicialização e um provisionamento baseado em imagem."
-      ],
       "Memory": [
         "Memória"
       ],
@@ -80,8 +80,8 @@
       "Only one volume can be bootable": [
         "Somente um volume pode ser inicializável"
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
-        "Opcionalmente, fornecer uma CA, ou uma corrente CA corretamente ordenada ou um caminho para um arquivo. Se deixado em branco - inseguro."
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
+        ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "Senha para autenticar-se - usada para o passo final do SSH"
@@ -116,8 +116,8 @@
       "The compute resource could not be authenticated": [
         "O recurso de computação não pôde ser autenticado"
       ],
-      "The name of the image in the registry.": [
-        "O nome da imagem no registro."
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
+        ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "O sistema remoto apresentou uma chave pública assinada por uma autoridade certificadora não identificada.\\n           Se você tiver certeza de que o sistema remoto é autêntico, vá para a página de edição de recursos de computação, pressione o botão 'Test Connection' e envie"

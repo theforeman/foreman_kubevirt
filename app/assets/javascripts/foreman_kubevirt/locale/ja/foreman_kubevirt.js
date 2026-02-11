@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.4.1",
+        "Project-Id-Version": "foreman_kubevirt 0.5.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2023",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         "コア %{cpu_cores} 個およびメモリー %{memory}"
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         "API ポート"
       ],
@@ -32,8 +35,8 @@
       "Bootable": [
         "ブート可能"
       ],
-      "CA crt for KubeVirt only": [
-        "KubeVirt 専用の CA 証明書"
+      "CA cert for KubeVirt only": [
+        ""
       ],
       "CNI Provider": [
         "CNI プロバイダー"
@@ -56,9 +59,6 @@
       "Image": [
         "イメージ"
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        "ブート可能なボリュームとイメージをベースにしたプロビジョニングを設定できません。"
-      ],
       "Memory": [
         "メモリー"
       ],
@@ -80,8 +80,8 @@
       "Only one volume can be bootable": [
         "1 つのボリュームのみがブート可能です"
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
-        "オプションで CA、正しく順序付けされた CA チェーン、またはファイルへのパスを指定してください。空白のままにすると、安全ではありません。"
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
+        ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "認証に使用するパスワード: SSH の最終ステップで使用されます。"
@@ -116,8 +116,8 @@
       "The compute resource could not be authenticated": [
         "コンピュートリソースを認証できませんでした"
       ],
-      "The name of the image in the registry.": [
-        "レジストリー内のイメージ名。"
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
+        ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "リモートシステムは、未確認の証明局によって署名された公開鍵を提示しました。\\n           リモートシステムが信頼できると確信できる場合には、コンピュートリソースの編集ページに移動し、「接続のテスト」ボタンを押して送信します"

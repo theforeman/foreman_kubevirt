@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.4.1",
+        "Project-Id-Version": "foreman_kubevirt 0.5.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2025",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         "%{cpu_cores} 内核和%{memory} 内存"
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         "API 端口"
       ],
@@ -32,8 +35,8 @@
       "Bootable": [
         "可引导的"
       ],
-      "CA crt for KubeVirt only": [
-        "仅限 KubeVirt 的 CA crt"
+      "CA cert for KubeVirt only": [
+        ""
       ],
       "CNI Provider": [
         "CNI 供应商"
@@ -56,9 +59,6 @@
       "Image": [
         "镜像"
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        "无法基于置备设置引导卷和镜像。"
-      ],
       "Memory": [
         "内存"
       ],
@@ -80,8 +80,8 @@
       "Only one volume can be bootable": [
         "只能引导一个卷"
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
-        "（可选）提供一个 CA，或正确排序的 CA 链，或文件的路径。如果留为空白-不安全。"
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
+        ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "进行验证的密码 - 用于 SSH 完成步骤。"
@@ -116,8 +116,8 @@
       "The compute resource could not be authenticated": [
         "无法验证计算资源"
       ],
-      "The name of the image in the registry.": [
-        "registry 中的镜像名称。"
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
+        ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "显示由无法识别证书授权签名的公钥的远程系统。\\n           如果您确定该远程系统可信，请进入计算资源编辑页面，按“测试连接”按纽并提交。"

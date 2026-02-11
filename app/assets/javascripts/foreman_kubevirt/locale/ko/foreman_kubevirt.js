@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.4.1",
+        "Project-Id-Version": "foreman_kubevirt 0.5.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2025",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         "%{cpu_cores} 코어 및%{memory} 메모리"
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         "API 포트"
       ],
@@ -32,8 +35,8 @@
       "Bootable": [
         "부팅가능"
       ],
-      "CA crt for KubeVirt only": [
-        "KubeVirt 전용 CA 인증서"
+      "CA cert for KubeVirt only": [
+        ""
       ],
       "CNI Provider": [
         "CNI 제공자"
@@ -56,9 +59,6 @@
       "Image": [
         "이미지 "
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        "부팅 가능한 볼륨과 이미지 기반 프로비저닝을 설정할 수 없습니다."
-      ],
       "Memory": [
         "메모리"
       ],
@@ -80,8 +80,8 @@
       "Only one volume can be bootable": [
         "하나의 볼륨만 부팅할 수 있습니다 "
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
-        "선택적으로 CA 또는 올바르게 정렬된 CA 체인 또는 파일 경로를 지정합니다. 비워두면 안전하지 않습니다."
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
+        ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "인증에 사용될 암호 - SSH 마지막 단계에서 사용됩니다."
@@ -116,8 +116,8 @@
       "The compute resource could not be authenticated": [
         "컴퓨팅 리소스를 인증할 수 없습니다."
       ],
-      "The name of the image in the registry.": [
-        "레지스트리에 있는 이미지의 이름입니다."
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
+        ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "원격 시스템은 신원이 확인되지 않은 인증 기관에서 서명한 공개 키를 제시했습니다. 원격 시스템이 신뢰할 수 있다고 확신하는 경우 컴퓨팅 리소스 편집 페이지로 이동하여 '연결 테스트' 버튼을 누르고 제출합니다."

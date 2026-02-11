@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.4.1",
+        "Project-Id-Version": "foreman_kubevirt 0.5.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "Robert Antoni Buj i Gelonch <rbuj@fedoraproject.org>, 2020",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         ""
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         ""
       ],
@@ -32,7 +35,7 @@
       "Bootable": [
         ""
       ],
-      "CA crt for KubeVirt only": [
+      "CA cert for KubeVirt only": [
         ""
       ],
       "CNI Provider": [
@@ -56,9 +59,6 @@
       "Image": [
         "Imatge"
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        ""
-      ],
       "Memory": [
         "Memòria"
       ],
@@ -80,7 +80,7 @@
       "Only one volume can be bootable": [
         ""
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
         ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
@@ -116,7 +116,7 @@
       "The compute resource could not be authenticated": [
         ""
       ],
-      "The name of the image in the registry.": [
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
         ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
