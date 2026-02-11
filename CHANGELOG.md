@@ -1,3 +1,8 @@
+### 0.5.1 / 2026-02-11
+
+* i18n - pulling from tx (#184)
+* Fix typo for :ca_cert param for compute-resource API (#183)
+
 ### 0.5.0 / 2026-02-10
 
 * use dataVolumeTemplates to perform image-based provisioning (#178)
