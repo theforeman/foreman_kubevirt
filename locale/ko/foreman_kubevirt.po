@@ -10,7 +10,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.4.1\n"
+"Project-Id-Version: foreman_kubevirt 0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarde"
@@ -25,6 +25,9 @@ msgstr ""
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr "%{cpu_cores} 코어 및%{memory} 메모리"
 
+msgid "A bootable volume is required as a target for the image"
+msgstr ""
+
 msgid "API Port"
 msgstr "API 포트"
 
@@ -37,8 +40,8 @@ msgstr "동작 "
 msgid "Bootable"
 msgstr "부팅가능"
 
-msgid "CA crt for KubeVirt only"
-msgstr "KubeVirt 전용 CA 인증서"
+msgid "CA cert for KubeVirt only"
+msgstr ""
 
 msgid "CNI Provider"
 msgstr "CNI 제공자"
@@ -61,9 +64,6 @@ msgstr "호스트 이름"
 msgid "Image"
 msgstr "이미지 "
 
-msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr "부팅 가능한 볼륨과 이미지 기반 프로비저닝을 설정할 수 없습니다."
-
 msgid "Memory"
 msgstr "메모리"
 
@@ -85,8 +85,8 @@ msgstr "네트워크"
 msgid "Only one volume can be bootable"
 msgstr "하나의 볼륨만 부팅할 수 있습니다 "
 
-msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
-msgstr "선택적으로 CA 또는 올바르게 정렬된 CA 체인 또는 파일 경로를 지정합니다. 비워두면 안전하지 않습니다."
+msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file."
+msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
 msgstr "인증에 사용될 암호 - SSH 마지막 단계에서 사용됩니다."
@@ -121,8 +121,8 @@ msgstr "스토리지 클래스"
 msgid "The compute resource could not be authenticated"
 msgstr "컴퓨팅 리소스를 인증할 수 없습니다."
 
-msgid "The name of the image in the registry."
-msgstr "레지스트리에 있는 이미지의 이름입니다."
+msgid "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace."
+msgstr ""
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"

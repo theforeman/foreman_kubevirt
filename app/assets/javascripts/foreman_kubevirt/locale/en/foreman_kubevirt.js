@@ -5,7 +5,7 @@
       "": {
         "Project-Id-Version": "foreman_kubevirt 1.0.0",
         "Report-Msgid-Bugs-To": "",
-        "PO-Revision-Date": "2025-10-07 14:20+0200",
+        "PO-Revision-Date": "2026-02-11 09:08+0100",
         "Last-Translator": "FULL NAME <EMAIL@ADDRESS>",
         "Language-Team": "LANGUAGE <LL@li.org>",
         "Language": "",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         ""
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         ""
       ],
@@ -32,7 +35,7 @@
       "Bootable": [
         ""
       ],
-      "CA crt for KubeVirt only": [
+      "CA cert for KubeVirt only": [
         ""
       ],
       "CNI Provider": [
@@ -56,9 +59,6 @@
       "Image": [
         ""
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        ""
-      ],
       "Memory": [
         ""
       ],
@@ -80,7 +80,7 @@
       "Only one volume can be bootable": [
         ""
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
         ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
@@ -116,7 +116,7 @@
       "The compute resource could not be authenticated": [
         ""
       ],
-      "The name of the image in the registry.": [
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
         ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [

@@ -13,7 +13,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.4.1\n"
+"Project-Id-Version: foreman_kubevirt 0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
 "Last-Translator: Vladimir Pavlov <v.pavlov@i-teco.ru>, 2020\n"
@@ -29,6 +29,9 @@ msgstr ""
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
 
+msgid "A bootable volume is required as a target for the image"
+msgstr ""
+
 msgid "API Port"
 msgstr ""
 
@@ -41,7 +44,7 @@ msgstr "Действия"
 msgid "Bootable"
 msgstr "Загрузочный"
 
-msgid "CA crt for KubeVirt only"
+msgid "CA cert for KubeVirt only"
 msgstr ""
 
 msgid "CNI Provider"
@@ -65,9 +68,6 @@ msgstr "Имя узла"
 msgid "Image"
 msgstr "Образ"
 
-msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr ""
-
 msgid "Memory"
 msgstr "Память"
 
@@ -89,7 +89,7 @@ msgstr "Сеть"
 msgid "Only one volume can be bootable"
 msgstr "Только один том может быть загрузочным"
 
-msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure."
+msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file."
 msgstr ""
 
 msgid "Password to authenticate with - used for SSH finish step."
@@ -125,7 +125,7 @@ msgstr ""
 msgid "The compute resource could not be authenticated"
 msgstr ""
 
-msgid "The name of the image in the registry."
+msgid "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace."
 msgstr ""
 
 msgid ""

@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.4.1",
+        "Project-Id-Version": "foreman_kubevirt 0.5.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "pdolinic, 2021",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         "%{cpu_cores} Kerne und %{memory} Arbeitsspeicher"
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         "API-Port"
       ],
@@ -32,8 +35,8 @@
       "Bootable": [
         "Bootfähig"
       ],
-      "CA crt for KubeVirt only": [
-        "CA crt nur für KubeVirt"
+      "CA cert for KubeVirt only": [
+        ""
       ],
       "CNI Provider": [
         "CNI-Anbieter"
@@ -56,9 +59,6 @@
       "Image": [
         "Image"
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        "Es ist nicht möglich, ein bootfähiges Volume und Image-basierte Bereitstellung festzulegen."
-      ],
       "Memory": [
         "Speicher"
       ],
@@ -80,8 +80,8 @@
       "Only one volume can be bootable": [
         "Nur ein Datenträger kann bootbar sein"
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
-        "Geben Sie optional eine CA oder eine korrekt geordnete CA-Kette oder einen Pfad zu einer Datei an. Wenn leer gelassen - unsicher."
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
+        ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "Passwort zur Authentifizierung – verwendet im letzten Schritt von SSH."
@@ -116,8 +116,8 @@
       "The compute resource could not be authenticated": [
         "Die Rechenressource konnte nicht authentifiziert werden"
       ],
-      "The name of the image in the registry.": [
-        "Der Name des Images in der Registrierung."
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
+        ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "Das entfernte System präsentierte einen öffentlichen Schlüssel, der von einer nicht identifizierten Zertifizierungsstelle signiert wurde.\\nWenn Sie sicher sind, dass das Remote-System authentisch ist, gehen Sie zur Bearbeitungsseite für die Computing-Ressource, klicken Sie auf die Schaltfläche \\\"Verbindung testen\\\" und senden Sie den Vorgang ab"

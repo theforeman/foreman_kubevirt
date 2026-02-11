@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreman_kubevirt 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-07 14:20+0200\n"
-"PO-Revision-Date: 2025-10-07 14:20+0200\n"
+"POT-Creation-Date: 2026-02-11 09:08+0100\n"
+"PO-Revision-Date: 2026-02-11 09:08+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -35,7 +35,7 @@ msgstr ""
 
 #:
 #: ../app/controllers/foreman_kubevirt/concerns/api/compute_resources_controller_extensions.rb:11
-msgid "CA crt for KubeVirt only"
+msgid "CA cert for KubeVirt only"
 msgstr ""
 
 #:
@@ -51,23 +51,23 @@ msgstr ""
 msgid "The compute resource could not be authenticated"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:118
+#: ../app/models/foreman_kubevirt/kubevirt.rb:138
 msgid "no Storage Classes available on provider"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:123
+#: ../app/models/foreman_kubevirt/kubevirt.rb:143
 msgid "multus"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:123
+#: ../app/models/foreman_kubevirt/kubevirt.rb:143
 msgid "genie"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:123
+#: ../app/models/foreman_kubevirt/kubevirt.rb:143
 msgid "pod"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:344
+#: ../app/models/foreman_kubevirt/kubevirt.rb:366
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate"
 " authority.\n"
@@ -75,29 +75,29 @@ msgid ""
 "esource edit page, press the 'Test Connection' button and submit"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:355
+#: ../app/models/foreman_kubevirt/kubevirt.rb:377
 msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:360
-msgid "It is not possible to set a bootable volume and image based provisioning."
-msgstr ""
-
-#: ../app/models/foreman_kubevirt/kubevirt.rb:366
+#: ../app/models/foreman_kubevirt/kubevirt.rb:392
 msgid "VM should be created based on an image"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:380
+#: ../app/models/foreman_kubevirt/kubevirt.rb:402
+msgid "A bootable volume is required as a target for the image"
+msgstr ""
+
+#: ../app/models/foreman_kubevirt/kubevirt.rb:422
 #: ../app/validators/volume_validator.rb:7
 msgid "Volume size %s is not valid"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:386
+#: ../app/models/foreman_kubevirt/kubevirt.rb:428
 #: ../app/views/compute_resources_vms/form/kubevirt/_volume.html.erb:22
 msgid "Only one volume can be bootable"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:471
+#: ../app/models/foreman_kubevirt/kubevirt.rb:523
 msgid "cni_provider or network are missing"
 msgstr ""
 
@@ -125,14 +125,12 @@ msgstr ""
 msgid "e.g. eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9..."
 msgstr ""
 
-#: ../app/views/compute_resources/form/_kubevirt.html.erb:12
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:11
 msgid "X509 Certification Authorities"
 msgstr ""
 
-#: ../app/views/compute_resources/form/_kubevirt.html.erb:13
-msgid ""
-"Optionally provide a CA, or a correctly ordered CA chain or a path to a file. "
-"If left blank - insecure."
+#: ../app/views/compute_resources/form/_kubevirt.html.erb:12
+msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file."
 msgstr ""
 
 #: ../app/views/compute_resources_vms/form/kubevirt/_base.html.erb:1
@@ -173,7 +171,7 @@ msgstr ""
 msgid "CNI Provider"
 msgstr ""
 
-#: ../app/views/compute_resources_vms/form/kubevirt/_network.html.erb:18
+#: ../app/views/compute_resources_vms/form/kubevirt/_network.html.erb:19
 msgid "Network"
 msgstr ""
 
@@ -240,7 +238,9 @@ msgid "Does this image support user data input (e.g. via cloud-init)?"
 msgstr ""
 
 #: ../app/views/images/form/_kubevirt.html.erb:4
-msgid "The name of the image in the registry."
+msgid ""
+"The name of the DataSource that contains the image. Use namespace/name notatio"
+"n to use a DataSource in a different namespace."
 msgstr ""
 
 #: gemspec.rb:2

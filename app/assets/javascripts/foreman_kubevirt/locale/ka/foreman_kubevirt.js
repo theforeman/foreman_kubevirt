@@ -3,7 +3,7 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.4.1",
+        "Project-Id-Version": "foreman_kubevirt 0.5.0",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
         "Last-Translator": "Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2023",
@@ -20,6 +20,9 @@
       "%{cpu_cores} Cores and %{memory} memory": [
         "%{cpu_cores} ბირთვი და %{memory} მეხსიერება"
       ],
+      "A bootable volume is required as a target for the image": [
+        ""
+      ],
       "API Port": [
         "api_port"
       ],
@@ -32,8 +35,8 @@
       "Bootable": [
         "ჩატვირთვადი"
       ],
-      "CA crt for KubeVirt only": [
-        "მხოლოდ KubeVirt-ის CA crt"
+      "CA cert for KubeVirt only": [
+        ""
       ],
       "CNI Provider": [
         "CNI მომწოდებელი"
@@ -56,9 +59,6 @@
       "Image": [
         "ასლი"
       ],
-      "It is not possible to set a bootable volume and image based provisioning.": [
-        "შეუძლებელია ერთდროულად ჩატვირთვადი დისკისა და სამუშაოდ ასლით მომზადების ჩართვა."
-      ],
       "Memory": [
         "მეხსიერება"
       ],
@@ -80,8 +80,8 @@
       "Only one volume can be bootable": [
         "ჩატვირთვადი მხოლოდ ერთი ტომი შეიძლება იყოს"
       ],
-      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file. If left blank - insecure.": [
-        "ან მიუთითეთ CA ან CA-ების სწორად დალაგებული ჯაჭვი, ან ბილიკი ფაილამდე. თუ ცარიელს დატოვებთ, დაცული არ იქნება."
+      "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
+        ""
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "პაროლი - საბოლოო ნაბიჯისთვის."
@@ -116,8 +116,8 @@
       "The compute resource could not be authenticated": [
         "გამოთვლითი რესურსის ავთენტიკაცია შეუძლებელია"
       ],
-      "The name of the image in the registry.": [
-        "რეესტრში არსებული ასლის სახელი."
+      "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
+        ""
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "დაშორებულმა სისტემამ წარმოადგინა საჯარო გასაღები ხელმოწერილი დაუდგენელი სერტიფიკატის გამომცემლის მიერ.\\n            თუ დარწმუნებული ხართ, რომ დაშორებული სისტემა ნამდვილია, გადადით გამოთვლითი რესურსის რედაქტირების გვერდზე, დააჭირეთ ღილაკს „კავშირის ტესტი“ და გადაგზავნეთ"
