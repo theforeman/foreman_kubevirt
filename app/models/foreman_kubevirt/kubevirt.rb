@@ -305,14 +305,6 @@ module ForemanKubevirt
       64.gigabytes
     end
 
-    # Converts a given memory to bytes
-    #
-    # @param memory - The memory of the VM to convert
-    #
-    def convert_memory_to_bytes(memory)
-      convert_memory(memory, :b)
-    end
-
     def plain_kubevirt_protocol
       "plain.kubevirt.io".freeze
     end

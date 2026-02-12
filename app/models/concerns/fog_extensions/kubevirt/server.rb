@@ -7,6 +7,20 @@ module FogExtensions
 
       attr_accessor :image_id
 
+      included do
+        alias_method :fog_memory, :memory
+
+        define_method(:memory) do
+          return fog_memory if fog_memory.is_a?(Numeric)
+          return nil if fog_memory.blank?
+
+          ::Fog::Kubevirt::Utils::UnitConverter.convert(fog_memory, :b).to_i
+        rescue StandardError => e
+          Rails.logger.warn("Failed to convert memory '#{fog_memory}': #{e.message}")
+          nil
+        end
+      end
+
       def to_s
         name
       end

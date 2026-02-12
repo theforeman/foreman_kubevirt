@@ -163,14 +163,4 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     # verify default memory value is set
     assert_equal "1024M", server.memory
   end
-
-  test "converts memory to byte" do
-    Fog.mock!
-    compute_resource = new_kubevirt_vcr
-    assert_equal 1.gigabytes, compute_resource.convert_memory_to_bytes("1Gi")
-    assert_equal 1.megabytes, compute_resource.convert_memory_to_bytes("1Mi")
-    assert_equal 1_000_000_000, compute_resource.convert_memory_to_bytes("1G")
-    assert_equal 1_000_000, compute_resource.convert_memory_to_bytes("1M")
-    assert_equal 0, compute_resource.convert_memory_to_bytes("0b")
-  end
 end
