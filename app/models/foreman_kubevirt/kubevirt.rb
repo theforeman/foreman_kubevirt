@@ -310,6 +310,13 @@ module ForemanKubevirt
     # @param memory - The memory of the VM to convert
     #
     def convert_memory_to_bytes(memory)
+      return nil if memory.nil? || memory == ''
+      return memory if memory.is_a?(Numeric)
+
+      if memory.is_a?(String) && memory.match?(/^\d+$/)
+        return memory.to_i
+      end
+
       convert_memory(memory, :b)
     end
 
