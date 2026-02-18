@@ -161,6 +161,6 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     server = compute_resource.create_vm(vm_args)
 
     # verify default memory value is set
-    assert_equal "1024M", server.memory
+    assert_equal 1_024_000_000, server.memory
   end
 end
