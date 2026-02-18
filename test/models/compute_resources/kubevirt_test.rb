@@ -57,6 +57,8 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
     test "raises an error for image based provisioning without an explicit boot volume" do
       record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
 
       error = assert_raises(Foreman::Exception) do
         record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => {}, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
@@ -93,6 +95,8 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
     test "raises an error for image based provisioning with only an extra data volume" do
       record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
 
       error = assert_raises(Foreman::Exception) do
         record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
