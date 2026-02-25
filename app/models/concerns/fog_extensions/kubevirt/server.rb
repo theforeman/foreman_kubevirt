@@ -14,7 +14,7 @@ module FogExtensions
           return fog_memory if fog_memory.is_a?(Numeric)
           return nil if fog_memory.blank?
 
-          ::Fog::Kubevirt::Utils::UnitConverter.convert(fog_memory, :b).to_i
+          ::Fog::Kubevirt::Utils::UnitConverter.convert("#{fog_memory}b", :b)
         rescue StandardError => e
           Rails.logger.warn("Failed to convert memory '#{fog_memory}': #{e.message}")
           nil
