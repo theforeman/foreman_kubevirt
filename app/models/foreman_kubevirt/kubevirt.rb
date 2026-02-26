@@ -280,10 +280,10 @@ module ForemanKubevirt
 
     def new_vm(attr = {})
       vm = super
-      interfaces = nested_attributes_for :interfaces, attr[:interfaces_attributes]
-      interfaces.map { |i| vm.interfaces << new_interface(i) }
-      volumes = nested_attributes_for :volumes, attr[:volumes_attributes]
-      volumes.map { |v| vm.volumes << new_volume(v) }
+      iface_nested_attrs = nested_attributes_for :interfaces, attr[:interfaces_attributes]
+      vm.interfaces = iface_nested_attrs.map { |i| new_interface(i) }
+      volume_nested_attrs = nested_attributes_for :volumes, attr[:volumes_attributes]
+      vm.volumes = volume_nested_attrs.map { |v| new_volume(v) }
       vm
     end
 
