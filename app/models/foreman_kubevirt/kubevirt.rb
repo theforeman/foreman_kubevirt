@@ -180,23 +180,27 @@ module ForemanKubevirt
       logger.debug("creating VM with the following options: #{options.inspect}")
 
       # Add clound init user data
-      user_data = { "userData" => options[:user_data] } if options[:user_data].present?
+      user_data = options[:user_data]
 
       begin
         volumes, volume_templates = create_volumes_for_vm(options)
         interfaces, networks = create_network_devices_for_vm(options, volumes)
+        userdata_secret = create_userdata_secret(user_data, options[:name]) if user_data.present?
         client.vms.create(:vm_name     => options[:name],
                           :cpus        => options[:cpu_cores].to_i,
                           :memory_size => convert_memory(options[:memory] + "b", :mi).to_s,
                           :memory_unit => "Mi",
                           :volumes     => volumes,
                           :volume_templates => volume_templates,
-                          :cloudinit   => user_data,
+                          :cloudinit   => userdata_secret_ref(userdata_secret),
                           :networks    => networks,
                           :interfaces  => interfaces)
-        client.servers.get(options[:name])
+        vm = client.servers.get(options[:name])
+        update_userdata_secret_owner(userdata_secret, options[:name], vm.uid) if userdata_secret.present?
+        vm
       rescue Exception => e
         delete_pvcs(volumes) if volumes
+        delete_userdata_secret(userdata_secret) if userdata_secret.present?
         raise e
       end
     end
@@ -528,6 +532,35 @@ module ForemanKubevirt
       end
 
       [interfaces, networks]
+    end
+
+    def create_userdata_secret(user_data, vm_name)
+      client.secrets.create(:name => "#{vm_name}-userdata", :namespace => namespace, :data => { "userData" => Base64.encode64(user_data) })
+    end
+
+    # Update the owner reference of the userdata secret to the VM
+    # This is needed to ensure that the secret is deleted when the VM is deleted
+    def update_userdata_secret_owner(secret, vm_name, vm_uid)
+      secret.metadata['ownerReferences'] = [{
+        apiVersion: "kubevirt.io/v1",
+        kind: "VirtualMachine",
+        name: vm_name,
+        uid: vm_uid
+      }]
+      secret.save
+    end
+
+    def delete_userdata_secret(secret)
+      secret.destroy
+    end
+
+    def userdata_secret_ref(userdata_secret)
+      return nil if userdata_secret.nil?
+      {
+        'secretRef': {
+          name: userdata_secret.name,
+        }
+      }
     end
 
     def convert_memory(memory, unit)
