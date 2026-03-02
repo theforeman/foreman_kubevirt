@@ -35,6 +35,10 @@ module FogExtensions
       def volumes_attributes=(attrs)
       end
 
+      def id
+        name
+      end
+
       def uuid
         name
       end
