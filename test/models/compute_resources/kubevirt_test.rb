@@ -16,14 +16,25 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     pvcs.stubs(:delete)
     servers = stub
     servers.stubs(:get)
+    secrets = stub
     storageclasses = stub
     storageclasses.stubs(:all).returns([{ 'name': 'local' }])
     client = stub
     client.stubs(:vms).returns(vms)
     client.stubs(:pvcs).returns(pvcs)
     client.stubs(:servers).returns(servers)
+    client.stubs(:secrets).returns(secrets)
     client.stubs(:storageclasses).returns(storageclasses)
     client
+  end
+
+  def mock_userdata_secret(name: "test-userdata")
+    metadata = {}
+    secret = stub(name: name)
+    secret.stubs(:metadata).returns(metadata)
+    secret.stubs(:save)
+    secret.stubs(:destroy)
+    secret
   end
 
   test "host_interfaces_attrs" do
@@ -102,6 +113,89 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
         record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
       end
       assert_match(/A bootable volume is required as a target for the image/, error.message)
+    end
+
+    test "without user_data, cloudinit is nil" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        assert_nil args[:cloudinit]
+      end
+
+      record.create_vm({ :name => "test", :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+    end
+
+    test "with user_data, creates secret and passes secretRef" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      user_data = "#!/bin/bash\necho hello"
+      mock_secret = mock_userdata_secret(name: "test-userdata")
+
+      client.secrets.expects(:create).with do |args|
+        assert_equal "test-userdata", args[:name]
+        assert_equal record.namespace, args[:namespace]
+        assert_equal Base64.encode64(user_data), args[:data]["userData"]
+      end.returns(mock_secret)
+
+      client.vms.expects(:create).with do |args|
+        assert_equal({ secretRef: { name: "test-userdata" } }, args[:cloudinit])
+      end
+
+      vm = stub(uid: "vm-uid-123")
+      client.servers.stubs(:get).with("test").returns(vm)
+
+      record.create_vm({ :name => "test", :user_data => user_data, :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+    end
+
+    test "with user_data, updates secret owner after VM creation" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      user_data = "#!/bin/bash\necho hello"
+      metadata = {}
+      mock_secret = stub(name: "test-userdata")
+      mock_secret.stubs(:metadata).returns(metadata)
+      mock_secret.stubs(:save)
+      mock_secret.stubs(:destroy)
+
+      client.secrets.expects(:create).returns(mock_secret)
+
+      client.vms.expects(:create)
+      vm = stub(uid: "vm-uid-456")
+      client.servers.stubs(:get).with("test").returns(vm)
+
+      mock_secret.expects(:save).once
+
+      record.create_vm({ :name => "test", :user_data => user_data, :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+
+      assert_equal 1, metadata["ownerReferences"].length
+      assert_equal "kubevirt.io/v1", metadata["ownerReferences"][0][:apiVersion]
+      assert_equal "VirtualMachine", metadata["ownerReferences"][0][:kind]
+      assert_equal "test", metadata["ownerReferences"][0][:name]
+      assert_equal "vm-uid-456", metadata["ownerReferences"][0][:uid]
+    end
+
+    test "with user_data, on exception destroys secret" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      user_data = "#!/bin/bash\necho hello"
+      mock_secret = mock_userdata_secret(name: "test-userdata")
+
+      client.secrets.expects(:create).returns(mock_secret)
+      client.vms.expects(:create).raises(StandardError.new("vm create failed"))
+      mock_secret.expects(:destroy).once
+
+      error = assert_raises(StandardError) do
+        record.create_vm({ :name => "test", :user_data => user_data, :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+      end
+      assert_equal "vm create failed", error.message
     end
   end
 
