@@ -3,10 +3,10 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.5.0",
+        "Project-Id-Version": "foreman_kubevirt 0.5.3",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
-        "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2023",
+        "Last-Translator": "Ondřej Gajdušek, 2026",
         "Language-Team": "Japanese (https://app.transifex.com/foreman/teams/114/ja/)",
         "MIME-Version": "1.0",
         "Content-Type": "text/plain; charset=UTF-8",
@@ -21,7 +21,7 @@
         "コア %{cpu_cores} 個およびメモリー %{memory}"
       ],
       "A bootable volume is required as a target for the image": [
-        ""
+        "イメージのターゲットには、ブート可能なボリュームが必要です"
       ],
       "API Port": [
         "API ポート"
@@ -36,7 +36,7 @@
         "ブート可能"
       ],
       "CA cert for KubeVirt only": [
-        ""
+        "KubeVirt のみの CA 証明書"
       ],
       "CNI Provider": [
         "CNI プロバイダー"
@@ -81,7 +81,7 @@
         "1 つのボリュームのみがブート可能です"
       ],
       "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
-        ""
+        "必要に応じて CA、適切に順序付けされた CA チェーン、またはファイルへのパスを指定します。"
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "認証に使用するパスワード: SSH の最終ステップで使用されます。"
@@ -117,7 +117,7 @@
         "コンピュートリソースを認証できませんでした"
       ],
       "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
-        ""
+        "イメージを含む DataSource の名前。namespace/name 表記を使用して、別の namespace で DataSource を使用します。"
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "リモートシステムは、未確認の証明局によって署名された公開鍵を提示しました。\\n           リモートシステムが信頼できると確信できる場合には、コンピュートリソースの編集ページに移動し、「接続のテスト」ボタンを押して送信します"
@@ -150,7 +150,7 @@
         "ボリュームサイズ %s は無効です"
       ],
       "X509 Certification Authorities": [
-        "X509 証明機関"
+        "X509 認証局"
       ],
       "cni_provider or network are missing": [
         "cni_provider またはネットワークがありません"
