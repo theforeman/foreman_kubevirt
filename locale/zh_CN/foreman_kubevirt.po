@@ -9,14 +9,14 @@
 # tim123, 2020
 # Amit Upadhye <aupadhye@redhat.com>, 2022
 # Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2025
+# Ondřej Gajdušek, 2026
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: foreman_kubevirt 0.5.0\n"
+"Project-Id-Version: foreman_kubevirt 0.5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: 2020-05-26 07:39+0000\n"
-"Last-Translator: Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarde"
-"n.nl>, 2025\n"
+"Last-Translator: Ondřej Gajdušek, 2026\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/foreman/teams/114/zh"
 "_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr "%{cpu_cores} 内核和%{memory} 内存"
 
 msgid "A bootable volume is required as a target for the image"
-msgstr ""
+msgstr "需要一个可引导卷作为镜像的目标"
 
 msgid "API Port"
 msgstr "API 端口"
@@ -44,7 +44,7 @@ msgid "Bootable"
 msgstr "可引导的"
 
 msgid "CA cert for KubeVirt only"
-msgstr ""
+msgstr "仅限 KubeVirt 的 CA 证书"
 
 msgid "CNI Provider"
 msgstr "CNI 供应商"
@@ -89,7 +89,7 @@ msgid "Only one volume can be bootable"
 msgstr "只能引导一个卷"
 
 msgid "Optionally provide a CA, or a correctly ordered CA chain or a path to a file."
-msgstr ""
+msgstr "（可选）提供一个 CA，或正确排序的 CA 链，或到一个文件的路径。"
 
 msgid "Password to authenticate with - used for SSH finish step."
 msgstr "进行验证的密码 - 用于 SSH 完成步骤。"
@@ -125,7 +125,7 @@ msgid "The compute resource could not be authenticated"
 msgstr "无法验证计算资源"
 
 msgid "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace."
-msgstr ""
+msgstr "包含镜像的 DataSource 的名称。如果需要使用一个不同命名空间中的 DataSource，使用 namespace/name 格式指定。"
 
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate authority.\n"

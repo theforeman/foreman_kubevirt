@@ -3,10 +3,10 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.5.0",
+        "Project-Id-Version": "foreman_kubevirt 0.5.3",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
-        "Last-Translator": "pdolinic, 2021",
+        "Last-Translator": "Evgeni Golov <evgeni@golov.de>, 2026",
         "Language-Team": "German (https://app.transifex.com/foreman/teams/114/de/)",
         "MIME-Version": "1.0",
         "Content-Type": "text/plain; charset=UTF-8",
@@ -36,7 +36,7 @@
         "Bootfähig"
       ],
       "CA cert for KubeVirt only": [
-        ""
+        "CA Zertifikat nur für KubeVirt"
       ],
       "CNI Provider": [
         "CNI-Anbieter"
@@ -81,7 +81,7 @@
         "Nur ein Datenträger kann bootbar sein"
       ],
       "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
-        ""
+        "Geben Sie optional eine CA oder eine korrekt geordnete CA-Kette oder einen Pfad zu einer Datei an."
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "Passwort zur Authentifizierung – verwendet im letzten Schritt von SSH."
@@ -147,7 +147,7 @@
         "VM sollte basierend auf einem Image erstellt werden"
       ],
       "Volume size %s is not valid": [
-        ""
+        "Volume-Größe %s ist ungültig"
       ],
       "X509 Certification Authorities": [
         "X509-Zertifizierungsstellen (CA)"

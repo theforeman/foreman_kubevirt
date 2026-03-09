@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreman_kubevirt 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-11 09:08+0100\n"
-"PO-Revision-Date: 2026-02-11 09:08+0100\n"
+"POT-Creation-Date: 2026-03-09 12:48+0000\n"
+"PO-Revision-Date: 2026-03-09 12:48+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -43,7 +43,7 @@ msgstr ""
 msgid "API port for KubeVirt only"
 msgstr ""
 
-#: ../app/models/concerns/fog_extensions/kubevirt/server.rb:47
+#: ../app/models/concerns/fog_extensions/kubevirt/server.rb:65
 msgid "%{cpu_cores} Cores and %{memory} memory"
 msgstr ""
 
@@ -67,7 +67,7 @@ msgstr ""
 msgid "pod"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:366
+#: ../app/models/foreman_kubevirt/kubevirt.rb:358
 msgid ""
 "The remote system presented a public key signed by an unidentified certificate"
 " authority.\n"
@@ -75,29 +75,29 @@ msgid ""
 "esource edit page, press the 'Test Connection' button and submit"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:377
+#: ../app/models/foreman_kubevirt/kubevirt.rb:369
 msgid "VM should be created based on Persistent Volume Claim or Image"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:392
+#: ../app/models/foreman_kubevirt/kubevirt.rb:384
 msgid "VM should be created based on an image"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:402
+#: ../app/models/foreman_kubevirt/kubevirt.rb:394
 msgid "A bootable volume is required as a target for the image"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:422
+#: ../app/models/foreman_kubevirt/kubevirt.rb:414
 #: ../app/validators/volume_validator.rb:7
 msgid "Volume size %s is not valid"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:428
+#: ../app/models/foreman_kubevirt/kubevirt.rb:420
 #: ../app/views/compute_resources_vms/form/kubevirt/_volume.html.erb:22
 msgid "Only one volume can be bootable"
 msgstr ""
 
-#: ../app/models/foreman_kubevirt/kubevirt.rb:523
+#: ../app/models/foreman_kubevirt/kubevirt.rb:515
 msgid "cni_provider or network are missing"
 msgstr ""
 

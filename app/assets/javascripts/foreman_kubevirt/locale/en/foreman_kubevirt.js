@@ -5,7 +5,7 @@
       "": {
         "Project-Id-Version": "foreman_kubevirt 1.0.0",
         "Report-Msgid-Bugs-To": "",
-        "PO-Revision-Date": "2026-02-11 09:08+0100",
+        "PO-Revision-Date": "2026-03-09 12:48+0000",
         "Last-Translator": "FULL NAME <EMAIL@ADDRESS>",
         "Language-Team": "LANGUAGE <LL@li.org>",
         "Language": "",

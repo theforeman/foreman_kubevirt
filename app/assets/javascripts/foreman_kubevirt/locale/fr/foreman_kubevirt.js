@@ -3,10 +3,10 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.5.0",
+        "Project-Id-Version": "foreman_kubevirt 0.5.3",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
-        "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2024",
+        "Last-Translator": "Ondřej Gajdušek, 2026",
         "Language-Team": "French (https://app.transifex.com/foreman/teams/114/fr/)",
         "MIME-Version": "1.0",
         "Content-Type": "text/plain; charset=UTF-8",
@@ -21,7 +21,7 @@
         "%{cpu_cores} Cores et %{memory} mémoire"
       ],
       "A bootable volume is required as a target for the image": [
-        ""
+        "Un volume amorçable est requis comme cible pour l'image."
       ],
       "API Port": [
         "Port API"
@@ -36,7 +36,7 @@
         "Amorçable"
       ],
       "CA cert for KubeVirt only": [
-        ""
+        "Cert CA pour KubeVirt uniquement"
       ],
       "CNI Provider": [
         "Fournisseur CNI"
@@ -81,7 +81,7 @@
         "Un seul volume peut être déclaré pour le démarrage"
       ],
       "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
-        ""
+        "Fournir éventuellement un CA, ou une chaîne de CA correctement ordonnée ou un chemin d'accès à un fichier."
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "Mot de passe pour l'authentification SSH lors de l'étape finale."
@@ -117,7 +117,7 @@
         "La ressource compute n'a pas pu être authentifiée"
       ],
       "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
-        ""
+        "Nom de la source de données qui contient l'image. Utilisez la notation espace de noms/nom pour utiliser une source de données dans un espace de noms différent."
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "Le système distant a présenté une clé publique signée par une autorité de certification inconnue. Si vous êtes sûr de l'authenticité du système distant, rendez-vous sur la page de modification des ressources de calcul, cliquez sur « Tester la connexion » puis validez"

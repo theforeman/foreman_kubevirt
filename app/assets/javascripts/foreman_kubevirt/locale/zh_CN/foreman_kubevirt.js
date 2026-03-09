@@ -3,10 +3,10 @@
   "locale_data": {
     "foreman_kubevirt": {
       "": {
-        "Project-Id-Version": "foreman_kubevirt 0.5.0",
+        "Project-Id-Version": "foreman_kubevirt 0.5.3",
         "Report-Msgid-Bugs-To": "",
         "PO-Revision-Date": "2020-05-26 07:39+0000",
-        "Last-Translator": "Ewoud Kohl van Wijngaarden <ewoud+transifex@kohlvanwijngaarden.nl>, 2025",
+        "Last-Translator": "Ondřej Gajdušek, 2026",
         "Language-Team": "Chinese (China) (https://app.transifex.com/foreman/teams/114/zh_CN/)",
         "MIME-Version": "1.0",
         "Content-Type": "text/plain; charset=UTF-8",
@@ -21,7 +21,7 @@
         "%{cpu_cores} 内核和%{memory} 内存"
       ],
       "A bootable volume is required as a target for the image": [
-        ""
+        "需要一个可引导卷作为镜像的目标"
       ],
       "API Port": [
         "API 端口"
@@ -36,7 +36,7 @@
         "可引导的"
       ],
       "CA cert for KubeVirt only": [
-        ""
+        "仅限 KubeVirt 的 CA 证书"
       ],
       "CNI Provider": [
         "CNI 供应商"
@@ -81,7 +81,7 @@
         "只能引导一个卷"
       ],
       "Optionally provide a CA, or a correctly ordered CA chain or a path to a file.": [
-        ""
+        "（可选）提供一个 CA，或正确排序的 CA 链，或到一个文件的路径。"
       ],
       "Password to authenticate with - used for SSH finish step.": [
         "进行验证的密码 - 用于 SSH 完成步骤。"
@@ -117,7 +117,7 @@
         "无法验证计算资源"
       ],
       "The name of the DataSource that contains the image. Use namespace/name notation to use a DataSource in a different namespace.": [
-        ""
+        "包含镜像的 DataSource 的名称。如果需要使用一个不同命名空间中的 DataSource，使用 namespace/name 格式指定。"
       ],
       "The remote system presented a public key signed by an unidentified certificate authority.\\n           If you are sure the remote system is authentic, go to the compute resource edit page, press the 'Test Connection' button and submit": [
         "显示由无法识别证书授权签名的公钥的远程系统。\\n           如果您确定该远程系统可信，请进入计算资源编辑页面，按“测试连接”按纽并提交。"
