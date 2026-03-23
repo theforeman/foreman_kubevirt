@@ -291,4 +291,22 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     record.test_connection
     assert_includes record.errors[:base][0], "[Foreman::FingerprintException]: test"
   end
+
+  test "verify_tls? returns false if ca_cert is nil" do
+    record = new_kubevirt_vcr
+    record.stubs(:ca_cert).returns(nil)
+    assert_not record.verify_tls?
+  end
+
+  test "verify_tls? returns true if ca_cert is set" do
+    record = new_kubevirt_vcr
+    record.stubs(:ca_cert).returns("ca_cert")
+    assert record.verify_tls?
+  end
+
+  test "verify_tls? returns true if ca_cert is empty" do
+    record = new_kubevirt_vcr
+    record.stubs(:ca_cert).returns('')
+    assert record.verify_tls?
+  end
 end

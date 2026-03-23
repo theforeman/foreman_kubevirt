@@ -8,8 +8,26 @@
               :id => "compute_resource_password"
 %>
 
-<%= textarea_f f, :ca_cert, :label => _("X509 Certification Authorities"),
-  :placeholder => _("Optionally provide a CA, or a correctly ordered CA chain or a path to a file.") %>
+<%
+  tls_options = [[_('Use System CA'), 'system'], [_('Use Custom CA'), 'custom'], [_('Disable TLS'), 'disable']]
+  ca_cert_value = params.dig(:ca_cert).presence || f.object.ca_cert
+  tls_selected = ca_cert_value.nil? ? 'disable' : ca_cert_value.empty? ? 'system' : 'custom'
+%>
+
+<div class="clearfix">
+  <%= label_tag "verify_tls", _("TLS verification mode"), class: "col-md-2 control-label" %>
+  <div class="col-md-4">
+    <%= select_tag "verify_tls", options_for_select(tls_options, tls_selected), class: "form-control", onchange: "kubevirtVerifyTls()" %>
+  </div>
+</div>
+
+<%= textarea_f f, :ca_cert,
+                  :label => _("X509 Certification Authorities"),
+                  :disabled => tls_selected == 'system' || tls_selected == 'disable',
+                  :required => tls_selected == 'custom',
+                  :value => ca_cert_value,
+                  :placeholder => ''
+%>
 
 <div class="col-md-offset-2">
   <%= test_connection_button_f(f, f.object.connection_valid?) %>

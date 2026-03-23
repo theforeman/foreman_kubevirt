@@ -36,6 +36,10 @@ module ForemanKubevirt
       { :uuid => :name, :mac => :mac }
     end
 
+    def verify_tls?
+      !ca_cert.nil?
+    end
+
     def available_images
       []
     end
@@ -342,7 +346,7 @@ module ForemanKubevirt
         :kubevirt_namespace  => namespace,
         :kubevirt_token      => token,
         :kubevirt_log        => logger,
-        :kubevirt_verify_ssl => true,
+        :kubevirt_verify_ssl => verify_tls?,
         :kubevirt_ca_cert    => ca_cert,
         :kubevirt_version    => "v1alpha3"
       )

@@ -15,6 +15,10 @@ module ForemanKubevirt
           parameter_filter(ComputeResource, :token, :password)
           parameter_filter(ComputeResource, :ca_cert)
           parameter_filter(ComputeResource, :api_port)
+
+          extend_page "compute_resources/_form" do |cx|
+            cx.add_pagelet :compute_resource_form, :name => "Kubevirt Form", :partial => "compute_resources/form_pagelet"
+          end
         end
       end
     end
@@ -62,6 +66,8 @@ module ForemanKubevirt
       require "fog/kubevirt/compute/models/networkattachmentdef"
       Fog::Kubevirt::Compute::Networkattachmentdef.send(:include, ::FogExtensions::Kubevirt::Network)
       ComputeAttribute.send :include, ForemanKubevirt::ComputeAttributeExtensions
+
+      ::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::ComputeResourcesControllerExtensions
 
     rescue StandardError => e
       Rails.logger.warn "Foreman-Kubevirt: skipping engine hook (#{e})"
