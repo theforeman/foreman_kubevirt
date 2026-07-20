@@ -203,7 +203,7 @@ module ForemanKubevirt
                           :networks     => networks,
                           :interfaces   => interfaces,
                           :extra_domain => extra_domain)
-        vm = client.servers.get(options[:name])
+        vm = client.vms.get(options[:name])
         update_userdata_secret_owner(userdata_secret, options[:name], vm.uid) if userdata_secret.present?
         vm
       rescue Exception => e
