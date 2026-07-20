@@ -208,6 +208,23 @@ module ForemanKubevirt
                           :extra_domain => extra_domain)
         vm = client.vms.get(options[:name])
         update_userdata_secret_owner(userdata_secret, options[:name], vm.uid) if userdata_secret.present?
+
+        # Generate MAC addresses where missing, since they are required for Foreman to link the created VM
+        patches = []
+        vm.interfaces.each_with_index do |iface, idx|
+          next if iface.mac_address
+
+          patches << {
+            op: 'replace',
+            path: "/spec/template/spec/domain/devices/interfaces/#{idx}/macAddress",
+            value: "02:#{('%010x' % (rand * (2**40)).to_i).scan(/.{2}/).join(':')}"
+          }
+        end
+        if patches.any?
+          client.send(:kubevirt_client).json_patch_virtual_machine(options[:name], patches, namespace)
+          vm = client.vms.get(options[:name])
+        end
+
         vm
       rescue Exception => e
         delete_pvcs(volumes) if volumes
