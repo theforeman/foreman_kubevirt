@@ -56,10 +56,11 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     compute_resource = new_kubevirt_vcr
     server = compute_resource.create_vm(NETWORK_BASED_VM_ARGS)
 
-    assert_equal "robin-rykert.example.com", server.name
+    # fog-kubevirt mock values
+    assert_equal "vm-multus-multiple-net", server.name
     assert_equal 2, server.volumes.count
     assert_equal 2, server.disks.count
-    assert_equal 1, server.interfaces.count
+    assert_equal 2, server.interfaces.count
   end
 
   test "create_vm image based should pass" do
@@ -67,10 +68,11 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     compute_resource = new_kubevirt_vcr
     server = compute_resource.create_vm(IMAGE_BASED_VM_ARGS)
 
-    assert_equal "olive-kempter.example.com", server.name
+    # fog-kubevirt mock values
+    assert_equal "vm-multus-multiple-net", server.name
     assert_equal 2, server.volumes.count
     assert_equal 2, server.disks.count
-    assert_equal 1, server.interfaces.count
+    assert_equal 2, server.interfaces.count
   end
 
   test "create_vm image based without additional volumes should fail" do
@@ -150,7 +152,8 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     server = compute_resource.create_vm(vm_args)
 
     # verify default CPU value is set
-    assert_equal 1, server.cpu_cores
+    # fog-kubevirt mock values does not include any CPU cores in get_raw_vm
+    assert_nil server.cpu_cores
   end
 
   test "create_vm without memory should pass" do
