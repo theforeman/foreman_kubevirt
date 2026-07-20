@@ -179,6 +179,13 @@ module ForemanKubevirt
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
 
+      # Build bootloader and TPM configuration
+      firmware_attrs = process_firmware_attributes(args[:firmware], args.delete(:firmware_type).to_s, args[:provision_method])
+      extra_domain = {}
+      # TODO: allow persistent TPM/UEFI VARS - https://kubevirt.io/user-guide/compute/persistent_tpm_and_uefi_state/
+      extra_domain.merge!(firmware_attrs)
+      extra_domain[:devices] = { tpm: {} } if args[:tpm_enabled].presence
+
       # Add clound init user data
       user_data = options[:user_data]
 
@@ -186,15 +193,16 @@ module ForemanKubevirt
         volumes, volume_templates = create_volumes_for_vm(options)
         interfaces, networks = create_network_devices_for_vm(options, volumes)
         userdata_secret = create_userdata_secret(user_data, options[:name]) if user_data.present?
-        client.vms.create(:vm_name     => options[:name],
-                          :cpus        => options[:cpu_cores].to_i,
-                          :memory_size => convert_memory(options[:memory] + "b", :mi).to_s,
-                          :memory_unit => "Mi",
-                          :volumes     => volumes,
+        client.vms.create(:vm_name      => options[:name],
+                          :cpus         => options[:cpu_cores].to_i,
+                          :memory_size  => convert_memory(options[:memory] + "b", :mi).to_s,
+                          :memory_unit  => "Mi",
+                          :volumes      => volumes,
                           :volume_templates => volume_templates,
-                          :cloudinit   => userdata_secret_ref(userdata_secret),
-                          :networks    => networks,
-                          :interfaces  => interfaces)
+                          :cloudinit    => userdata_secret_ref(userdata_secret),
+                          :networks     => networks,
+                          :interfaces   => interfaces,
+                          :extra_domain => extra_domain)
         vm = client.servers.get(options[:name])
         update_userdata_secret_owner(userdata_secret, options[:name], vm.uid) if userdata_secret.present?
         vm
@@ -366,6 +374,22 @@ module ForemanKubevirt
     end
 
     private
+
+    def generate_secure_boot_settings(firmware)
+      case firmware
+      when 'uefi'
+        { firmware: { bootloader: { efi: { secureBoot: false } } } }
+      when 'uefi_secure_boot'
+        {
+          features: { smm: { enabled: true } },
+          firmware: { bootloader: { efi: { secureBoot: true } } }
+        }
+      when 'bios'
+        { firmware: { bootloader: { bios: {} } } }
+      else
+        {}
+      end
+    end
 
     def verify_at_least_one_volume_provided(options)
       image = options[:image_id]
