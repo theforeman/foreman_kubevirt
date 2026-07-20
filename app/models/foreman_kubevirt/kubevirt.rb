@@ -101,6 +101,9 @@ module ForemanKubevirt
 
     def find_vm_by_uuid(uuid)
       super
+    rescue Fog::Kubevirt::Errors::NotFoundError
+      # Default server lookup only finds running VMs, so also look for a stopped one
+      client.vms.get(uuid)
     rescue Fog::Kubevirt::Errors::ClientError => e
       Foreman::Logging.exception("Failed retrieving KubeVirt vm by uuid #{uuid}", e)
       raise ActiveRecord::RecordNotFound
