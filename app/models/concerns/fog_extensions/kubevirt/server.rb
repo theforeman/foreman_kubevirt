@@ -60,6 +60,13 @@ module FogExtensions
         !vm.dig(:spec, :template, :spec, :domain, :devices, :tpm).nil?
       end
 
+      def tpm_persist
+        return nil unless persisted?
+
+        vm = service.get_raw_vm(name)
+        vm.dig(:spec, :template, :spec, :domain, :devices, :tpm, :persistent)
+      end
+
       def mac
         interfaces.map(&:mac_address).compact.min
       end

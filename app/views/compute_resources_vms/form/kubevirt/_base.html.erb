@@ -11,7 +11,12 @@ end %>
                                   label: _('Virtual TPM'),
                                   label_help: _('Only compatible with UEFI firmware.'),
                                   label_size: 'col-md-2',
+                                  onclick: 'kubevirtTpmClicked(this)',
                                   disabled: !new_vm } %>
+<%= checkbox_f f, :tpm_persist, { help_inline: _('Persist Virtual TPM contents across VM restarts.'),
+                                  label: _('Persist TPM'),
+                                  label_size: 'col-md-2',
+                                  disabled: !new_vm || !f.object.tpm_enabled } %>
 
 <%= text_f f, :name, :label => _('Name'), :label_size => "col-md-2", :disabled => !new_vm if show_vm_name? %>
 
