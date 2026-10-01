@@ -101,6 +101,9 @@ module ForemanKubevirt
 
     def find_vm_by_uuid(uuid)
       super
+    rescue Fog::Kubevirt::Errors::NotFoundError
+      # Default server lookup only finds running VMs, so also look for a stopped one
+      client.vms.get(uuid)
     rescue Fog::Kubevirt::Errors::ClientError => e
       Foreman::Logging.exception("Failed retrieving KubeVirt vm by uuid #{uuid}", e)
       raise ActiveRecord::RecordNotFound
@@ -179,6 +182,10 @@ module ForemanKubevirt
       options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
       logger.debug("creating VM with the following options: #{options.inspect}")
 
+      # Build bootloader and TPM configuration
+      extra_domain = process_firmware_attributes(args[:firmware], args[:firmware_type].to_s, args[:provision_method])
+      extra_domain[:devices] = { tpm: { persistent: Foreman::Cast.to_bool(args[:tpm_persist]) } } if Foreman::Cast.to_bool(args[:tpm_enabled])
+
       # Add clound init user data
       user_data = options[:user_data]
 
@@ -186,16 +193,17 @@ module ForemanKubevirt
         volumes, volume_templates = create_volumes_for_vm(options)
         interfaces, networks = create_network_devices_for_vm(options, volumes)
         userdata_secret = create_userdata_secret(user_data, options[:name]) if user_data.present?
-        client.vms.create(:vm_name     => options[:name],
-                          :cpus        => options[:cpu_cores].to_i,
-                          :memory_size => convert_memory(options[:memory] + "b", :mi).to_s,
-                          :memory_unit => "Mi",
-                          :volumes     => volumes,
+        client.vms.create(:vm_name      => options[:name],
+                          :cpus         => options[:cpu_cores].to_i,
+                          :memory_size  => convert_memory(options[:memory] + "b", :mi).to_s,
+                          :memory_unit  => "Mi",
+                          :volumes      => volumes,
                           :volume_templates => volume_templates,
-                          :cloudinit   => userdata_secret_ref(userdata_secret),
-                          :networks    => networks,
-                          :interfaces  => interfaces)
-        vm = client.servers.get(options[:name])
+                          :cloudinit    => userdata_secret_ref(userdata_secret),
+                          :networks     => networks,
+                          :interfaces   => interfaces,
+                          :extra_domain => extra_domain)
+        vm = client.vms.get(options[:name])
         update_userdata_secret_owner(userdata_secret, options[:name], vm.uid) if userdata_secret.present?
         vm
       rescue Exception => e
@@ -366,6 +374,20 @@ module ForemanKubevirt
     end
 
     private
+
+    def generate_secure_boot_settings(firmware)
+      case firmware
+      when 'efi', 'uefi'
+        { firmware: { bootloader: { efi: { secureBoot: false } } } }
+      when 'uefi_secure_boot'
+        {
+          features: { smm: { enabled: true } },
+          firmware: { bootloader: { efi: { secureBoot: true } } }
+        }
+      else
+        { firmware: { bootloader: { bios: {} } } }
+      end
+    end
 
     def verify_at_least_one_volume_provided(options)
       image = options[:image_id]

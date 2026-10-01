@@ -1,3 +1,23 @@
+<%
+  firmware_type = compute_resource.firmware_type(f.object.firmware, f.object.secure_boot)
+%>
+<%= field(f, :firmware, :disabled => !new_vm, :label => _('Firmware'), :label_help => _("Choose 'Automatic' to set the firmware based on the PXE loader of the host. If no PXE loader is selected, firmware defaults to BIOS."), :label_size => "col-md-2") do
+  compute_resource.firmware_types.collect do |type, name|
+    radio_button_f f, :firmware, {:checked => (firmware_type == type), :disabled => !new_vm, :value => type, :text => _(name) }
+  end.join(' ').html_safe
+end %>
+
+<%= checkbox_f f, :tpm_enabled, { help_inline: _('Add Virtual TPM module to the VM.'),
+                                  label: _('Virtual TPM'),
+                                  label_help: _('Only compatible with UEFI firmware.'),
+                                  label_size: 'col-md-2',
+                                  onclick: 'kubevirtTpmClicked(this)',
+                                  disabled: !new_vm } %>
+<%= checkbox_f f, :tpm_persist, { help_inline: _('Persist Virtual TPM contents across VM restarts.'),
+                                  label: _('Persist TPM'),
+                                  label_size: 'col-md-2',
+                                  disabled: !new_vm || !f.object.tpm_enabled } %>
+
 <%= text_f f, :name, :label => _('Name'), :label_size => "col-md-2", :disabled => !new_vm if show_vm_name? %>
 
 <%= counter_f f, :cpu_cores, :disabled => !new_vm, :label => _('CPUs'), :label_size => 'col-md-2', :'data-soft-max' => compute_resource.max_cpu_count %>

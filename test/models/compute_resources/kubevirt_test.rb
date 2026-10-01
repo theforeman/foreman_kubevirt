@@ -11,6 +11,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
   def mocked_client
     vms = stub
+    vms.stubs(:get)
     pvcs = stub
     pvcs.stubs(:create)
     pvcs.stubs(:delete)
@@ -146,7 +147,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       end
 
       vm = stub(uid: "vm-uid-123")
-      client.servers.stubs(:get).with("test").returns(vm)
+      client.vms.stubs(:get).with("test").returns(vm)
 
       record.create_vm({ :name => "test", :user_data => user_data, :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
@@ -167,7 +168,7 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
 
       client.vms.expects(:create)
       vm = stub(uid: "vm-uid-456")
-      client.servers.stubs(:get).with("test").returns(vm)
+      client.vms.stubs(:get).with("test").returns(vm)
 
       mock_secret.expects(:save).once
 
@@ -196,6 +197,48 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
         record.create_vm({ :name => "test", :user_data => user_data, :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
       end
       assert_equal "vm create failed", error.message
+    end
+
+    test "with efi firmware, bootloader config is set correctly" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        args[:extra_domain][:firmware][:bootloader][:efi]
+      end
+      vm = stub(uid: "vm-uid-456")
+      client.vms.stubs(:get).with("test").returns(vm)
+
+      record.create_vm({ :name => "test", :firmware => 'uefi', :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+    end
+
+    test "with virtual TPM, device is attached correctly" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        args[:extra_domain][:devices][:tpm].is_a?(Hash)
+      end
+      vm = stub(uid: "vm-uid-456")
+      client.vms.stubs(:get).with("test").returns(vm)
+
+      record.create_vm({ :name => "test", :tpm_enabled => true, :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+    end
+
+    test "with virtual - persistent - TPM, device is attached and configured correctly" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        args[:extra_domain][:devices][:tpm][:persistent] == true
+      end
+      vm = stub(uid: "vm-uid-456")
+      client.vms.stubs(:get).with("test").returns(vm)
+
+      record.create_vm({ :name => "test", :tpm_enabled => true, :tpm_persist => true, :volumes_attributes => { 0 => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
   end
 

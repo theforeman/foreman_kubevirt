@@ -53,6 +53,9 @@ module ForemanKubevirt
       ::Api::V2::ComputeResourcesController.send :include, ForemanKubevirt::Concerns::Api::ComputeResourcesControllerExtensions
       Fog::Kubevirt::Compute::Server.send(:include, ::FogExtensions::Kubevirt::Server)
 
+      require "fog/kubevirt/compute/models/vm"
+      Fog::Kubevirt::Compute::Vm.send(:include, ::FogExtensions::Kubevirt::Server)
+
       require "fog/kubevirt/compute/models/volume"
       Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
 
