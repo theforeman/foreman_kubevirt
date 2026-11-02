@@ -100,12 +100,11 @@ module ForemanKubevirt
     end
 
     def find_vm_by_uuid(uuid)
-      # Default client.servers lookup will only find running VMs, so use client.vms instead to also find stopped ones
+      # Default client.servers lookup will only find running VMs, so use client.vms to also find stopped ones
       begin
-        client.vms.get(uuid)
-      rescue Fog::Kubevirt::Errors::NotFoundError
-        # Attempt a check for a running vmi lacking a backing vm as well
         super
+      rescue Fog::Kubevirt::Errors::NotFoundError
+        client.vms.get(uuid)
       end
     rescue Fog::Kubevirt::Errors::ClientError => e
       Foreman::Logging.exception("Failed retrieving KubeVirt vm by uuid #{uuid}", e)

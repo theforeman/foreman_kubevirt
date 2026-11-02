@@ -305,10 +305,13 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     test "it raises RecordNotFound when it fails" do
       Fog.mock!
       compute_resource = FactoryBot.build(:compute_resource_kubevirt)
-      # Skip fog VCR response for client.vms.get
+      # Skip fog VCR response for client.servers/vms.get
       vms_stubbed = compute_resource.send(:client).vms
       vms_stubbed.expects(:get).with('not_found.example.com').raises(Fog::Kubevirt::Errors::NotFoundError)
       compute_resource.send(:client).stubs(:vms).returns(vms_stubbed)
+      servers_stubbed = compute_resource.send(:client).servers
+      servers_stubbed.expects(:get).with('not_found.example.com').raises(Fog::Kubevirt::Errors::NotFoundError)
+      compute_resource.send(:client).stubs(:servers).returns(servers_stubbed)
 
       assert_raises ActiveRecord::RecordNotFound do
         compute_resource.find_vm_by_uuid("not_found.example.com")

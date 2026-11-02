@@ -55,6 +55,7 @@ module ForemanKubevirt
 
       require "fog/kubevirt/compute/models/vm"
       Fog::Kubevirt::Compute::Vm.send(:include, ::FogExtensions::Kubevirt::Server)
+      Fog::Kubevirt::Compute::Vm.send(:include, ::FogExtensions::Kubevirt::VM)
 
       require "fog/kubevirt/compute/models/volume"
       Fog::Kubevirt::Compute::Volume.send(:include, ::FogExtensions::Kubevirt::Volume)
