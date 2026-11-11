@@ -104,6 +104,75 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10", :bootable => "true" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
 
+    test "keeps provisioning NIC first and assigns bootable PVC disk second" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        assert_equal 1, args[:volumes].length
+        assert_equal 2, args[:volumes].first.boot_order
+        assert_equal 1, args[:interfaces].length
+        assert_equal 1, args[:interfaces].first[:bootOrder]
+      end
+
+      record.create_vm({
+        :name => "test",
+        :volumes_attributes => { "0" => { :capacity => "10", :storage_class => "local", :bootable => "true" } },
+        :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network", :provision => true } },
+      })
+    end
+
+    test "assigns bootable PVC disk first when there is no provisioning NIC" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        assert_equal 1, args[:volumes].length
+        assert_equal 1, args[:volumes].first.boot_order
+        assert_equal 1, args[:interfaces].length
+        assert_nil args[:interfaces].first[:bootOrder]
+      end
+
+      record.create_vm({
+        :name => "test",
+        :volumes_attributes => { "0" => { :capacity => "10", :storage_class => "local", :bootable => "true" } },
+        :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } },
+      })
+    end
+
+    test "serializes boot ordered PVCs as bootable for round trip" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      volume = Fog::Kubevirt::Compute::Volume.new
+      volume.type = 'persistentVolumeClaim'
+      volume.info = 'test-claim'
+      volume.boot_order = 2
+
+      vm = stub(name: "test", volumes: [volume])
+      client.pvcs.stubs(:get).with('test-claim').returns(stub)
+
+      vm_attrs = record.send(:set_vm_volumes_attributes, vm, {})
+      attrs = vm_attrs[:volumes_attributes]["0"].with_indifferent_access
+
+      assert_equal 2, attrs[:boot_order]
+      assert_equal "true", attrs[:bootable]
+    end
+
+    test "preserves explicit boot order when rebuilding a bootable volume" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      volume = record.new_volume({ :capacity => "10", :storage_class => "local", :bootable => "true", :boot_order => 2 })
+
+      assert_equal 2, volume.boot_order
+      assert volume.bootable
+    end
+
     test "raises an error for image based provisioning with only an extra data volume" do
       record = new_kubevirt_vcr
       client = mocked_client

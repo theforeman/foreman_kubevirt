@@ -3,7 +3,7 @@ module FogExtensions
     module Volume
       extend ActiveSupport::Concern
       def bootable
-        boot_order == 1
+        !boot_order.nil?
       end
 
       def id

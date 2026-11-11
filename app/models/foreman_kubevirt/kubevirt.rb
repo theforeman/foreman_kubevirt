@@ -128,8 +128,12 @@ module ForemanKubevirt
       return unless new_volume_errors.empty?
       capacity = attrs.delete(:capacity)
       args = {capacity: capacity}.merge(attrs)
+      boot_order = args[:boot_order] || args['boot_order']
+      bootable = args[:bootable] || args['bootable']
       vol = Fog::Kubevirt::Compute::Volume.new(args)
-      vol.boot_order = 1 if args[:bootable] == "on" || args[:bootable] == "true"
+      if boot_order.blank? && ["on", "true"].include?(bootable)
+        vol.boot_order = 1
+      end
       vol
     end
 
@@ -260,7 +264,11 @@ module ForemanKubevirt
           nil
         end
       end.compact
-      vm_attrs[:volumes_attributes] = Hash[volumes.each_with_index.map { |volume, idx| [idx.to_s, volume.attributes] }]
+      vm_attrs[:volumes_attributes] = Hash[volumes.each_with_index.map do |volume, idx|
+        attrs = volume.attributes.with_indifferent_access
+        attrs[:bootable] = "true" if volume.bootable
+        [idx.to_s, attrs]
+      end]
 
       vm_attrs
     end
@@ -441,14 +449,28 @@ module ForemanKubevirt
       end
     end
 
-    def create_vm_volume(pvc_name, capacity, storage_class, bootable)
+    def create_vm_volume(pvc_name, capacity, storage_class, boot_order)
       create_new_pvc(pvc_name, capacity, storage_class)
 
       volume = Fog::Kubevirt::Compute::Volume.new
       volume.type = 'persistentVolumeClaim'
       volume.info = pvc_name
-      volume.boot_order = 1 if bootable == "true"
+      volume.boot_order = boot_order if boot_order.present?
       volume
+    end
+
+    def bootable_volume?(volume_attributes)
+      volume_attributes[:bootable] == "true"
+    end
+
+    def provisioning_interface_present?(options)
+      options.fetch(:interfaces_attributes, {}).values.any? { |iface| iface[:provision] == true }
+    end
+
+    def boot_order_for_pvc(options, volume_attributes, image_provision)
+      return nil if image_provision || !bootable_volume?(volume_attributes)
+
+      provisioning_interface_present?(options) ? 2 : 1
     end
 
     def add_volumes_based_on_pvcs(options, image_provision)
@@ -462,14 +484,14 @@ module ForemanKubevirt
       vm_name = options[:name].gsub(/[._]+/, '-')
       volumes_attributes.each_with_index do |(_, v), index|
         # skip if this is a boot volume for image provisioning
-        next if image_provision && v[:bootable]
+        next if image_provision && bootable_volume?(v)
         # Add PVC as volumes to the virtual machine
         pvc_name = vm_name + "-claim-" + (index + 1).to_s
         capacity = v[:capacity]
         storage_class = v[:storage_class]
-        bootable = v[:bootable] && !image_provision
+        boot_order = boot_order_for_pvc(options, v, image_provision)
 
-        volume = create_vm_volume(pvc_name, capacity, storage_class, bootable)
+        volume = create_vm_volume(pvc_name, capacity, storage_class, boot_order)
         volumes << volume
       end
 
