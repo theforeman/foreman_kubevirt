@@ -20,6 +20,12 @@ cniProviderSelected = function (item) {
   }
 }
 
+kubevirtTpmClicked = function (item) {
+  checked = $(item).is(':checked');
+  persistCheckbox = $('[name$="[tpm_persist]"]');
+  persistCheckbox.attr('disabled', !checked);
+}
+
 function disableDropdown(item) {
   item.hide();
   item.attr('disabled', true);
