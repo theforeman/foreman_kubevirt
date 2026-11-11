@@ -516,7 +516,8 @@ module ForemanKubevirt
       interfaces = []
       networks = []
       options[:interfaces_attributes].values.each do |iface|
-        raise ::Foreman::Exception.new _('cni_provider or network are missing') unless (iface.key?(:cni_provider) && iface.key?(:network))
+        raise ::Foreman::Exception.new _('cni_provider or network are missing') unless
+          iface.key?(:cni_provider) && (iface[:cni_provider] == 'pod' || iface.key?(:network))
         if iface[:cni_provider] == 'pod'
           nic, net = create_pod_network_element
         else
