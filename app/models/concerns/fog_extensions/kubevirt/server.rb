@@ -43,6 +43,23 @@ module FogExtensions
         name
       end
 
+      def firmware
+        return 'efi' if bootloader&.key? :efi
+
+        'bios'
+      end
+
+      def secure_boot
+        attributes.dig(:bootloader, :efi, :secureBoot)
+      end
+
+      def tpm_enabled
+        return nil unless persisted?
+
+        vm = service.get_raw_vm(name)
+        !vm.dig(:spec, :template, :spec, :domain, :devices, :tpm).nil?
+      end
+
       def mac
         interfaces.map(&:mac_address).compact.min
       end
