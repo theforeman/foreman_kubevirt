@@ -62,6 +62,19 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     assert_equal 1, server.interfaces.count
   end
 
+  test "create_vm with pod cni provider and no network key should pass" do
+    vm_args = NETWORK_BASED_VM_ARGS.deep_dup
+    vm_args["interfaces_attributes"]["0"].delete("network")
+    vm_args["interfaces_attributes"]["0"]["cni_provider"] = "pod"
+
+    Fog.mock!
+    compute_resource = new_kubevirt_vcr
+    server = compute_resource.create_vm(vm_args)
+
+    assert_equal "robin-rykert.example.com", server.name
+    assert_equal 1, server.interfaces.count
+  end
+
   test "create_vm image based should pass" do
     Fog.mock!
     compute_resource = new_kubevirt_vcr
