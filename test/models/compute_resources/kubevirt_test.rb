@@ -209,6 +209,15 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     end
   end
 
+  describe "create_pod_network_element" do
+    test "uses masquerade binding instead of bridge" do
+      record = new_kubevirt_vcr
+      nic, net = record.send(:create_pod_network_element)
+      assert_equal({ :masquerade => {}, :name => "pod" }, nic)
+      assert_equal({ :name => "pod", :pod => {} }, net)
+    end
+  end
+
   describe "networks" do
     test "returns list of networksattachmentdefs" do
       Fog.mock!

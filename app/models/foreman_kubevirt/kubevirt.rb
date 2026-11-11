@@ -496,8 +496,14 @@ module ForemanKubevirt
       [volumes, volume_templates]
     end
 
+    # KubeVirt recommends masquerade over bridge binding for the default pod
+    # network: bridge disallows live migration, is rejected by some CNI
+    # plugins when a custom MAC address is requested, and can be disabled
+    # cluster-wide by an admin (permitBridgeInterfaceOnPodNetwork: false).
+    # See https://kubevirt.io/user-guide/network/interfaces_and_networks/#bridge-binding-for-pod-networking
+    # and https://kubevirt.io/user-guide/network/interfaces_and_networks/#masquerade
     def create_pod_network_element
-      nic = { bridge: {}, name: 'pod' }
+      nic = { masquerade: {}, name: 'pod' }
       net = { name: 'pod', pod: {} }
       [nic, net]
     end
