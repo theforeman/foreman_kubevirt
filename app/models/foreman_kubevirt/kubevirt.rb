@@ -64,7 +64,18 @@ module ForemanKubevirt
     def validate_connectivity(options = {})
       return unless connection_properties_valid?
       return false if errors.any?
-      client&.valid? && client&.virt_supported?
+
+      unless client&.valid?
+        errors.add(:base, _('The Kubernetes API could not be reached'))
+        return false
+      end
+
+      unless client.virt_supported?
+        errors.add(:base, _('KubeVirt is not available on the compute resource'))
+        return false
+      end
+
+      true
     rescue StandardError => e
       if /401/.match?(e.message)
         errors.add(:base, _('The compute resource could not be authenticated'))
@@ -198,17 +209,19 @@ module ForemanKubevirt
         vm = client.servers.get(options[:name])
         update_userdata_secret_owner(userdata_secret, options[:name], vm.uid) if userdata_secret.present?
         vm
-      rescue Exception => e
+      rescue StandardError
         delete_pvcs(volumes) if volumes
         delete_userdata_secret(userdata_secret) if userdata_secret.present?
-        raise e
+        raise
       end
     end
 
     def destroy_vm(vm_uuid)
       vm = find_vm_by_uuid(vm_uuid)
-      delete_pvcs(vm.volumes)
-      vm.destroy
+      volumes = vm.volumes
+      result = vm.destroy
+      delete_pvcs(volumes)
+      result
     rescue ActiveRecord::RecordNotFound
       true
     end
@@ -343,8 +356,7 @@ module ForemanKubevirt
         :kubevirt_token      => token,
         :kubevirt_log        => logger,
         :kubevirt_verify_ssl => true,
-        :kubevirt_ca_cert    => ca_cert,
-        :kubevirt_version    => "v1alpha3"
+        :kubevirt_ca_cert    => ca_cert
       )
     rescue OpenSSL::X509::CertificateError
       raise_certification_failure_exception
@@ -455,14 +467,12 @@ module ForemanKubevirt
       volumes_attributes = options[:volumes_attributes]
       return [] if volumes_attributes.blank?
 
-      validate_volume_capacity(volumes_attributes)
-      validate_only_single_bootable_volume(volumes_attributes)
-
       volumes = []
+
       vm_name = options[:name].gsub(/[._]+/, '-')
       volumes_attributes.each_with_index do |(_, v), index|
         # skip if this is a boot volume for image provisioning
-        next if image_provision && v[:bootable]
+        next if image_provision && v[:bootable] == "true"
         # Add PVC as volumes to the virtual machine
         pvc_name = vm_name + "-claim-" + (index + 1).to_s
         capacity = v[:capacity]
@@ -474,6 +484,9 @@ module ForemanKubevirt
       end
 
       volumes
+    rescue StandardError
+      delete_pvcs(volumes)
+      raise
     end
 
     # Creates volume elements for the VM based on provided parameters
@@ -482,16 +495,21 @@ module ForemanKubevirt
     #
     def create_volumes_for_vm(options)
       verify_at_least_one_volume_provided(options)
+      volumes_attributes = options[:volumes_attributes]
+      if volumes_attributes.present?
+        validate_volume_capacity(volumes_attributes)
+        validate_only_single_bootable_volume(volumes_attributes)
+      end
 
       # Add image as volume to the virtual machine
       volumes = []
       volume_templates = []
       image_provision = options[:provision_method] == "image"
 
+      # Validate the image target before allocating any persistent claims.
+      volume_templates << add_volume_template_for_image_provision(options) if image_provision
       volumes << add_volume_for_image_provision(options) if image_provision
       volumes.concat(add_volumes_based_on_pvcs(options, image_provision))
-
-      volume_templates << add_volume_template_for_image_provision(options) if image_provision
 
       [volumes, volume_templates]
     end

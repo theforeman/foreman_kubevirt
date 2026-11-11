@@ -104,6 +104,37 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
       record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10", :bootable => "true" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
     end
 
+    test "keeps an explicitly non-bootable data volume for image provisioning" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+
+      client.vms.expects(:create).with do |args|
+        assert_equal %w[dataVolume persistentVolumeClaim], args[:volumes].map(&:type)
+        assert_equal "test-claim-2", args[:volumes].last.info
+      end
+
+      record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10", :bootable => "true" }, "1" => { :capacity => "5", :bootable => "false" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+    end
+
+    test "removes PVCs created before a later PVC fails" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+      client.pvcs.stubs(:create).with do |args|
+        raise StandardError, 'second PVC failed' if args[:name] == 'test-claim-2'
+
+        true
+      end
+      client.pvcs.expects(:delete).with('test-claim-1').once
+      client.vms.expects(:create).never
+
+      error = assert_raises(StandardError) do
+        record.create_vm({ :name => "test", :volumes_attributes => { "0" => { :capacity => "10" }, "1" => { :capacity => "5" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+      end
+      assert_equal 'second PVC failed', error.message
+    end
+
     test "raises an error for image based provisioning with only an extra data volume" do
       record = new_kubevirt_vcr
       client = mocked_client
@@ -113,6 +144,53 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
         record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
       end
       assert_match(/A bootable volume is required as a target for the image/, error.message)
+    end
+
+    test "does not allocate PVCs when image provisioning has only an explicitly non-bootable volume" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+      client.pvcs.expects(:create).never
+      client.pvcs.expects(:delete).never
+      client.vms.expects(:create).never
+
+      error = assert_raises(Foreman::Exception) do
+        record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => "10", :bootable => "false" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+      end
+
+      assert_match(/A bootable volume is required as a target for the image/, error.message)
+    end
+
+    test "does not allocate PVCs when the provisioning image is missing" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+      client.pvcs.expects(:create).never
+      client.pvcs.expects(:delete).never
+      client.vms.expects(:create).never
+
+      error = assert_raises(Foreman::Exception) do
+        record.create_vm({ :name => "test", :provision_method => 'image', :volumes_attributes => { "0" => { :capacity => "10", :bootable => "false" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+      end
+
+      assert_match(/VM should be created based on an image/, error.message)
+    end
+
+    test "validates image target capacity before building its volume template" do
+      record = new_kubevirt_vcr
+      client = mocked_client
+      record.stubs(:client).returns(client)
+      client.pvcs.expects(:create).never
+      client.pvcs.expects(:delete).never
+      client.vms.expects(:create).never
+
+      [nil, 'invalid'].each do |capacity|
+        error = assert_raises(Foreman::Exception) do
+          record.create_vm({ :name => "test", :provision_method => 'image', :image_id => "default/template", :volumes_attributes => { "0" => { :capacity => capacity, :bootable => "true" }, "1" => { :capacity => "5", :bootable => "false" } }, :interfaces_attributes => { "0" => { "cni_provider" => "multus", "network" => "default/network" } } })
+        end
+
+        assert_match(/Volume size .* is not valid/, error.message)
+      end
     end
 
     test "without user_data, cloudinit is nil" do
@@ -269,6 +347,59 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     end
   end
 
+  describe "destroy_vm" do
+    test "deletes managed PVCs only after deleting the VM" do
+      record = new_kubevirt_vcr
+      volumes = [stub]
+      order = []
+      vm = Object.new
+      vm.define_singleton_method(:volumes) { volumes }
+      vm.define_singleton_method(:destroy) do
+        order << :vm
+        true
+      end
+      record.stubs(:find_vm_by_uuid).returns(vm)
+      record.define_singleton_method(:delete_pvcs) do |actual_volumes|
+        raise 'unexpected volumes' unless actual_volumes.equal?(volumes)
+
+        order << :pvcs
+        true
+      end
+
+      assert record.destroy_vm('test')
+      assert_equal %i[vm pvcs], order
+    end
+
+    test "preserves managed PVCs when deleting the VM fails" do
+      record = new_kubevirt_vcr
+      vm = stub(:volumes => [stub])
+      vm.stubs(:destroy).raises(StandardError, 'VM deletion failed')
+      record.stubs(:find_vm_by_uuid).returns(vm)
+      record.expects(:delete_pvcs).never
+
+      error = assert_raises(StandardError) { record.destroy_vm('test') }
+      assert_equal 'VM deletion failed', error.message
+    end
+  end
+
+  test "client lets fog discover the preferred KubeVirt API version" do
+    record = new_kubevirt_vcr
+    client = stub
+    expected_options = {
+      :kubevirt_hostname => record.hostname,
+      :kubevirt_port => record.api_port,
+      :kubevirt_namespace => record.namespace,
+      :kubevirt_token => record.token,
+      :kubevirt_log => record.logger,
+      :kubevirt_verify_ssl => true,
+      :kubevirt_ca_cert => record.ca_cert,
+    }
+
+    Fog::Kubevirt::Compute.expects(:new).with(**expected_options).returns(client)
+
+    assert_same client, record.send(:client)
+  end
+
   test "test_connection should fail if client does not support virt" do
     client = stub
     client.stubs(:virt_supported?).returns(false)
@@ -276,6 +407,29 @@ class ForemanKubevirtTest < ActiveSupport::TestCase
     record = new_kubevirt_vcr
     record.stubs(:client).returns(client)
     assert_not record.test_connection
+    assert_equal ['KubeVirt is not available on the compute resource'], record.errors[:base]
+  end
+
+  test "test_connection should fail if the Kubernetes API is unavailable" do
+    client = stub
+    client.stubs(:valid?).returns(false)
+    client.expects(:virt_supported?).never
+    record = new_kubevirt_vcr
+    record.stubs(:client).returns(client)
+
+    assert_not record.test_connection
+    assert_equal ['The Kubernetes API could not be reached'], record.errors[:base]
+  end
+
+  test "test_connection should succeed for a reachable KubeVirt API" do
+    client = stub
+    client.stubs(:valid?).returns(true)
+    client.stubs(:virt_supported?).returns(true)
+    record = new_kubevirt_vcr
+    record.stubs(:client).returns(client)
+
+    assert record.test_connection
+    assert_empty record.errors[:base]
   end
 
   test "Verify client raises StandardError exception" do

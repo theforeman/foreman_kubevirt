@@ -57,72 +57,69 @@ To verify that the installation was successful, go to Foreman, top bar **Adminis
 
 
 
-| Foreman Version | Plugin Version |  Kubevirt API Version |
-| --------------- | --------------:|  -------------------- |
-| >= 1.21.x       | ~> 0.1.x       |  v1alpha3             |
+| Foreman Version | Plugin Version | KubeVirt API Version |
+| --------------- | -------------: | -------------------- |
+| >= 3.13         | ~> 0.6.x       | cluster preferred version |
+
+The current development version uses the preferred KubeVirt API version advertised by the cluster API.
 
 ## Usage
 Go to **Infrastructure > Compute Resources** and click on **New Compute Resource**.
 Choose the **KubeVirt provider**, and fill in all the fields.
 
 Here is a short description of some of the fields:
-* *Namespace* - the virtual cluster on kubernetes to which the user has permissions as cluster-admin.
+* *Namespace* - the Kubernetes namespace in which Foreman manages virtual machines.
 * *Token* - a bearer token authentication for HTTP(s) calls.
 * *X509 Certification Authorities* - enables client certificate authentication for API server calls.
+
+Use a dedicated ServiceAccount with only the namespaced KubeVirt, PVC, Secret,
+and network attachment permissions required by this provider. StorageClass
+discovery additionally needs cluster-scoped read access. Do not use a
+cluster-admin token.
 
 ### How to get values of *Token* and *X509 CA* ?
 
 #### Kubernetes
 ##### *Token*:
 
-Either list the secrets and pick the one that contains the relevant token, or select a service account:
+Create a bounded token for a dedicated ServiceAccount. Replace the namespace
+and account name with the values from your RBAC configuration:
 
-List of secrets that contain the tokens and set secret name instead of *YOUR_SECRET*:
 ```
-# kubectl get secrets
-# kubectl get secrets YOUR_SECRET -o jsonpath='{.data.token}' | base64 -d | xargs
+kubectl --namespace foreman-managed-vms create token foreman-kubevirt --duration=24h
 ```
 
-Or obtain token for a service account named 'foreman-account':
-```
-# KUBE_SECRET=`kubectl get sa foreman-account -o jsonpath='{.secrets[0].name}'`
-# kubectl get secrets $KUBE_SECRET -o jsonpath='{.data.token}' | base64 -d | xargs
-```
+The API server may cap the requested lifetime. Rotate the token in Foreman
+before it expires. Legacy automatically generated ServiceAccount token Secrets
+and non-expiring tokens are not recommended.
 
 ##### *X509 CA*:
 
-Taken from kubernetes admin config file:
+Taken from the active kubeconfig context:
 ```
-# cat /etc/kubernetes/admin.conf | grep certificate-authority-data: | cut -d: -f2 | tr -d " " | base64 -d
-```
-
-Or by retrieving from the secret, via the service account (in this example assuming its name is *foreman-account*):
-```
-# KUBE_SECRET=`kubectl get sa foreman-account -o jsonpath='{.secrets[0].name}'`
-# kubectl get secret $KUBE_SECRET  -o jsonpath='{.data.ca\.crt}' | base64 -d
+kubectl config view --raw --minify \
+  --output='jsonpath={.clusters[0].cluster.certificate-authority-data}' | \
+  base64 --decode
 ```
 
 #### OpenShift
 ##### *Token*:
 
-Create a privileged account named *my-account*:
+Create a bounded token for the dedicated ServiceAccount after applying the
+same least-privilege RBAC described above:
+
 ```
-# oc create -f https://raw.githubusercontent.com/ManageIQ/manageiq-providers-kubevirt/master/manifests/account-openshift.yml
+oc --namespace foreman-managed-vms create token foreman-kubevirt --duration=24h
 ```
-Use *oc* tool for reading the token of the *my-account* service account under *default* namespace:
-`# oc sa get-token my-account -n default`
 
 ##### *X509 CA*:
 
-Taken from OpenShift admin config file:
-```
-# cat /etc/origin/master/openshift-master.kubeconfig | grep certificate-authority-data: | cut -d: -f2 | tr -d " " | base64 -d
-```
+Taken from the active OpenShift context:
 
-Or by retrieving from the secret of service account *my-account* under the *default* namespace:
 ```
-# KUBE_SECRET=`oc get sa my-account -n default -o jsonpath='{.secrets[0].name}'`
-# kubectl get secret $KUBE_SECRET -n default -o jsonpath='{.data.ca\.crt}' | base64 -d
+oc config view --raw --minify \
+  --output='jsonpath={.clusters[0].cluster.certificate-authority-data}' | \
+  base64 --decode
 ```
 
 ## Documentation
@@ -135,10 +132,6 @@ Tests should be invoked from the *foreman* directory by:
 ```
 # bundle exec rake test:foreman_kubevirt
 ```
-
-## TODO
-
-* Implement VM Console
 
 ## Contributing
 
